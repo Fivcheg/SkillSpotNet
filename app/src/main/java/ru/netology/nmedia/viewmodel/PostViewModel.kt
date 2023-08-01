@@ -28,7 +28,8 @@ private val empty = Post(
     authorAvatar = "",
     likedByMe = false,
     likes = 0,
-    published = 0,
+    published = "",
+    ownedByMe = false
 )
 
 private val noPhoto = PhotoModel()
@@ -82,7 +83,7 @@ class PostViewModel @Inject constructor(
         loadPosts()
     }
 
-    fun loadPosts() = viewModelScope.launch {
+    private fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
           //   repository.stream.cachedIn(viewModelScope).
