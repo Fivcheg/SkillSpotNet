@@ -39,10 +39,19 @@ class SignInFragment : Fragment() {
         with(binding) {
             username.requestFocus()
             signinButton.setOnClickListener {
-                viewModel.authenticationUser(
-                    username.text.toString(),
-                    password.text.toString(),
-                )
+                val checkPassword = validPassword(password.text.toString())
+                val checkUser = validUser(username.text.toString())
+
+
+                if (checkPassword == null && checkUser == null) {
+                    viewModel.authenticationUser(
+                        username.text.toString(),
+                        password.text.toString(),
+                    )
+                } else {
+                    loginPasswordContainer.helperText = checkPassword ?: "Pass is good"
+                    loginContainer.helperText = checkUser ?: "Login is good"
+                }
                 hideKeyboard(requireView())
             }
         }
@@ -52,7 +61,36 @@ class SignInFragment : Fragment() {
             findNavController().navigate(R.id.action_signInFragment_to_feedFragment)
         }
 
-    return binding.root
+        return binding.root
 
     }
+
+    private fun validPassword(passwordText: String): String? {
+
+        if (passwordText.length < 8) {
+            return "Minimum 8 Character Password"
+        }
+        if (!passwordText.matches(".*[A-Z].*".toRegex())) {
+            return "Must Contain 1 Upper-case Character"
+        }
+        if (!passwordText.matches(".*[a-z].*".toRegex())) {
+            return "Must Contain 1 Lower-case Character"
+        }
+        if (!passwordText.matches(".*[@#\$%^&+=].*".toRegex())) {
+            return "Must Contain 1 Special Character (@#\$%^&+=)"
+        }
+        return null
+    }
+
+    private fun validUser(userText: String): String? {
+
+        if (userText.length < 3) {
+            return "Minimum 3 Character Username"
+        }
+        if (userText.matches(".*[@#\$%^&+=].*".toRegex())) {
+            return "Must Contain 1 Special Character (@#\$%^&+=)"
+        }
+        return null
+    }
+
 }

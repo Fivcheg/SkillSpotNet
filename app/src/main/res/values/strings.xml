@@ -31,6 +31,6 @@
     <string name="ad_description">ad</string>
     <string name="Login">Login</string>
     <string name="Password">Password</string>
-    <string name="Loginning">Enter</string>
+    <string name="Loginning">LOGIN</string>
     <string name="Enter">Login</string>
 </resources>
