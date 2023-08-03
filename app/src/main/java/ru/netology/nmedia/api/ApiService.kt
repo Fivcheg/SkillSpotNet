@@ -3,7 +3,6 @@ package ru.netology.nmedia.api
 import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -98,10 +97,10 @@ interface ApiService {
     @Multipart
     @POST("users/registration")
     suspend fun registrationUser(
-        @Part("login") login: RequestBody,
-        @Part("password") pass: RequestBody,
-        @Part("name") name: RequestBody,
-        @Part image: MultipartBody.Part?,
+        @Part("login") login: String,
+        @Part("password") pass: String,
+        @Part("name") name: String,
+        // @Part image: MultipartBody.Part?,
     ): Response<Token>
 
 }

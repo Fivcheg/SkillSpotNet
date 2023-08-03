@@ -10,7 +10,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
@@ -85,11 +84,12 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                     R.id.signin -> {
                         findNavController(R.id.nav_host_fragment)
                             .navigate(
-                                R.id.action_feedFragment_to_signInFragment)
+                                R.id.signInFragment)
                         true
                     }
                     R.id.signup -> {
-                        // TODO: just hardcode it, implementation must be in homework
+                        findNavController(R.id.nav_host_fragment)
+                            .navigate(R.id.signUpFragment)
                         true
                     }
                     R.id.signout -> {
