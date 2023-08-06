@@ -33,6 +33,4 @@
     <string name="Password">Password</string>
     <string name="Loginning">LOGIN</string>
     <string name="Enter">Login</string>
-    <string name="registration">Registration</string>
-    <string name="username">Username</string>
 </resources>

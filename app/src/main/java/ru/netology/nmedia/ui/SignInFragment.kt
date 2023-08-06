@@ -13,8 +13,6 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.FragmentSigninBinding
 import ru.netology.nmedia.util.AndroidUtils.hideKeyboard
-import ru.netology.nmedia.validation.ValidationUser.Companion.validPassword
-import ru.netology.nmedia.validation.ValidationUser.Companion.validUser
 import ru.netology.nmedia.viewmodel.SignInViewModel
 import javax.inject.Inject
 
@@ -44,6 +42,7 @@ class SignInFragment : Fragment() {
                 val checkPassword = validPassword(password.text.toString())
                 val checkUser = validUser(username.text.toString())
 
+
                 if (checkPassword == null && checkUser == null) {
                     viewModel.authenticationUser(
                         username.text.toString(),
@@ -63,5 +62,35 @@ class SignInFragment : Fragment() {
         }
 
         return binding.root
+
     }
+
+    private fun validPassword(passwordText: String): String? {
+
+        if (passwordText.length < 8) {
+            return "Minimum 8 Character Password"
+        }
+        if (!passwordText.matches(".*[A-Z].*".toRegex())) {
+            return "Must Contain 1 Upper-case Character"
+        }
+        if (!passwordText.matches(".*[a-z].*".toRegex())) {
+            return "Must Contain 1 Lower-case Character"
+        }
+        if (!passwordText.matches(".*[@#\$%^&+=].*".toRegex())) {
+            return "Must Contain 1 Special Character (@#\$%^&+=)"
+        }
+        return null
+    }
+
+    private fun validUser(userText: String): String? {
+
+        if (userText.length < 3) {
+            return "Minimum 3 Character Username"
+        }
+        if (userText.matches(".*[@#\$%^&+=].*".toRegex())) {
+            return "Must Contain 1 Special Character (@#\$%^&+=)"
+        }
+        return null
+    }
+
 }
