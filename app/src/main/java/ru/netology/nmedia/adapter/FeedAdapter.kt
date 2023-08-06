@@ -79,7 +79,7 @@ class FeedAdapter(
                 content.text = post.content
                 avatar.loadCircleCrop("${BuildConfig.BASE_URL}/avatars/${post.authorAvatar}")
                 like.isChecked = post.likedByMe
-                like.text = "${post.likes}"
+//                like.text = "${post.likes}"
 
                 menu.visibility = if (post.ownedByMe) View.VISIBLE else View.INVISIBLE
 

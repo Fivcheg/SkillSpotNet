@@ -22,14 +22,17 @@ import kotlin.random.Random
 
 private val empty = Post(
     id = 0,
-    content = "",
     authorId = 0,
     author = "",
     authorAvatar = "",
-    likedByMe = false,
-    likes = 0,
+    content = "",
     published = "",
-    ownedByMe = false
+    coords = null,
+    mentionedMe = false,
+    likedByMe = false,
+    attachment = null,
+    ownedByMe = false,
+    users = null
 )
 
 private val noPhoto = PhotoModel()

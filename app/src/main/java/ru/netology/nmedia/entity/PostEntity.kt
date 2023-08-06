@@ -11,16 +11,19 @@ data class PostEntity(
     val id: Long,
     val authorId: Long,
     val author: String,
+    var authorAvatar: String?,
     val content: String,
     val published: String,
-    var authorAvatar: String?,
+    @Embedded
+    val coords: CoordinatesEmbeddable?,
+    val mentionedMe: Boolean,
     val likedByMe: Boolean,
-    val likes: Int = 0,
     @Embedded
     var attachment: AttachmentEmbeddable?,
-    val ownedByMe: Boolean
-
-    ) {
+    val ownedByMe: Boolean,
+    @Embedded
+    val users: UsersEmbeddable?,
+) {
     fun toDto(): Post {
         val post = Post(
             id,
@@ -29,10 +32,12 @@ data class PostEntity(
             authorAvatar,
             content,
             published,
+            coords?.toDto(),
+            mentionedMe,
             likedByMe,
-            likes,
             attachment?.toDto(),
-            ownedByMe
+            ownedByMe,
+            users?.toDto()
         )
         return post
     }
@@ -43,13 +48,15 @@ data class PostEntity(
                 dto.id,
                 dto.authorId,
                 dto.author,
+                dto.authorAvatar,
                 dto.content,
                 dto.published,
-                dto.authorAvatar,
+                CoordinatesEmbeddable.fromDto(dto.coords),
+                dto.mentionedMe,
                 dto.likedByMe,
-                dto.likes,
                 AttachmentEmbeddable.fromDto(dto.attachment),
-                dto.ownedByMe
+                dto.ownedByMe,
+                UsersEmbeddable.fromDto(dto.users)
             )
         }
     }

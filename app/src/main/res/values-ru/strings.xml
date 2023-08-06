@@ -34,4 +34,6 @@
     <string name="Password">Пароль</string>
     <string name="Loginning">Вход</string>
     <string name="Enter">Войти</string>
+    <string name="registration">Регистрация</string>
+    <string name="username">Имя пользователя</string>
 </resources>

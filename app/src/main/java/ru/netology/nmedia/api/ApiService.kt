@@ -14,9 +14,7 @@ import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.dto.Token
 import ru.netology.nmedia.dto.User
 
-
 private const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
-
 
 fun okhttp(vararg interceptors: Interceptor): OkHttpClient = OkHttpClient.Builder()
     .apply {
