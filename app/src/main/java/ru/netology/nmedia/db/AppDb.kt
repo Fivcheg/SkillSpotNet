@@ -12,7 +12,7 @@ import ru.netology.nmedia.entity.PostRemoteKeyEntity
         PostEntity::class,
         PostRemoteKeyEntity::class
     ],
-    version = 32,
+    version = 33,
     exportSchema = false
 )
 abstract class AppDb : RoomDatabase() {

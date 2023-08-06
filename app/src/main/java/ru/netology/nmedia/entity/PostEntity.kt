@@ -12,10 +12,14 @@ data class PostEntity(
     val authorId: Long,
     val author: String,
     var authorAvatar: String?,
+    val authorJob: String?,
     val content: String,
     val published: String,
     @Embedded
     val coords: CoordinatesEmbeddable?,
+    val link: String?,
+//    val likeOwnerIds: List<Int>?,
+//    val mentionIds: List<Int>?,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @Embedded
@@ -26,18 +30,22 @@ data class PostEntity(
 ) {
     fun toDto(): Post {
         val post = Post(
-            id,
-            authorId,
-            author,
-            authorAvatar,
-            content,
-            published,
-            coords?.toDto(),
-            mentionedMe,
-            likedByMe,
-            attachment?.toDto(),
-            ownedByMe,
-            users?.toDto()
+            id = id,
+            authorId = authorId,
+            author = author,
+            authorAvatar = authorAvatar,
+            authorJob = authorJob,
+            content = content,
+            published = published,
+            coords = coords?.toDto(),
+            link = link,
+//            likeOwnerIds = likeOwnerIds,
+//            mentionIds = mentionIds,
+            mentionedMe = mentionedMe,
+            likedByMe = likedByMe,
+            attachment = attachment?.toDto(),
+            ownedByMe = ownedByMe,
+            users = users?.toDto()
         )
         return post
     }
@@ -45,18 +53,22 @@ data class PostEntity(
     companion object {
         fun fromDto(dto: Post): PostEntity {
             return PostEntity(
-                dto.id,
-                dto.authorId,
-                dto.author,
-                dto.authorAvatar,
-                dto.content,
-                dto.published,
-                CoordinatesEmbeddable.fromDto(dto.coords),
-                dto.mentionedMe,
-                dto.likedByMe,
-                AttachmentEmbeddable.fromDto(dto.attachment),
-                dto.ownedByMe,
-                UsersEmbeddable.fromDto(dto.users)
+                id = dto.id,
+                authorId = dto.authorId,
+                author = dto.author,
+                authorAvatar = dto.authorAvatar,
+                authorJob = dto.authorJob,
+                content = dto.content,
+                published = dto.published,
+                coords = CoordinatesEmbeddable.fromDto(dto.coords),
+                link = dto.link,
+//                likeOwnerIds = dto.likeOwnerIds,
+//                mentionIds = dto.mentionIds,
+                mentionedMe = dto.mentionedMe,
+                likedByMe = dto.likedByMe,
+                attachment = AttachmentEmbeddable.fromDto(dto.attachment),
+                ownedByMe = dto.ownedByMe,
+                users = UsersEmbeddable.fromDto(dto.users)
             )
         }
     }
