@@ -37,7 +37,9 @@ class FeedAdapter(
             is Ad -> typeAd
             is Post -> typePost
             null -> throw IllegalArgumentException("unknown item type")
-            else -> {0}
+            else -> {
+                0
+            }
         }
     }
 
@@ -48,10 +50,12 @@ class FeedAdapter(
                 CardAdBinding.inflate(layoutInflater, parent, false),
                 onInteractionListener
             )
+
             typePost -> PostViewHolder(
                 CardPostBinding.inflate(layoutInflater, parent, false),
                 onInteractionListener
             )
+
             else -> throw IllegalArgumentException("unknown view type: $viewType")
         }
     }
@@ -62,7 +66,9 @@ class FeedAdapter(
             when (it) {
                 is Post -> (holder as? PostViewHolder)?.bind(it)
                 is Ad -> (holder as? AdViewHolder)?.bind(it)
-                else -> {0}
+                else -> {
+                    0
+                }
             }
         }
     }
@@ -94,6 +100,7 @@ class FeedAdapter(
                                     onInteractionListener.onRemove(post)
                                     true
                                 }
+
                                 R.id.edit -> {
                                     onInteractionListener.onEdit(post)
                                     true
@@ -136,7 +143,6 @@ class FeedAdapter(
             if (oldItem::class != newItem::class) {
                 return false
             }
-
             return oldItem.id == newItem.id
         }
 
