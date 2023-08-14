@@ -33,4 +33,19 @@
     <string name="Password">Password</string>
     <string name="Loginning">LOGIN</string>
     <string name="Enter">Login</string>
+    <string name="registration">Registration</string>
+    <string name="username">Username</string>
+    <string name="notAuth">Not authtorized</string>
+    <string name="attachmentImagePost">Attachment image in Post</string>
+    <string name="my_job">My Job</string>
+    <string name="company">Company</string>
+    <string name="description_job_menu">Popup job menu</string>
+    <string name="job_company">Company name:</string>
+    <string name="job_position">Position:</string>
+    <string name="job_start">Start:</string>
+    <string name="job_finish">Finish:</string>
+    <string name="job_link">Link:</string>
+    <string name="empty_jobs">There are no jobss.\\nIf you create a new job, it will appear here</string>
+    <string name="add_job">Add job</string>
+    <string name="create_job_header">Create new job</string>
 </resources>

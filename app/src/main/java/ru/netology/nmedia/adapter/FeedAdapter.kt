@@ -7,15 +7,16 @@ import android.widget.PopupMenu
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.netology.nmedia.BuildConfig
+import com.bumptech.glide.Glide
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardAdBinding
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Ad
 import ru.netology.nmedia.dto.FeedItem
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.enumeration.AttachmentType
+import ru.netology.nmedia.util.realTimeFormat
 import ru.netology.nmedia.view.load
-import ru.netology.nmedia.view.loadCircleCrop
 
 
 class FeedAdapter(
@@ -78,14 +79,33 @@ class FeedAdapter(
         private val onInteractionListener: OnInteractionListener,
     ) : RecyclerView.ViewHolder(binding.root) {
 
+
         fun bind(post: Post) {
             binding.apply {
                 author.text = post.author
-                published.text = post.published.toString()
+                published.text = realTimeFormat(post.published)
                 content.text = post.content
-                avatar.loadCircleCrop("${BuildConfig.BASE_URL}/avatars/${post.authorAvatar}")
                 like.isChecked = post.likedByMe
-//                like.text = "${post.likes}"
+
+                imagePost.visibility =
+                    if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
+
+                Glide.with(itemView)
+                    .load("${post.authorAvatar}")
+                    .placeholder(R.drawable.baseline_catching_pokemon_24)
+                    .error(R.drawable.baseline_sign_language_24)
+                    .timeout(10_000)
+                    .circleCrop()
+                    .into(avatar)
+
+                post.attachment?.apply {
+                    Glide.with(imagePost)
+                        .load(this.url)
+                        .placeholder(R.drawable.baseline_catching_pokemon_24)
+                        .error(R.drawable.baseline_report_gmailerrorred_24)
+                        .timeout(10_000)
+                        .into(imagePost)
+                }
 
                 menu.visibility = if (post.ownedByMe) View.VISIBLE else View.INVISIBLE
 
@@ -130,7 +150,7 @@ class FeedAdapter(
 
         fun bind(ad: Ad) {
             binding.apply {
-                image.load("${BuildConfig.BASE_URL}/media/${ad.image}")
+                image.load("https://cs13.pikabu.ru/post_img/2023/05/20/9/1684592976157428245.jpg")
                 image.setOnClickListener {
                     onInteractionListener.onAdClick(ad)
                 }

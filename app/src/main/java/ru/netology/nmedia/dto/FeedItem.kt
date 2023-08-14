@@ -23,8 +23,8 @@ data class Post(
     val published: String,
     val coords: Coordinates? = null,
     val link: String? = null,
-    val likeOwnerIds: List<Int>? = null,
-    val mentionIds: List<Int>? = null,
+ //   val likeOwnerIds: List<Int>? = null,
+//    val mentionIds: List<Int>? = null,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
 //    val likes: Int = 0,
@@ -33,28 +33,6 @@ data class Post(
     val users: Users? = null,
 ) : FeedItem()
 
-data class Job(
-    val id: Long,
-    val name: String,
-    val position: String,
-    val start: String,
-)
-
-data class Event(
-    val id: Long,
-    val authorId: Long,
-    val author: String,
-    val content: String,
-    val datetime: String,
-    val published: String,
-    val coords: Coordinates? = null,
-    val type: EventType,
-    val likedByMe: Boolean,
-    val participatedByMe: Boolean,
-    val attachment: Attachment? = null,
-    val ownedByMe: Boolean = false,
-    val users: Users,
-)
 
 data class Attachment(
     val url: String,
@@ -67,7 +45,7 @@ data class Coordinates(
 )
 
 data class Users(
-    val name: String,
+    val name: String = " ",
     val avatar: String? = null,
 )
 

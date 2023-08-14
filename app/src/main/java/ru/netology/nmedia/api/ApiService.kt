@@ -3,12 +3,12 @@ package ru.netology.nmedia.api
 import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import ru.netology.nmedia.BuildConfig
+import ru.netology.nmedia.dto.Job
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.dto.PushToken
@@ -77,6 +77,8 @@ interface ApiService {
     suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
 
     //-------------- Users -------------------//
+
+
     @GET("users")
     suspend fun getUsers(): Response<List<User>>
 
@@ -96,11 +98,23 @@ interface ApiService {
     @Multipart
     @POST("users/registration")
     suspend fun registrationUser(
-        @Part("login") login: RequestBody,
-        @Part("password") pass: RequestBody,
-        @Part("name") name: RequestBody,
-        @Part image: MultipartBody.Part?,
+        @Part("login") login: String,
+        @Part("password") pass: String,
+        @Part("name") name: String,
+        // @Part image: MultipartBody.Part?,
     ): Response<Token>
+
+
+    //-------------- Job -------------------//
+
+    @GET("{id}/jobs")
+    suspend fun getJobByUserId(@Path("id") id: Long): Response<List<Job>>
+
+    @POST("my/jobs")
+    suspend fun saveJob(@Body job: Job): Response<Job>
+
+    @DELETE("my/jobs/{id}")
+    suspend fun removeJobById(@Path("id") id: Long): Response<Unit>
 
 }
 

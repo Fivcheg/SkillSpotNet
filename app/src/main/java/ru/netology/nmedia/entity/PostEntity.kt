@@ -18,7 +18,8 @@ data class PostEntity(
     @Embedded
     val coords: CoordinatesEmbeddable?,
     val link: String? = null,
-//    val likeOwnerIds: List<Int>?,
+//    @Embedded
+//    var likeOwnerIds: LikeOwnerIdsConverter?,
 //    val mentionIds: List<Int>?,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
@@ -39,7 +40,7 @@ data class PostEntity(
             published = published,
             coords = coords?.toDto(),
             link = link,
-//            likeOwnerIds = likeOwnerIds,
+//            likeOwnerIds = likeOwnerIds?.toDto(),
 //            mentionIds = mentionIds,
             mentionedMe = mentionedMe,
             likedByMe = likedByMe,
@@ -62,7 +63,7 @@ data class PostEntity(
                 published = dto.published,
                 coords = CoordinatesEmbeddable.fromDto(dto.coords),
                 link = dto.link,
-//                likeOwnerIds = dto.likeOwnerIds,
+//                likeOwnerIds = LikeOwnerIdsConverter.fromDto(dto.likeOwnerIds),
 //                mentionIds = dto.mentionIds,
                 mentionedMe = dto.mentionedMe,
                 likedByMe = dto.likedByMe,
