@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import ru.netology.nmedia.api.ApiService
 import ru.netology.nmedia.dao.JobDao
-import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Job
 import ru.netology.nmedia.entity.JobEntity
 import ru.netology.nmedia.entity.toDto
@@ -20,7 +19,6 @@ import javax.inject.Singleton
 
 @Singleton
 class JobRepositoryImpl @Inject constructor(
-    appDb: AppDb,
     private val jobDao: JobDao,
     private val apiService: ApiService,
 ) : JobRepository {
@@ -28,6 +26,8 @@ class JobRepositoryImpl @Inject constructor(
     override val data: Flow<List<Job>> = jobDao.getJob()
         .map { it.toDto() }
         .flowOn(Dispatchers.Default)
+
+    private val _data = MutableLiveData<List<Job>>()
 
     override suspend fun saveJob(job: Job) {
         try {
@@ -61,12 +61,10 @@ class JobRepositoryImpl @Inject constructor(
         }
     }
 
-    private val _data = MutableLiveData<List<Job>>()
-
     override suspend fun removeByIdJob(id: Long) {
         try {
             jobDao.removeJobById(id)
-            val response = apiService.removeById(id)
+            val response = apiService.removeJobById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

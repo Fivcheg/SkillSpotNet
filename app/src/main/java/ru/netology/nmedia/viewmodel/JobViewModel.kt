@@ -23,8 +23,8 @@ private val empty = Job(
     name = "",
     position = "",
     start = "",
-    finish = "",
-    link = ""
+    finish = null,
+    link = null
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -54,6 +54,9 @@ class JobViewModel @Inject constructor(
     val jobCreated: LiveData<Unit>
         get() = _jobCreated
 
+    fun setId(id: Long) {
+        userId.value = id
+    }
 
     internal fun loadJobs(id: Long) = viewModelScope.launch {
         try {
@@ -63,10 +66,6 @@ class JobViewModel @Inject constructor(
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }
-    }
-
-    fun setId(id: Long) {
-        userId.value = id
     }
 
     fun save() {
@@ -96,9 +95,10 @@ class JobViewModel @Inject constructor(
         }
     }
 
-    fun changeJob(name: String, position: String, start: String, finish: String?, link: String?) {
+    fun editJob(name: String, position: String, start: String, finish: String?, link: String?) {
         val nameJob = name.trim()
-        if (edited.value?.name == nameJob) {
+
+        if (edited.value?.name != nameJob) {
             edited.value = edited.value?.copy(name = nameJob)
         }
 
@@ -121,5 +121,13 @@ class JobViewModel @Inject constructor(
         if (edited.value?.position != linkJob) {
             edited.value = edited.value?.copy(link = linkJob)
         }
+    }
+
+    fun startDate(date: String) {
+        edited.value = edited.value?.copy(start = date)
+    }
+
+    fun finishDate(date: String) {
+        edited.value = edited.value?.copy(finish = date)
     }
 }

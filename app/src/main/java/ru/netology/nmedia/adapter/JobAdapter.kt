@@ -16,8 +16,8 @@ class JobAdapter(
 ) : ListAdapter<Job, JobViewHolder>(JobDiffCallback()) {
 
     interface OnJobInteractionListener {
-        fun onRemoveJob(job: Job) {}
-        fun onEditJob(job: Job) {}
+        fun onRemoveJob(job: Job)
+        fun onEditJob(job: Job)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobViewHolder {
@@ -42,16 +42,13 @@ class JobViewHolder(
     private val onJobInteractionListener: JobAdapter.OnJobInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-
     fun bind(job: Job) {
-
         binding.apply {
             jobCompanyName.text = job.name
             jobPositionName.text = job.position
             jobStartName.text = job.start
             jobFinishName.text = job.finish
             jobLinkName.text = job.link
-
             menuCardJob.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)

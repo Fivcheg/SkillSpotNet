@@ -40,6 +40,19 @@ class JobFragment : Fragment() {
         val adapter = JobAdapter(object : JobAdapter.OnJobInteractionListener {
             override fun onEditJob(job: Job) {
                 viewModel.edit(job)
+                val bundle = Bundle().apply {
+                    putString("name", job.name)
+                    putString("position", job.position)
+                    putString("start", job.start)
+                    job.finish?.let {
+                        putString("finish", it)
+                    }
+                    job.link?.let {
+                        putString("link", it)
+                    }
+                }
+                findNavController()
+                    .navigate(R.id.newJobFragment, bundle)
             }
 
             override fun onRemoveJob(job: Job) {
@@ -47,7 +60,6 @@ class JobFragment : Fragment() {
             }
 
         })
-
 
 //        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
 //            0, ItemTouchHelper.START or ItemTouchHelper.END
@@ -65,24 +77,26 @@ class JobFragment : Fragment() {
 //                viewHolder: RecyclerView.ViewHolder,
 //                direction: Int
 //            ) {
-//                println("DO SOMETHING")
+//
 //            }
 //        }).attachToRecyclerView(binding.listJobs)
 
+        //TODO change id to any users. this for test
+        val id = auth.authStateFlow.value.id
+
+        binding.listJobs.adapter = adapter
 
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitList)
         }
 
         lifecycleScope.launchWhenCreated {
-            viewModel.setId(id.toLong())
-            viewModel.loadJobs(id.toLong())
+            viewModel.setId(id)
+            viewModel.loadJobs(id)
         }
 
-        //  binding.swiperefresh.setOnRefreshListener(adapter::refresh)
-
         binding.fabJob.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_JobFragment)
+            findNavController().navigate(R.id.action_JobFragment_to_newJobFragment)
         }
 
         return binding.root

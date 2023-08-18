@@ -12,8 +12,8 @@ data class JobEntity(
     val name: String,
     val position: String,
     val start: String,
-    val finish: String?,
-    val link: String?
+    val finish: String? = null,
+    val link: String? = null
 ) {
     fun toDto(): Job {
         val job = Job(

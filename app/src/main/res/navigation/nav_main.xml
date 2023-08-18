@@ -59,8 +59,17 @@
     <fragment
         android:id="@+id/JobFragment"
         android:name="ru.netology.nmedia.ui.JobFragment"
-        android:label="fragment_feed"
+        android:label="fragment_job"
         tools:layout="@layout/fragment_jobs">
+        <action
+            android:id="@+id/action_JobFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.netology.nmedia.ui.NewJobFragment"
+        android:label="fragment_new_job"
+        tools:layout="@layout/fragment_new_job">
     </fragment>
 
 </navigation>
