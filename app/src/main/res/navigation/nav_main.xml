@@ -71,5 +71,11 @@
         android:label="fragment_new_job"
         tools:layout="@layout/fragment_new_job">
     </fragment>
+    <fragment
+        android:id="@+id/imageOpenNav"
+        android:name="ru.netology.nmedia.ui.ImageFragment"
+        android:label="fragment_image_open"
+        tools:layout="@layout/fragment_image">
+    </fragment>
 
 </navigation>

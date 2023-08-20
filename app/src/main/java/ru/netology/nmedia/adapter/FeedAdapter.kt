@@ -1,9 +1,11 @@
 package ru.netology.nmedia.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.navigation.Navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +33,9 @@ class FeedAdapter(
         fun onRemove(post: Post) {}
         fun onShare(post: Post) {}
         fun onAdClick(ad: Ad) {}
+        fun onOpenImage(post: Post) {}
+        fun onPlayAudio(post: Post) {}
+        fun onPlayVideo(post: Post) {}
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -62,7 +67,6 @@ class FeedAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        // FIXME: students will do in HW
         getItem(position)?.let {
             when (it) {
                 is Post -> (holder as? PostViewHolder)?.bind(it)
@@ -73,6 +77,7 @@ class FeedAdapter(
             }
         }
     }
+
 
     class PostViewHolder(
         private val binding: CardPostBinding,
@@ -109,10 +114,15 @@ class FeedAdapter(
 
                 menu.visibility = if (post.ownedByMe) View.VISIBLE else View.INVISIBLE
 
+                postAudioGroup.visibility =
+                    if (post.attachment != null && post.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
+
+                playVideo.visibility =
+                    if (post.attachment != null && post.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
+
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
                         inflate(R.menu.options_post)
-                        // TODO: if we don't have other options, just remove dots
                         menu.setGroupVisible(R.id.owned, post.ownedByMe)
                         setOnMenuItemClickListener { item ->
                             when (item.itemId) {
@@ -138,6 +148,18 @@ class FeedAdapter(
 
                 share.setOnClickListener {
                     onInteractionListener.onShare(post)
+                }
+
+                imagePost.setOnClickListener {
+                    onInteractionListener.onOpenImage(post)
+                }
+
+                playAudio.setOnClickListener {
+                    onInteractionListener.onPlayAudio(post)
+                }
+
+                playVideo.setOnClickListener{
+                    onInteractionListener.onPlayVideo(post)
                 }
             }
         }

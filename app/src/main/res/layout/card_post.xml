@@ -97,6 +97,52 @@
             tools:srcCompat="@tools:sample/avatars[7]"
             tools:visibility="visible" />
 
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/post_audio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="playAudio"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/playAudio"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_spacing"
+            android:contentDescription="@string/description_audio_play"
+            app:icon="@drawable/baseline_play_circle_outline_24"
+            app:layout_constraintStart_toStartOf="@id/content"
+            app:layout_constraintTop_toBottomOf="@id/imagePost"
+             />
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/pauseAudio"-->
+<!--            style="@style/Widget.AppTheme.IconButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="@dimen/common_spacing"-->
+<!--            android:contentDescription="@string/description_audio_pause"-->
+<!--            app:icon="@drawable/baseline_pause_circle_outline_24"-->
+<!--            app:layout_constraintStart_toEndOf="@id/playAudio"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/imagePost" />-->
+
+        <ImageButton
+            android:id="@+id/playVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:adjustViewBounds="true"
+            android:checkable="true"
+            android:contentDescription="@string/description_video"
+            app:layout_constraintEnd_toEndOf="@id/imagePost"
+            app:layout_constraintStart_toStartOf="@id/imagePost"
+            app:layout_constraintTop_toBottomOf="@id/playAudio"
+            tools:srcCompat="@drawable/baseline_video_file_24"
+            />
+
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/footer"
             android:layout_width="wrap_content"
@@ -114,7 +160,7 @@
             android:contentDescription="@string/description_post_like"
             app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imagePost"
+            app:layout_constraintTop_toBottomOf="@+id/playVideo"
             tools:checked="@sample/posts.json/data/likedByMe"
             tools:text="@sample/posts.json/data/likes" />
 
@@ -127,6 +173,6 @@
             android:contentDescription="@string/description_post_share"
             app:icon="@drawable/ic_share_24dp"
             app:layout_constraintStart_toEndOf="@+id/like"
-            app:layout_constraintTop_toBottomOf="@+id/imagePost" />
+            app:layout_constraintTop_toBottomOf="@+id/playVideo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

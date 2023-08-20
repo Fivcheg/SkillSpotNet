@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
+import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.util.StringArg
 import ru.netology.nmedia.viewmodel.PostViewModel
@@ -42,7 +43,9 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
+
         fragmentBinding = binding
+        var type: AttachmentType? = null
 
         arguments?.textArg
             ?.let(binding.edit::setText)
@@ -59,11 +62,18 @@ class NewPostFragment : Fragment() {
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
-  //                  Activity.RESULT_OK -> viewModel.changePhoto(it.data?.data)
                     Activity.RESULT_OK -> {
                         val uri: Uri? = it.data?.data
                         viewModel.changePhoto(uri, uri?.toFile())
                     }
+                }
+            }
+
+
+                val pickMediaLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+                uri?.let {
+                    viewModel.changeMedia(it, it.toFile(), type)
                 }
             }
 
@@ -93,6 +103,20 @@ class NewPostFragment : Fragment() {
             viewModel.changePhoto(null, null)
         }
 
+        binding.removeMedia.setOnClickListener {
+            viewModel.changeMedia(null, null, null)
+        }
+
+        binding.pickAudio.setOnClickListener {
+            pickMediaLauncher.launch("audio/*")
+            type = AttachmentType.AUDIO
+        }
+
+        binding.pickVideo.setOnClickListener {
+            pickMediaLauncher.launch("video/*")
+            type = AttachmentType.VIDEO
+        }
+
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
@@ -107,7 +131,17 @@ class NewPostFragment : Fragment() {
             binding.photo.setImageURI(it.uri)
         }
 
-        requireActivity().addMenuProvider(object : MenuProvider {
+        viewModel.media.observe(viewLifecycleOwner) {
+            if (it.uri == null) {
+                binding.mediaContainer.visibility = View.GONE
+                return@observe
+            }
+
+            binding.mediaContainer.visibility = View.VISIBLE
+            binding.media.setImageURI(it.uri)
+        }
+
+           requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_new_post, menu)
             }

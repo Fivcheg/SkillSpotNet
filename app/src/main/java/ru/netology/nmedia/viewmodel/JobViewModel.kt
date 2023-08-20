@@ -34,7 +34,6 @@ class JobViewModel @Inject constructor(
     auth: AppAuth,
 ) : ViewModel() {
 
-
     val data: Flow<List<Job>> = auth.authStateFlow
         .flatMapLatest { (myId, _) ->
             repository.data.map {

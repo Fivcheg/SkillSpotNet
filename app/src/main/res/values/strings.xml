@@ -49,4 +49,12 @@
     <string name="add_job">Add job</string>
     <string name="create_job_header">Create new job</string>
     <string name="edit_job">Edit job</string>
+    <string name="description_image_open">Open Image</string>
+    <string name="description_audio_play">Play audio</string>
+    <string name="description_audio_pause">Pause Audio</string>
+    <string name="error_play">Error play\n</string>
+    <string name="description_take_audio">Pick audio</string>
+    <string name="description_take_video" >Pick video</string>
+    <string name="description_media">Media\n</string>
+    <string name="description_video">Play video</string>
 </resources>

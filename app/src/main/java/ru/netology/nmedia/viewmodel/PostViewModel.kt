@@ -1,6 +1,7 @@
 package ru.netology.nmedia.viewmodel
 
 import android.net.Uri
+import android.provider.MediaStore.Video
 import androidx.core.net.toFile
 import androidx.lifecycle.*
 import androidx.paging.*
@@ -13,11 +14,16 @@ import ru.netology.nmedia.dto.Ad
 import ru.netology.nmedia.dto.FeedItem
 import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.model.FeedModelState
+import ru.netology.nmedia.model.MediaModel
 import ru.netology.nmedia.model.PhotoModel
+import ru.netology.nmedia.model.StateModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.util.SingleLiveEvent
 import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -41,6 +47,7 @@ private val empty = Post(
 )
 
 private val noPhoto = PhotoModel()
+private val noMedia = MediaModel()
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -55,6 +62,7 @@ class PostViewModel @Inject constructor(
                 generator = { before, after ->
                     if (before?.id?.rem(5) != 0L) null else
                         Ad(
+                            //TODO !!!!!!!!
                             Random.nextLong(),
                             "@sample/ads_images/",
                             "figma.jpg"
@@ -87,6 +95,10 @@ class PostViewModel @Inject constructor(
     val photo: LiveData<PhotoModel>
         get() = _photo
 
+    private val _media = MutableLiveData(noMedia)
+    val media: LiveData<MediaModel>
+        get() = _media
+
     init {
         loadPosts()
     }
@@ -94,8 +106,6 @@ class PostViewModel @Inject constructor(
     private fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
-            //   repository.stream.cachedIn(viewModelScope).
-            _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }
@@ -111,14 +121,15 @@ class PostViewModel @Inject constructor(
         }
     }
 
+
+
     fun save() {
         edited.value?.let {
             viewModelScope.launch {
                 try {
                     repository.save(
-                        it, _photo.value?.uri?.let { MediaUpload(it.toFile()) }
+                        it, _media.value?.uri?.let { MediaUpload(it.toFile()) }, it.attachment?.type
                     )
-
                     _postCreated.value = Unit
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -127,28 +138,8 @@ class PostViewModel @Inject constructor(
         }
         edited.value = empty
         _photo.value = noPhoto
+        _media.value = noMedia
     }
-//    fun save(){
-//        edited.value?.let{
-//            _postCreated.value = Unit
-//            viewModelScope.launch {
-//                try {
-//                    when (_photo.value) {
-//                        noPhoto -> repository.save(it)
-//                        else -> _photo.value?.file?.let {
-//                            repository.saveWhithAttachment(it, MediaUpload(file))
-//                        }
-//                    }
-//                    _dataState.value = FeedModelState()
-//                } catch (e: Exception){
-//                    _dataState.value = FeedModelState(error = true)
-//                }
-//                }
-//            }
-//    edited.value = empty
-//    _photo.value = noPhoto
-//    }
-//    }
 
     fun edit(post: Post) {
         edited.value = post
@@ -162,8 +153,16 @@ class PostViewModel @Inject constructor(
         edited.value = edited.value?.copy(content = text)
     }
 
-    fun changePhoto(uri: Uri?, toFile: File?) {
-        _photo.value = PhotoModel(uri)
+    fun changePhoto(uri: Uri?, inputFile: File?) {
+        _photo.value = PhotoModel(uri, inputFile)
+    }
+
+    fun changeMedia(
+        uri: Uri?,
+        inputFile: File?,
+        type: AttachmentType?,
+    ) {
+        _media.value = MediaModel(uri, inputFile, type)
     }
 
     fun removeById(id: Long) = viewModelScope.launch {

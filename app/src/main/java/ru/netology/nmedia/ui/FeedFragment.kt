@@ -1,6 +1,7 @@
 package ru.netology.nmedia.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,8 @@ class FeedFragment : Fragment() {
         val adapter = FeedAdapter(object : FeedAdapter.OnInteractionListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                findNavController()
+                    .navigate(R.id.newPostFragment)
             }
 
             override fun onLike(post: Post) {
@@ -73,6 +76,41 @@ class FeedFragment : Fragment() {
                     Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
             }
+
+
+            override fun onPlayAudio(post: Post) {
+                try {
+                    val uri = Uri.parse(post.attachment?.url)
+                    val intent = Intent(Intent.ACTION_VIEW)
+
+                    intent.setDataAndType(uri, "audio/*")
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(context, R.string.error_play, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onPlayVideo(post: Post) {
+                try {
+                    val uri = Uri.parse(post.attachment?.url)
+                    val intent = Intent(Intent.ACTION_VIEW)
+
+                    intent.setDataAndType(uri, "video/*")
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(context, R.string.error_play, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onOpenImage(post: Post) {
+                val bundle = Bundle().apply {
+                    putString("url", post.attachment?.url)
+                }
+                findNavController().navigate(R.id.imageOpenNav, bundle)
+            }
+
         })
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
@@ -87,25 +125,25 @@ class FeedFragment : Fragment() {
             }),
         )
 
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-            0, ItemTouchHelper.START or ItemTouchHelper.END
-        ) {
-
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun onSwiped(
-                viewHolder: RecyclerView.ViewHolder,
-                direction: Int
-            ) {
-                println("DO SOMETHING")
-            }
-        }).attachToRecyclerView(binding.list)
+//        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+//            0, ItemTouchHelper.START or ItemTouchHelper.END
+//        ) {
+//
+//            override fun onMove(
+//                recyclerView: RecyclerView,
+//                viewHolder: RecyclerView.ViewHolder,
+//                target: RecyclerView.ViewHolder
+//            ): Boolean {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onSwiped(
+//                viewHolder: RecyclerView.ViewHolder,
+//                direction: Int
+//            ) {
+//                println("DO SOMETHING")
+//            }
+//        }).attachToRecyclerView(binding.list)
 
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitData)
