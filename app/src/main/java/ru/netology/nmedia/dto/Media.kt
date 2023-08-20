@@ -1,8 +1,8 @@
 package ru.netology.nmedia.dto
 
-import java.io.File
-import java.io.InputStream
+import android.net.Uri
+import ru.netology.nmedia.enumeration.AttachmentType
 
 data class Media(val url: String)
 
-data class MediaUpload(val file: File)
+data class MediaUpload(val file: Uri, val type: AttachmentType? = null)

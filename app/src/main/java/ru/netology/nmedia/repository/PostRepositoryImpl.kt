@@ -1,12 +1,11 @@
 package ru.netology.nmedia.repository
 
+import android.content.ContentResolver
 import androidx.paging.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nmedia.api.ApiService
 import ru.netology.nmedia.dao.PostDao
@@ -27,12 +26,14 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
 class PostRepositoryImpl @Inject constructor(
     appDb: AppDb,
     private val postDao: PostDao,
     postRemoteKeyDao: PostRemoteKeyDao,
     private val apiService: ApiService,
+    private val contentResolver: ContentResolver,
 ) : PostRepository {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -101,7 +102,7 @@ class PostRepositoryImpl @Inject constructor(
                             AttachmentType.IMAGE
                         )
                     )
-                    else ->  post.copy()
+                    else ->  post
                 }
 
             }
@@ -119,7 +120,6 @@ class PostRepositoryImpl @Inject constructor(
             throw UnknownError
         }
     }
-
 
 
     override suspend fun removeById(id: Long) {
@@ -169,13 +169,17 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-
-
     override suspend fun upload(upload: MediaUpload): Media {
         try {
-            val media = MultipartBody.Part.createFormData(
-                "file", upload.file.name, upload.file.asRequestBody()
-            )
+                val media = contentResolver.openInputStream(upload.file)?.use {
+                MultipartBody.Part.createFormData(
+                    "file", "file", it.readBytes().toRequestBody()
+                )
+            }
+
+            requireNotNull(media) {
+                "Resource ${upload.file} not found"
+            }
 
             val response = apiService.upload(media)
             if (!response.isSuccessful) {
@@ -191,3 +195,5 @@ class PostRepositoryImpl @Inject constructor(
     }
 
 }
+
+

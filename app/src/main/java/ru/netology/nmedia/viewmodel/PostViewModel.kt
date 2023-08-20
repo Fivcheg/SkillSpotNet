@@ -121,14 +121,12 @@ class PostViewModel @Inject constructor(
         }
     }
 
-
-
     fun save() {
         edited.value?.let {
             viewModelScope.launch {
                 try {
                     repository.save(
-                        it, _media.value?.uri?.let { MediaUpload(it.toFile()) }, it.attachment?.type
+                        it, _media.value?.uri?.let { MediaUpload(it)}, _media.value?.type
                     )
                     _postCreated.value = Unit
                 } catch (e: Exception) {
@@ -159,10 +157,9 @@ class PostViewModel @Inject constructor(
 
     fun changeMedia(
         uri: Uri?,
-        inputFile: File?,
         type: AttachmentType?,
     ) {
-        _media.value = MediaModel(uri, inputFile, type)
+        _media.value = MediaModel(uri, type)
     }
 
     fun removeById(id: Long) = viewModelScope.launch {

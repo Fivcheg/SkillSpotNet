@@ -69,13 +69,20 @@ class NewPostFragment : Fragment() {
                 }
             }
 
-
-                val pickMediaLauncher =
+        val pickMediaLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                 uri?.let {
-                    viewModel.changeMedia(it, it.toFile(), type)
+                    val stream = context?.contentResolver?.openInputStream(it)
+                    viewModel.changeMedia(it, type)
                 }
             }
+
+//                val pickMediaLauncher =
+//            registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+//                uri?.let {
+//                    viewModel.changeMedia(it, type)
+//                }
+//            }
 
         binding.pickPhoto.setOnClickListener {
             ImagePicker.with(this)
@@ -104,7 +111,7 @@ class NewPostFragment : Fragment() {
         }
 
         binding.removeMedia.setOnClickListener {
-            viewModel.changeMedia(null, null, null)
+            viewModel.changeMedia(null, null)
         }
 
         binding.pickAudio.setOnClickListener {
