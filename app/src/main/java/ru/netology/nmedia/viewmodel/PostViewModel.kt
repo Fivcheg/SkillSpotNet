@@ -1,8 +1,6 @@
 package ru.netology.nmedia.viewmodel
 
 import android.net.Uri
-import android.provider.MediaStore.Video
-import androidx.core.net.toFile
 import androidx.lifecycle.*
 import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,12 +16,9 @@ import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.model.MediaModel
 import ru.netology.nmedia.model.PhotoModel
-import ru.netology.nmedia.model.StateModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.util.SingleLiveEvent
 import java.io.File
-import java.io.IOException
-import java.io.InputStream
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -129,14 +124,14 @@ class PostViewModel @Inject constructor(
                         it, _media.value?.uri?.let { MediaUpload(it)}, _media.value?.type
                     )
                     _postCreated.value = Unit
+                    edited.value = empty
+                    _photo.value = noPhoto
+                    _media.value = noMedia
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
-        edited.value = empty
-        _photo.value = noPhoto
-        _media.value = noMedia
     }
 
     fun edit(post: Post) {
