@@ -77,5 +77,20 @@
         android:label="fragment_image_open"
         tools:layout="@layout/fragment_image">
     </fragment>
+    <fragment
+        android:id="@+id/EventFragment"
+        android:name="ru.netology.nmedia.ui.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event">
+        <action
+            android:id="@+id/action_EventFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="ru.netology.nmedia.ui.NewEventFragment"
+        android:label="fragment_new_event"
+        tools:layout="@layout/fragment_new_event">
+    </fragment>
 
 </navigation>

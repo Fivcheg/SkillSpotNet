@@ -8,6 +8,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import ru.netology.nmedia.BuildConfig
+import ru.netology.nmedia.dto.Event
+import ru.netology.nmedia.dto.EventItem
 import ru.netology.nmedia.dto.Job
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
@@ -78,7 +80,6 @@ interface ApiService {
 
     //-------------- Users -------------------//
 
-
     @GET("users")
     suspend fun getUsers(): Response<List<User>>
 
@@ -104,7 +105,6 @@ interface ApiService {
         // @Part image: MultipartBody.Part?,
     ): Response<Token>
 
-
     //-------------- Job -------------------//
 
     @GET("{id}/jobs")
@@ -115,6 +115,53 @@ interface ApiService {
 
     @DELETE("my/jobs/{id}")
     suspend fun removeJobById(@Path("id") id: Long): Response<Unit>
+
+
+    //-------------- Event -------------------//
+
+
+    @GET("events")
+    suspend fun getAllEvents(): Response<List<Event>>
+
+    @GET("events/{id}/before")
+    suspend fun getEventBefore(
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+    ): Response<List<Event>>
+
+    @GET("events/{id}/after")
+    suspend fun getEventAfter(
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+    ): Response<List<Event>>
+
+    @GET("events/{id}/newer")
+    suspend fun getNewerEvents(@Path("id") id: Long): Response<List<Event>>
+
+    @GET("events/latest")
+    suspend fun getEventLatest(@Query("count") count: Int): Response<List<Event>>
+
+    @POST("events")
+    suspend fun saveEvent(@Body event: EventItem): Response<Event>
+
+    @DELETE("events/{id}")
+    suspend fun removeEventById(@Path("id") id: Long): Response<Unit>
+
+    @POST("events/{id}/likes")
+    suspend fun likeEventById(@Path("id") id: Long): Response<Event>
+
+    @DELETE("events/{id}/likes")
+    suspend fun dislikeEventById(@Path("id") id: Long): Response<Event>
+
+    @POST("events/{id}/participants")
+    suspend fun participate(@Path("id") id: Long): Response<Event>
+
+    @DELETE("events/{id}/participants")
+    suspend fun doNotParticipate(@Path("id") id: Long): Response<Event>
+
+    @Multipart
+    @POST("media")
+    suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Media>
 
 }
 

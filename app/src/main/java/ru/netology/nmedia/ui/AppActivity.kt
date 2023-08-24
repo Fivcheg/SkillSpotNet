@@ -101,6 +101,11 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                             .navigate(R.id.JobFragment)
                         true
                     }
+                    R.id.myJob -> {
+                        findNavController(R.id.nav_host_fragment)
+                            .navigate(R.id.EventFragment)
+                        true
+                    }
                     else -> false
                 }
         })

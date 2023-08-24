@@ -81,9 +81,9 @@
             tools:text="@sample/posts.json/data/content" />
 
         <ImageView
-            android:id="@+id/imagePost"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/imageEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="@string/attachmentImagePost"
             android:maxWidth="@dimen/image_post_size"
@@ -99,41 +99,83 @@
 
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/post_audio_group"
+            android:id="@+id/event_audio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="playAudio"
+            app:constraint_referenced_ids="playAudioEvent"
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/playAudio"
+            android:id="@+id/playAudioEvent"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/description_audio_play"
             app:icon="@drawable/baseline_play_circle_outline_24"
-            app:layout_constraintStart_toStartOf="@id/content"
-            app:layout_constraintTop_toBottomOf="@id/imagePost"
-             />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageEvent" />
 
         <ImageButton
-            android:id="@+id/playVideo"
+            android:id="@+id/playVideoEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_spacing"
             android:adjustViewBounds="true"
             android:checkable="true"
             android:contentDescription="@string/description_video"
-            app:layout_constraintEnd_toEndOf="@id/imagePost"
-            app:layout_constraintStart_toStartOf="@id/imagePost"
-            app:layout_constraintTop_toBottomOf="@id/playAudio"
-            tools:srcCompat="@drawable/baseline_video_file_24"
-            />
+            app:layout_constraintEnd_toEndOf="@id/imageEvent"
+            app:layout_constraintStart_toStartOf="@id/imageEvent"
+            app:layout_constraintTop_toBottomOf="@id/playAudioEvent"
+            tools:srcCompat="@drawable/baseline_video_file_24" />
+
+        <TextView
+            android:id="@+id/dateTimeEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_spacing"
+            android:contentDescription="@string/dateTimeEvent"
+            android:text="@string/dateTimeEvent"
+            app:layout_constraintStart_toStartOf="@id/content"
+            app:layout_constraintTop_toBottomOf="@id/playVideoEvent" />
+
+        <TextView
+            android:id="@+id/dateTimeEventValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_spacing"
+            android:contentDescription="@string/dateTimeEvent"
+            app:layout_constraintStart_toEndOf="@id/dateTimeEvent"
+            app:layout_constraintTop_toBottomOf="@id/playVideoEvent"
+            tools:text="@sample/posts.json/data/published" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSpeakersEvent"
+            style="@style/Widget.AppTheme.LikeCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/description_event_speakers"
+            app:icon="@drawable/outline_accessibility_new_24"
+            app:layout_constraintStart_toEndOf="@+id/share"
+            app:layout_constraintTop_toBottomOf="@+id/dateTimeEvent"
+            tools:checked="@sample/posts.json/data/likedByMe" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLocationEvent"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/description_event_location"
+            app:icon="@drawable/outline_location_on_24"
+            app:layout_constraintStart_toEndOf="@+id/buttonSpeakersEvent"
+            app:layout_constraintTop_toBottomOf="@+id/dateTimeEvent"
+            tools:checked="@sample/posts.json/data/likedByMe" />
 
         <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/footer"
+            android:id="@+id/footerEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
@@ -141,7 +183,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
-            style="@style/Widget.AppTheme.LikeCheckBox"
+            style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -149,7 +191,7 @@
             android:contentDescription="@string/description_post_like"
             app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playVideo"
+            app:layout_constraintTop_toBottomOf="@+id/dateTimeEvent"
             tools:checked="@sample/posts.json/data/likedByMe"
             tools:text="@sample/posts.json/data/likes" />
 
@@ -162,6 +204,6 @@
             android:contentDescription="@string/description_post_share"
             app:icon="@drawable/ic_share_24dp"
             app:layout_constraintStart_toEndOf="@+id/like"
-            app:layout_constraintTop_toBottomOf="@+id/playVideo" />
+            app:layout_constraintTop_toBottomOf="@+id/dateTimeEvent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -57,4 +57,12 @@
     <string name="description_take_video" >Pick video</string>
     <string name="description_media">Media\n</string>
     <string name="description_video">Play video</string>
+    <string name="dateTimeEvent">"Event datetime: "</string>
+    <string name="description_event_speakers">Speakers</string>
+    <string name="description_event_location">Location\n</string>
+    <string name="add_event">Add event\n</string>
+    <string name="description_pick_location">Pick location</string>
+    <string name="event_date">Event date:</string>
+    <string name="event_time">Event time:</string>
+    <string name="chooser_share_event">Share event</string>
 </resources>
