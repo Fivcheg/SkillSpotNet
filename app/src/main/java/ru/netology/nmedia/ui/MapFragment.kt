@@ -31,7 +31,7 @@ class MapFragment : Fragment() {
         const val LONG_KEY = "LONG_KEY"
     }
 
-    private lateinit var mapView: MapView
+    private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
 
     private val permissionLauncher =
@@ -40,7 +40,7 @@ class MapFragment : Fragment() {
                 granted -> {
                     MapKitFactory.getInstance().resetLocationManagerToDefault()
                     userLocation.cameraPosition()?.target?.also {
-                        val map = mapView.map ?: return@registerForActivityResult
+                        val map = mapView?.map ?: return@registerForActivityResult
                         val cameraPosition = map.cameraPosition
                         map.move(
                             CameraPosition(
@@ -97,8 +97,8 @@ class MapFragment : Fragment() {
                     )
                 )
                 val imageProvider = ImageProvider.fromResource(context, R.drawable.baseline_location_on_24)
-                val placemark = mapView.map.mapObjects.addPlacemark(point, imageProvider)
-                placemark.addTapListener(placemarkTapListener)
+                val placemark = map?.mapObjects?.addPlacemark(point, imageProvider)
+                placemark?.addTapListener(placemarkTapListener)
 
                 arguments.remove(LAT_KEY)
                 arguments.remove(LONG_KEY)
@@ -139,13 +139,13 @@ class MapFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        mapView.onStart()
+        mapView?.onStart()
         MapKitFactory.getInstance().onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        mapView.onStop()
+        mapView?.onStop()
         MapKitFactory.getInstance().onStop()
     }
 
