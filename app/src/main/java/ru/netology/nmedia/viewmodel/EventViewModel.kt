@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.AdEvent
+import ru.netology.nmedia.dto.Coordinates
 import ru.netology.nmedia.dto.Event
 import ru.netology.nmedia.dto.EventItem
 import ru.netology.nmedia.dto.MediaUpload
@@ -38,8 +39,8 @@ private val empty = Event(
     authorAvatar = null,
     authorJob = null,
     content = "",
-    datetime = "",
-    published = "",
+    datetime = "2023-01-27T17:00:00.000Z",
+    published = "2023-01-27T17:00:00.000Z",
     coords = null,
     type = EventType.OFFLINE,
     likeOwnerIds = null,
@@ -128,13 +129,15 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun save() {
+    fun saveEvent() {
         edited.value?.let {
             viewModelScope.launch {
+                _dataState.postValue(FeedModelState(loading = true))
                 try {
                     repository.saveEvent(
                         it, _media.value?.uri?.let { MediaUpload(it) }, _media.value?.type
                     )
+                    _dataState.value = FeedModelState()
                     _eventCreated.value = Unit
                     edited.value = empty
                     _photo.value = noPhoto
@@ -158,6 +161,22 @@ class EventViewModel @Inject constructor(
         edited.value = edited.value?.copy(content = text)
     }
 
+    fun changeDateTime(date: String) {
+        val dateTime = date.trim()
+        if (edited.value?.datetime == dateTime) {
+            return
+        }
+        edited.value = edited.value?.copy(datetime = dateTime)
+    }
+
+    fun changeCoords(lat: String, long: String) {
+        val coordinates = Coordinates(lat, long)
+        if (edited.value?.coords == coordinates) {
+            return
+        }
+        edited.value = edited.value?.copy(coords = coordinates)
+    }
+
     fun changePhoto(uri: Uri?, inputFile: File?) {
         _photo.value = PhotoModel(uri, inputFile)
     }
@@ -169,7 +188,7 @@ class EventViewModel @Inject constructor(
         _media.value = MediaModel(uri, type)
     }
 
-    fun removeById(id: Long) = viewModelScope.launch {
+    fun removeEventById(id: Long) = viewModelScope.launch {
         try {
             repository.removeEventById(id)
         } catch (e: Exception) {
@@ -177,7 +196,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun likeById(id: Long) = viewModelScope.launch {
+    fun likeEventById(id: Long) = viewModelScope.launch {
         try {
             repository.likeEventById(id)
         } catch (e: Exception) {
@@ -185,7 +204,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun dislikeById(id: Long) = viewModelScope.launch {
+    fun dislikeEventById(id: Long) = viewModelScope.launch {
         try {
             repository.dislikeEventById(id)
         } catch (e: Exception) {

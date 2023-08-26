@@ -52,8 +52,8 @@ class EventFragment : Fragment() {
             override fun onLike(event: Event) {
                 if (authViewModel.authenticated) {
                     if (!event.likedByMe)
-                        viewModel.likeById(event.id)
-                    else viewModel.dislikeById(event.id)
+                        viewModel.likeEventById(event.id)
+                    else viewModel.dislikeEventById(event.id)
                 } else {
                     Toast.makeText(activity, R.string.notAuth, Toast.LENGTH_SHORT)
                         .show()
@@ -61,7 +61,7 @@ class EventFragment : Fragment() {
             }
 
             override fun onRemove(event: Event) {
-                viewModel.removeById(event.id)
+                viewModel.removeEventById(event.id)
             }
 
             override fun onShare(event: Event) {
@@ -108,6 +108,14 @@ class EventFragment : Fragment() {
                     putString("url", event.attachment?.url)
                 }
                 findNavController().navigate(R.id.imageOpenNav, bundle)
+            }
+
+            override fun onOpenMap(event: Event) {
+               val bundle = Bundle().apply {
+                   putString("LAT_KEY", event.coords?.lat)
+                   putString("LONG_KEY", event.coords?.long)
+               }
+                findNavController().navigate(R.id.mapFragment, bundle)
             }
 
         })

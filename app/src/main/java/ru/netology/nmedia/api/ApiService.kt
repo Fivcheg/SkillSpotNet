@@ -142,7 +142,7 @@ interface ApiService {
     suspend fun getEventLatest(@Query("count") count: Int): Response<List<Event>>
 
     @POST("events")
-    suspend fun saveEvent(@Body event: EventItem): Response<Event>
+    suspend fun saveEvent(@Body event: Event): Response<Event>
 
     @DELETE("events/{id}")
     suspend fun removeEventById(@Path("id") id: Long): Response<Unit>

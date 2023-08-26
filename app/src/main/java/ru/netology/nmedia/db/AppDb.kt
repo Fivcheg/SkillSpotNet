@@ -21,7 +21,7 @@ import ru.netology.nmedia.entity.PostRemoteKeyEntity
         EventEntity::class,
         EventRemoteKeyEntity::class
     ],
-    version = 38,
+    version = 40,
     exportSchema = false
 )
 abstract class AppDb : RoomDatabase() {

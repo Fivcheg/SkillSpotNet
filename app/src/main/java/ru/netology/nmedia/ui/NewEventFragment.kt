@@ -2,6 +2,7 @@ package ru.netology.nmedia.ui
 
 import android.app.Activity
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -24,6 +26,9 @@ import ru.netology.nmedia.databinding.FragmentNewEventBinding
 import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.util.StringArg
+import ru.netology.nmedia.util.formatToInstant
+import ru.netology.nmedia.util.pickDate
+import ru.netology.nmedia.util.pickTime
 import ru.netology.nmedia.viewmodel.EventViewModel
 
 
@@ -37,6 +42,8 @@ class NewEventFragment : Fragment() {
     private val viewModel: EventViewModel by activityViewModels()
 
     private var fragmentBinding: FragmentNewEventBinding? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +61,9 @@ class NewEventFragment : Fragment() {
 
         arguments?.textArg
             ?.let(binding.edit::setText)
+
+        latitude = arguments?.getDouble("lat")
+        longitude = arguments?.getDouble("long")
 
         binding.edit.requestFocus()
 
@@ -125,6 +135,31 @@ class NewEventFragment : Fragment() {
             type = AttachmentType.VIDEO
         }
 
+
+        binding.pickLocation.setOnClickListener {
+            binding.textEditInputLatitudeCoordsEvent.visibility = View.VISIBLE
+            binding.textEditInputLongitudeCoordsEvent.visibility = View.VISIBLE
+        }
+
+        binding.textEditInputDateEvent.setOnClickListener {
+            context?.let { item ->
+                pickDate(binding.textEditInputDateEvent, item)
+            }
+        }
+
+        binding.textEditInputEventTime.setOnClickListener {
+            context?.let { item ->
+                pickTime(binding.textEditInputEventTime, item)
+            }
+        }
+
+//        binding.pickSpeakers.setOnClickListener {
+//            val bundle = Bundle().apply {
+//                putString("open", "speaker")
+//            }
+//            findNavController().navigate(R.id.nav_users, bundle)
+//        }
+
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
@@ -154,17 +189,22 @@ class NewEventFragment : Fragment() {
                 menuInflater.inflate(R.menu.menu_new_post, menu)
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
                     R.id.save -> {
                         fragmentBinding?.let {
                             viewModel.changeContent(it.edit.text.toString())
-                            viewModel.save()
+                            viewModel.changeDateTime(formatToInstant(
+                                "${it.textEditInputDateEvent.text} " +
+                                        "${it.textEditInputEventTime.text}"
+                            ))
+                            viewModel.changeCoords(it.textEditInputLatitudeCoordsEvent.text.toString(), it.textEditInputLongitudeCoordsEvent.text.toString())
+                            viewModel.saveEvent()
                             AndroidUtils.hideKeyboard(requireView())
                         }
                         true
                     }
-
                     else -> false
                 }
 

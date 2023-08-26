@@ -92,5 +92,11 @@
         android:label="fragment_new_event"
         tools:layout="@layout/fragment_new_event">
     </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="ru.netology.nmedia.ui.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map">
+    </fragment>
 
 </navigation>

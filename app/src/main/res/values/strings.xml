@@ -65,4 +65,12 @@
     <string name="event_date">Event date:</string>
     <string name="event_time">Event time:</string>
     <string name="chooser_share_event">Share event</string>
+    <string name="my_event">My event</string>
+    <string name="coords_latitude">Coordinates latitude:</string>
+    <string name="coords_longitude">Coordinates longitude:</string>
+    <string name="coordinatesEvent">Coordinates event</string>
+    <string name="coordinatesOfEvent">Event Coordinates:</string>
+    <string name="add_location">Add location</string>
+    <string name="need_permission">Need permission</string>
+    <string name="title_map">Title map\n</string>
 </resources>

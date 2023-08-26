@@ -37,6 +37,7 @@ class EventAdapter(
         fun onOpenImage(event: Event) {}
         fun onPlayAudio(event: Event) {}
         fun onPlayVideo(event: Event) {}
+        fun onOpenMap(event: Event) {}
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -95,6 +96,7 @@ class EventAdapter(
                 content.text = event.content
                 like.isChecked = event.likedByMe
                 dateTimeEventValue.text = formatToDate(event.datetime)
+                coordinatesEventValue.text = "${event.coords?.lat}, ${event.coords?.long}"
                 buttonSpeakersEvent.text = event.speakerIds?.count().toString()
 
                 imageEvent.visibility =
@@ -166,6 +168,11 @@ class EventAdapter(
                 playVideoEvent.setOnClickListener {
                     onInteractionListener.onPlayVideo(event)
                 }
+
+                buttonLocationEvent.setOnClickListener {
+                    onInteractionListener.onOpenMap(event)
+                }
+
             }
         }
     }

@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
+import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
@@ -101,7 +102,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                             .navigate(R.id.JobFragment)
                         true
                     }
-                    R.id.myJob -> {
+                    R.id.myEvent -> {
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.EventFragment)
                         true

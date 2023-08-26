@@ -98,6 +98,39 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_latitude_coords_event"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_spacing"
+                android:hint="@string/coords_latitude"
+                android:inputType="text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_input_latitude_coords_event"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="match_parent" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_longitude_coords_event"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_spacing"
+                android:hint="@string/coords_longitude"
+
+                android:inputType="text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_input_longitude_coords_event"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="match_parent" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
         </LinearLayout>
     </ScrollView>
 

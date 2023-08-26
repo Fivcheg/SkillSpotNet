@@ -40,7 +40,7 @@ class EventRepositoryImpl @Inject constructor(
     override val data: Flow<PagingData<Event>> = Pager(
         config = PagingConfig(pageSize = 5),
         remoteMediator = EventRemoteMediator(apiService, appDb, eventDao, eventRemoteKeyDao),
-        pagingSourceFactory = eventDao::pagingSource,
+        pagingSourceFactory = eventDao::getPagingSource,
     ).flow.map { pagingData ->
         pagingData.map(EventEntity::toDto)
     }
@@ -67,7 +67,6 @@ class EventRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             eventDao.insertEvents(body.toEntity())
             emit(body.size)
@@ -109,7 +108,6 @@ class EventRepositoryImpl @Inject constructor(
 
                     else -> event
                 }
-
             }
             val response = apiService.saveEvent(eventWithAttachment ?: event)
             if (!response.isSuccessful) {
@@ -179,7 +177,6 @@ class EventRepositoryImpl @Inject constructor(
                     "file", "file", it.readBytes().toRequestBody()
                 )
             }
-
             requireNotNull(media) {
                 "Resource ${upload.file} not found"
             }

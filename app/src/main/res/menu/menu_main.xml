@@ -21,6 +21,10 @@
             android:id="@+id/myJob"
             android:title="@string/my_job"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/myEvent"
+            android:title="@string/my_event"
+            app:showAsAction="never" />
     </group>
 </menu>
 

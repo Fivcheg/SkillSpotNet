@@ -22,3 +22,13 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    mapkitApiKey = getMapkitApiKey()
+}
+
+private String getMapkitApiKey() {
+    def properties = new Properties()
+    project.file("local.properties").withInputStream { properties.load(it) }
+    return properties.getProperty("MAPKIT_API_KEY", "")
+}

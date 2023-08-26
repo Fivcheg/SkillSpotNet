@@ -1,6 +1,7 @@
 package ru.netology.nmedia.util
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Build
 import android.widget.EditText
@@ -47,3 +48,36 @@ fun pickDate(editText: EditText?, context: Context?) {
         .show()
 }
 
+fun pickTime(editText: EditText, context: Context) {
+    val timePicker = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+        calendar[Calendar.HOUR_OF_DAY] = hourOfDay
+        calendar[Calendar.MINUTE] = minute
+
+        editText.setText(
+            SimpleDateFormat("HH:mm", Locale.ROOT)
+                .format(calendar.time)
+        )
+    }
+
+    TimePickerDialog(
+        context,
+        timePicker,
+        calendar[Calendar.HOUR_OF_DAY],
+        calendar[Calendar.MINUTE],
+        true
+    )
+        .show()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun formatToInstant(value: String): String {
+    return if (value != " ") {
+        val datetime = SimpleDateFormat(
+            "yyyy-MM-dd HH:mm",
+            Locale.getDefault()
+        )
+            .parse(value)
+        val transformation = DateTimeFormatter.ISO_INSTANT
+        transformation.format(datetime?.toInstant())
+    } else "2023-01-27T17:00:00.000000Z"
+}
