@@ -86,17 +86,18 @@ class MapFragment : Fragment() {
                 arguments.containsKey(LAT_KEY) &&
                 arguments.containsKey(LONG_KEY)
             ) {
+                val point = Point(arguments.getString(LAT_KEY)!!.toDouble(), arguments.getString(LONG_KEY)!!.toDouble())
                 val cameraPosition = map.cameraPosition
                 map.move(
                     CameraPosition(
-                        Point(arguments.getString(LAT_KEY)!!.toDouble(), arguments.getString(LONG_KEY)!!.toDouble()),
+                        point,
                         10F,
                         cameraPosition.azimuth,
                         cameraPosition.tilt,
                     )
                 )
                 val imageProvider = ImageProvider.fromResource(context, R.drawable.baseline_location_on_24)
-                val placemark = mapView.map.mapObjects.addPlacemark(Point(arguments.getString(LAT_KEY)!!.toDouble(), arguments.getString(LONG_KEY)!!.toDouble()), imageProvider)
+                val placemark = mapView.map.mapObjects.addPlacemark(point, imageProvider)
                 placemark.addTapListener(placemarkTapListener)
 
                 arguments.remove(LAT_KEY)
