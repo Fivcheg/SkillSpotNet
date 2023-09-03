@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nmedia.R
@@ -46,8 +45,11 @@ class FeedFragment : Fragment() {
         val adapter = FeedAdapter(object : FeedAdapter.OnInteractionListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                val bundle = Bundle().apply {
+                    putString("content", post.content)
+                }
                 findNavController()
-                    .navigate(R.id.newPostFragment)
+                    .navigate(R.id.newPostFragment, bundle)
             }
 
             override fun onLike(post: Post) {

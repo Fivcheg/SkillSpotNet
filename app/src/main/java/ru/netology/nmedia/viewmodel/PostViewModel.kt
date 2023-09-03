@@ -15,10 +15,8 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.model.MediaModel
-import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.util.SingleLiveEvent
-import java.io.File
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -41,7 +39,6 @@ private val empty = Post(
     users = null
 )
 
-private val noPhoto = PhotoModel()
 private val noMedia = MediaModel()
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -81,14 +78,10 @@ class PostViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    private val edited = MutableLiveData(empty)
+    val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
-
-    private val _photo = MutableLiveData(noPhoto)
-    val photo: LiveData<PhotoModel>
-        get() = _photo
 
     private val _media = MutableLiveData(noMedia)
     val media: LiveData<MediaModel>
@@ -121,11 +114,10 @@ class PostViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     repository.save(
-                        it, _media.value?.uri?.let { MediaUpload(it)}, _media.value?.type
+                        it, _media.value?.uri?.let { MediaUpload(it) }, _media.value?.type
                     )
                     _postCreated.value = Unit
                     edited.value = empty
-                    _photo.value = noPhoto
                     _media.value = noMedia
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -144,10 +136,6 @@ class PostViewModel @Inject constructor(
             return
         }
         edited.value = edited.value?.copy(content = text)
-    }
-
-    fun changePhoto(uri: Uri?, inputFile: File?) {
-        _photo.value = PhotoModel(uri, inputFile)
     }
 
     fun changeMedia(

@@ -33,4 +33,28 @@ data class Event(
     val link: String? = null,
     val ownedByMe: Boolean = false,
     val users: Users? = null,
-) : EventItem()
+) : EventItem() {
+    companion object {
+        val emptyEvent = Event(
+            id = 0,
+            authorId = 0,
+            author = "",
+            authorAvatar = null,
+            authorJob = null,
+            content = "",
+            datetime = "",
+            published = "",
+            coords = null,
+            type = EventType.OFFLINE,
+            likeOwnerIds = null,
+            likedByMe = false,
+            speakerIds = null,
+            participantsIds = null,
+            participatedByMe = false,
+            attachment = null,
+            link = null,
+            ownedByMe = false,
+            users = null,
+        )
+    }
+}

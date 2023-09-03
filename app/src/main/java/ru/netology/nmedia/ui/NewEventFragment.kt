@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,9 +22,11 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentNewEventBinding
+import ru.netology.nmedia.dto.Event
 import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.util.StringArg
+import ru.netology.nmedia.util.formatToDate
 import ru.netology.nmedia.util.formatToInstant
 import ru.netology.nmedia.util.pickDate
 import ru.netology.nmedia.util.pickTime
@@ -39,12 +40,13 @@ class NewEventFragment : Fragment() {
         var Bundle.textArg: String? by StringArg
     }
 
+    private var fragmentBinding: FragmentNewEventBinding? = null
     private val viewModel: EventViewModel by activityViewModels()
 
-    private var fragmentBinding: FragmentNewEventBinding? = null
     private var latitude: Double? = null
     private var longitude: Double? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,6 +67,37 @@ class NewEventFragment : Fragment() {
         latitude = arguments?.getDouble("lat")
         longitude = arguments?.getDouble("long")
 
+        val datetime = arguments?.getString("datetime")?.let {
+            formatToDate(it)
+        } ?: formatToDate("${viewModel.edited.value?.datetime}")
+        val date = datetime.substring(0, 10)
+        val time = datetime.substring(11)
+
+        binding.edit.setText(
+            arguments?.getString("content") ?: viewModel.edited.value?.content
+        )
+
+        binding.textEditInputLatitudeCoordsEvent.setText(
+            arguments?.getString("LAT_KEY") ?: viewModel.edited.value?.coords?.lat.toString()
+        )
+
+        binding.textEditInputLongitudeCoordsEvent.setText(
+            arguments?.getString("LONG_KEY") ?: viewModel.edited.value?.coords?.long.toString()
+        )
+
+        if (viewModel.edited.value != Event.emptyEvent) {
+            binding.textEditInputDateEvent.setText(date)
+            binding.textEditInputEventTime.setText(time)
+        }
+
+        if (binding.textEditInputLatitudeCoordsEvent.text.toString() != "null" || binding.textEditInputLongitudeCoordsEvent.text.toString() != "null") {
+            binding.textEditInputLatitudeCoordsEvent.visibility = View.VISIBLE
+            binding.textEditInputLongitudeCoordsEvent.visibility = View.VISIBLE
+
+//            binding.textEditInputLatitudeCoordsEvent.setText(latitude.toString())
+//            binding.textEditInputLongitudeCoordsEvent.setText(longitude.toString())
+        }
+
         binding.edit.requestFocus()
 
         val pickPhotoLauncher =
@@ -80,7 +113,6 @@ class NewEventFragment : Fragment() {
 
                     Activity.RESULT_OK -> {
                         val uri: Uri? = it.data?.data
-                        viewModel.changePhoto(uri, uri?.toFile())
                         viewModel.changeMedia(uri, type)
                     }
                 }
@@ -117,10 +149,6 @@ class NewEventFragment : Fragment() {
             type = AttachmentType.IMAGE
         }
 
-        binding.removePhoto.setOnClickListener {
-            viewModel.changePhoto(null, null)
-        }
-
         binding.removeMedia.setOnClickListener {
             viewModel.changeMedia(null, null)
         }
@@ -137,8 +165,9 @@ class NewEventFragment : Fragment() {
 
 
         binding.pickLocation.setOnClickListener {
-            binding.textEditInputLatitudeCoordsEvent.visibility = View.VISIBLE
-            binding.textEditInputLongitudeCoordsEvent.visibility = View.VISIBLE
+            val bundle = Bundle()
+            bundle.putBoolean("addEvent", true)
+            findNavController().navigate(R.id.mapFragment, bundle)
         }
 
         binding.textEditInputDateEvent.setOnClickListener {
@@ -164,16 +193,6 @@ class NewEventFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.photo.observe(viewLifecycleOwner) {
-            if (it.uri == null) {
-                binding.photoContainer.visibility = View.GONE
-                return@observe
-            }
-
-            binding.photoContainer.visibility = View.VISIBLE
-            binding.photo.setImageURI(it.uri)
-        }
-
         viewModel.media.observe(viewLifecycleOwner) {
             if (it.uri == null) {
                 binding.mediaContainer.visibility = View.GONE
@@ -195,21 +214,24 @@ class NewEventFragment : Fragment() {
                     R.id.save -> {
                         fragmentBinding?.let {
                             viewModel.changeContent(it.edit.text.toString())
-                            viewModel.changeDateTime(formatToInstant(
-                                "${it.textEditInputDateEvent.text} " +
-                                        "${it.textEditInputEventTime.text}"
-                            ))
-                            viewModel.changeCoords(it.textEditInputLatitudeCoordsEvent.text.toString(), it.textEditInputLongitudeCoordsEvent.text.toString())
+                            viewModel.changeDateTime(
+                                formatToInstant(
+                                    "${it.textEditInputDateEvent.text} " +
+                                            "${it.textEditInputEventTime.text}"
+                                )
+                            )
+                            viewModel.changeCoords(latitude.toString(), longitude.toString())
                             viewModel.saveEvent()
                             AndroidUtils.hideKeyboard(requireView())
+                            findNavController().navigate(R.id.EventFragment)
                         }
                         true
                     }
+
                     else -> false
                 }
 
         }, viewLifecycleOwner)
-
         return binding.root
     }
 

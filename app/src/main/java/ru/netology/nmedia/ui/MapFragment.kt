@@ -4,20 +4,25 @@ import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.image.ImageProvider
-import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
@@ -33,6 +38,34 @@ class MapFragment : Fragment() {
 
     private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
+    private var addEvent = false
+    private val bundle = Bundle()
+
+    private val listener = object : InputListener {
+        override fun onMapTap(map: Map, point: Point) {
+            mapView?.map?.mapObjects?.clear()
+        }
+
+        override fun onMapLongTap(map: Map, point: Point) {
+            mapView?.map?.mapObjects?.clear()
+            val pin = requireNotNull(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.baseline_location_on_24
+                )
+            )
+            val imageProvider = ImageProvider.fromBitmap(pin.toBitmap())
+            val placemark = map.mapObjects.addPlacemark(point, imageProvider)
+            placemark.addTapListener(placemarkTapListener)
+            view?.findViewById<View>(R.id.button_set_point)?.setOnClickListener {
+                bundle.apply {
+                    putDouble("lat", point.latitude)
+                    putDouble("long", point.longitude)
+                }
+                findNavController().navigate(R.id.newEventFragment, bundle)
+            }
+        }
+    }
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -80,13 +113,16 @@ class MapFragment : Fragment() {
             userLocation = MapKitFactory.getInstance().createUserLocationLayer(mapWindow)
             userLocation.isVisible = true
             userLocation.isHeadingEnabled = false
-
+            map.addInputListener(listener)
             val arguments = arguments
             if (arguments != null &&
                 arguments.containsKey(LAT_KEY) &&
                 arguments.containsKey(LONG_KEY)
             ) {
-                val point = Point(arguments.getString(LAT_KEY)!!.toDouble(), arguments.getString(LONG_KEY)!!.toDouble())
+                val point = Point(
+                    arguments.getString(LAT_KEY)!!.toDouble(),
+                    arguments.getString(LONG_KEY)!!.toDouble()
+                )
                 val cameraPosition = map.cameraPosition
                 map.move(
                     CameraPosition(
@@ -96,16 +132,43 @@ class MapFragment : Fragment() {
                         cameraPosition.tilt,
                     )
                 )
-                val imageProvider = ImageProvider.fromResource(context, R.drawable.baseline_location_on_24)
+                val pin = requireNotNull(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.baseline_location_on_24
+                    )
+                )
+                val imageProvider = ImageProvider.fromBitmap(pin.toBitmap())
                 val placemark = map?.mapObjects?.addPlacemark(point, imageProvider)
                 placemark?.addTapListener(placemarkTapListener)
-
                 arguments.remove(LAT_KEY)
                 arguments.remove(LONG_KEY)
+
+                binding.buttonFindPoint.setOnClickListener {
+                    map.move(
+                        CameraPosition(
+                            point,
+                            10F,
+                            cameraPosition.azimuth,
+                            cameraPosition.tilt,
+                        )
+                    )
+                }
+            }
+            if (arguments != null && arguments.containsKey("addEvent")) {
+                addEvent = arguments.getBoolean("addEvent")
             } else {
                 //TODO exception
                 null
             }
+            if (addEvent) {
+                binding.buttonFindPoint.visibility = GONE
+                binding.buttonSetPoint.visibility = VISIBLE
+            } else {
+                binding.buttonFindPoint.visibility = VISIBLE
+                binding.buttonSetPoint.visibility = GONE
+            }
+
         }
 
         binding.plus.setOnClickListener {
@@ -133,7 +196,6 @@ class MapFragment : Fragment() {
         binding.location.setOnClickListener {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
-
         return binding.root
     }
 
@@ -152,7 +214,8 @@ class MapFragment : Fragment() {
     private val placemarkTapListener = MapObjectTapListener { _, point ->
         Toast.makeText(
             context,
-            "Tapped the point (${point.longitude}, ${point.latitude})", Toast.LENGTH_SHORT).show()
+            "Super mega event (${point.longitude}, ${point.latitude})", Toast.LENGTH_SHORT
+        ).show()
         true
     }
 }

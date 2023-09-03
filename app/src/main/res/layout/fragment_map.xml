@@ -36,9 +36,20 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:contentDescription="@string/add_location"
+        app:layout_constraintBottom_toTopOf="@id/button_find_point"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:srcCompat="@drawable/outline_check_circle_outline_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_find_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/find_location"
         app:layout_constraintBottom_toTopOf="@id/location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/outline_location_on_24" />
+        app:srcCompat="@drawable/outline_not_listed_location_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/location"

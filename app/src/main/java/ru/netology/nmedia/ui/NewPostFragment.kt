@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -48,7 +47,11 @@ class NewPostFragment : Fragment() {
         var type: AttachmentType? = null
 
         arguments?.textArg
-            ?.let(binding.edit::setText)
+            ?.let(binding.edit::setText) ?: viewModel.edited.value?.content
+
+        binding.edit.setText(
+            arguments?.getString("content") ?: viewModel.edited.value?.content
+        )
 
         binding.edit.requestFocus()
 
@@ -62,9 +65,9 @@ class NewPostFragment : Fragment() {
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
+
                     Activity.RESULT_OK -> {
                         val uri: Uri? = it.data?.data
-                        viewModel.changePhoto(uri, uri?.toFile())
                         viewModel.changeMedia(uri, type)
                     }
                 }
@@ -101,10 +104,6 @@ class NewPostFragment : Fragment() {
             type = AttachmentType.IMAGE
         }
 
-        binding.removePhoto.setOnClickListener {
-            viewModel.changePhoto(null, null)
-        }
-
         binding.removeMedia.setOnClickListener {
             viewModel.changeMedia(null, null)
         }
@@ -123,16 +122,6 @@ class NewPostFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.photo.observe(viewLifecycleOwner) {
-            if (it.uri == null) {
-                binding.photoContainer.visibility = View.GONE
-                return@observe
-            }
-
-            binding.photoContainer.visibility = View.VISIBLE
-            binding.photo.setImageURI(it.uri)
-        }
-
         viewModel.media.observe(viewLifecycleOwner) {
             if (it.uri == null) {
                 binding.mediaContainer.visibility = View.GONE
@@ -143,7 +132,7 @@ class NewPostFragment : Fragment() {
             binding.media.setImageURI(it.uri)
         }
 
-           requireActivity().addMenuProvider(object : MenuProvider {
+        requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_new_post, menu)
             }
@@ -158,6 +147,7 @@ class NewPostFragment : Fragment() {
                         }
                         true
                     }
+
                     else -> false
                 }
 

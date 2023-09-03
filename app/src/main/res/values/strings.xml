@@ -73,4 +73,6 @@
     <string name="add_location">Add location</string>
     <string name="need_permission">Need permission</string>
     <string name="title_map">Title map\n</string>
+    <string name="delete_location">Delete location</string>
+    <string name="find_location">Find location\n</string>
 </resources>
