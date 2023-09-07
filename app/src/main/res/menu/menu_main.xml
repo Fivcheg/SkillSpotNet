@@ -25,6 +25,11 @@
             android:id="@+id/myEvent"
             android:title="@string/my_event"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/allUsers"
+            android:title="@string/all_users"
+            app:showAsAction="never" />
     </group>
+
 </menu>
 

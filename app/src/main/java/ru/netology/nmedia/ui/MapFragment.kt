@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -24,7 +25,6 @@ import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
-import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentMapBinding
 
@@ -34,6 +34,7 @@ class MapFragment : Fragment() {
     companion object {
         const val LAT_KEY = "LAT_KEY"
         const val LONG_KEY = "LONG_KEY"
+        const val REQUEST_KEY = "PICK_POINT"
     }
 
     private var mapView: MapView? = null
@@ -62,7 +63,8 @@ class MapFragment : Fragment() {
                     putDouble("lat", point.latitude)
                     putDouble("long", point.longitude)
                 }
-                findNavController().navigate(R.id.newEventFragment, bundle)
+                setFragmentResult(REQUEST_KEY, bundle)
+                findNavController().navigate(R.id.action_mapFragment_to_newEventFragment)
             }
         }
     }
@@ -98,7 +100,7 @@ class MapFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MapKitFactory.setApiKey(BuildConfig.MAPKIT_API_KEY)
+
         MapKitFactory.initialize(requireContext())
     }
 

@@ -75,4 +75,6 @@
     <string name="title_map">Title map\n</string>
     <string name="delete_location">Delete location</string>
     <string name="find_location">Find location\n</string>
+    <string name="user_avatar">User avatar\n</string>
+    <string name="all_users">All users\n</string>
 </resources>

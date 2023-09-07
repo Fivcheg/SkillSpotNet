@@ -8,5 +8,6 @@
     <dimen name="icon_button_min_size">48dp</dimen>
     <dimen name="image_post_size">200dp</dimen>
     <dimen name="image_post_min_size">100dp</dimen>
+    <dimen name="common_spacing_null">0dp</dimen>
 </resources>
 

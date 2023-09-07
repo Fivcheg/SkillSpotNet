@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
@@ -61,11 +62,12 @@ class NewEventFragment : Fragment() {
         fragmentBinding = binding
         var type: AttachmentType? = null
 
-        arguments?.textArg
-            ?.let(binding.edit::setText)
-
-        latitude = arguments?.getDouble("lat")
-        longitude = arguments?.getDouble("long")
+        setFragmentResultListener(MapFragment.REQUEST_KEY) { _, bundle ->
+            latitude = bundle.getDouble("lat")
+            longitude = bundle.getDouble("long")
+            binding.textEditInputLatitudeCoordsEvent.setText(latitude.toString())
+            binding.textEditInputLongitudeCoordsEvent.setText(longitude.toString())
+        }
 
         val datetime = arguments?.getString("datetime")?.let {
             formatToDate(it)
@@ -93,9 +95,6 @@ class NewEventFragment : Fragment() {
         if (binding.textEditInputLatitudeCoordsEvent.text.toString() != "null" || binding.textEditInputLongitudeCoordsEvent.text.toString() != "null") {
             binding.textEditInputLatitudeCoordsEvent.visibility = View.VISIBLE
             binding.textEditInputLongitudeCoordsEvent.visibility = View.VISIBLE
-
-//            binding.textEditInputLatitudeCoordsEvent.setText(latitude.toString())
-//            binding.textEditInputLongitudeCoordsEvent.setText(longitude.toString())
         }
 
         binding.edit.requestFocus()

@@ -13,7 +13,9 @@ import androidx.navigation.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
+import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
+import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.repository.PostRepository
@@ -32,7 +34,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        MapKitFactory.setApiKey(BuildConfig.MAPKIT_API_KEY)
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
                 return@let
@@ -84,31 +86,44 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                     R.id.signin -> {
                         findNavController(R.id.nav_host_fragment)
                             .navigate(
-                                R.id.signInFragment)
+                                R.id.signInFragment
+                            )
                         true
                     }
+
                     R.id.signup -> {
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.signUpFragment)
                         true
                     }
+
                     R.id.signout -> {
                         auth.removeAuth()
                         true
                     }
+
                     R.id.myJob -> {
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.JobFragment)
                         true
                     }
+
                     R.id.myEvent -> {
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.EventFragment)
                         true
                     }
+
+                    R.id.allUsers -> {
+                        findNavController(R.id.nav_host_fragment)
+                            .navigate(R.id.userFragment)
+                        true
+                    }
+
                     else -> false
                 }
-        })
+        }
+        )
     }
 
     private fun checkGoogleApiAvailability() {

@@ -7,11 +7,13 @@ import ru.netology.nmedia.dao.EventRemoteKeyDao
 import ru.netology.nmedia.dao.JobDao
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dao.PostRemoteKeyDao
+import ru.netology.nmedia.dao.UserDao
 import ru.netology.nmedia.entity.EventEntity
 import ru.netology.nmedia.entity.EventRemoteKeyEntity
 import ru.netology.nmedia.entity.JobEntity
 import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.entity.PostRemoteKeyEntity
+import ru.netology.nmedia.entity.UserEntity
 
 @Database(
     entities = [
@@ -19,9 +21,10 @@ import ru.netology.nmedia.entity.PostRemoteKeyEntity
         PostRemoteKeyEntity::class,
         JobEntity::class,
         EventEntity::class,
-        EventRemoteKeyEntity::class
+        EventRemoteKeyEntity::class,
+        UserEntity::class,
     ],
-    version = 40,
+    version = 42,
     exportSchema = false
 )
 abstract class AppDb : RoomDatabase() {
@@ -29,5 +32,6 @@ abstract class AppDb : RoomDatabase() {
     abstract fun postRemoteKeyDao(): PostRemoteKeyDao
     abstract fun jobDao(): JobDao
     abstract fun eventDao(): EventDao
+    abstract fun userDao(): UserDao
     abstract fun eventRemoteKeyDao(): EventRemoteKeyDao
 }

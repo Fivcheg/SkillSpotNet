@@ -46,9 +46,6 @@ class NewPostFragment : Fragment() {
         fragmentBinding = binding
         var type: AttachmentType? = null
 
-        arguments?.textArg
-            ?.let(binding.edit::setText) ?: viewModel.edited.value?.content
-
         binding.edit.setText(
             arguments?.getString("content") ?: viewModel.edited.value?.content
         )

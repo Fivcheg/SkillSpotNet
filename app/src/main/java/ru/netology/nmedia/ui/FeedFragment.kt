@@ -79,7 +79,6 @@ class FeedFragment : Fragment() {
                 startActivity(shareIntent)
             }
 
-
             override fun onPlayAudio(post: Post) {
                 try {
                     val uri = Uri.parse(post.attachment?.url)
