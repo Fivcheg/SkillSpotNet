@@ -96,7 +96,7 @@ class JobFragment : Fragment() {
         }
 
         binding.fabJob.setOnClickListener {
-            findNavController().navigate(R.id.action_JobFragment_to_newJobFragment)
+            findNavController().navigate(R.id.action_containerFragmentView_to_newJobFragment)
         }
 
         return binding.root

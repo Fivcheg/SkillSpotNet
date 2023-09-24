@@ -82,9 +82,12 @@ class UserFragment : Fragment() {
                         .show()
                 }
             }
-            binding.progress.isVisible = it.loading
         }
 
         return binding.root
+    }
+    companion object{
+        @JvmStatic
+        fun newInstance() = UserFragment()
     }
 }

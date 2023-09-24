@@ -126,26 +126,6 @@ class FeedFragment : Fragment() {
             }),
         )
 
-//        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-//            0, ItemTouchHelper.START or ItemTouchHelper.END
-//        ) {
-//
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onSwiped(
-//                viewHolder: RecyclerView.ViewHolder,
-//                direction: Int
-//            ) {
-//                println("DO SOMETHING")
-//            }
-//        }).attachToRecyclerView(binding.list)
-
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitData)
         }
@@ -159,9 +139,13 @@ class FeedFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            findNavController().navigate(R.id.action_containerFragmentView_to_newPostFragment)
         }
 
         return binding.root
+    }
+    companion object{
+        @JvmStatic
+        fun newInstance() = FeedFragment()
     }
 }

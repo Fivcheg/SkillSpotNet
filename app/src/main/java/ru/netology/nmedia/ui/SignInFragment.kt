@@ -59,7 +59,7 @@ class SignInFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) {
             appAuth.setAuth(it.id, it.token)
-            findNavController().navigate(R.id.action_signInFragment_to_feedFragment)
+            findNavController().navigate(R.id.action_signInFragment_to_containerFragmentView)
         }
 
         return binding.root

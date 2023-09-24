@@ -222,7 +222,7 @@ class NewEventFragment : Fragment() {
                             viewModel.changeCoords(latitude.toString(), longitude.toString())
                             viewModel.saveEvent()
                             AndroidUtils.hideKeyboard(requireView())
-                            findNavController().navigate(R.id.EventFragment)
+                            findNavController().navigate(R.id.containerFragmentView)
                         }
                         true
                     }

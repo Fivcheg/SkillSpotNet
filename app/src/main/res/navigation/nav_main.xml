@@ -3,30 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/feedFragment">
+    app:startDestination="@id/containerFragmentView">
 
     <fragment
         android:id="@+id/feedFragment"
         android:name="ru.netology.nmedia.ui.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed">
-        <action
-            android:id="@+id/action_feedFragment_to_newPostFragment"
-            app:destination="@id/newPostFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_feedFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-        <action
-            android:id="@+id/action_feedFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_feedFragment_to_JobFragment"
-            app:destination="@id/JobFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_feed"/>
     <fragment
         android:id="@+id/newPostFragment"
         android:name="ru.netology.nmedia.ui.NewPostFragment"
@@ -38,11 +21,11 @@
         android:label="@string/sign_in"
         tools:layout="@layout/fragment_signin">
         <action
-            android:id="@+id/action_signInFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
-        <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_containerFragmentView"
+            app:destination="@id/containerFragmentView" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -50,21 +33,17 @@
         android:label="@string/sign_up"
         tools:layout="@layout/fragment_signup">
         <action
-            android:id="@+id/action_signUpFragment_to_feedFragment2"
-            app:destination="@id/feedFragment" />
-        <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_containerFragmentView"
+            app:destination="@id/containerFragmentView" />
     </fragment>
     <fragment
         android:id="@+id/JobFragment"
         android:name="ru.netology.nmedia.ui.JobFragment"
         android:label="fragment_job"
-        tools:layout="@layout/fragment_jobs">
-        <action
-            android:id="@+id/action_JobFragment_to_newJobFragment"
-            app:destination="@id/newJobFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_jobs"/>
     <fragment
         android:id="@+id/newJobFragment"
         android:name="ru.netology.nmedia.ui.NewJobFragment"
@@ -81,11 +60,7 @@
         android:id="@+id/EventFragment"
         android:name="ru.netology.nmedia.ui.EventFragment"
         android:label="fragment_event"
-        tools:layout="@layout/fragment_event">
-        <action
-            android:id="@+id/action_EventFragment_to_newEventFragment"
-            app:destination="@id/newEventFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_event"/>
     <fragment
         android:id="@+id/newEventFragment"
         android:name="ru.netology.nmedia.ui.NewEventFragment"
@@ -107,5 +82,28 @@
         android:label="fragment_user"
         tools:layout="@layout/fragment_users">
     </fragment>
-
+    <fragment
+        android:id="@+id/containerFragmentView"
+        android:name="ru.netology.nmedia.ui.FragmentContainerView"
+        android:label="fragment_container_view"
+        tools:layout="@layout/fragment_container">
+        <action
+            android:id="@+id/action_containerFragmentView_to_EventFragment"
+            app:destination="@id/EventFragment" />
+        <action
+            android:id="@+id/action_containerFragmentView_to_JobFragment"
+            app:destination="@id/JobFragment" />
+        <action
+            android:id="@+id/action_containerFragmentView_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_containerFragmentView_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_containerFragmentView_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+        <action
+            android:id="@+id/action_containerFragmentView_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
 </navigation>

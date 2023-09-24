@@ -111,11 +111,17 @@ class EventFragment : Fragment() {
             }
 
             override fun onOpenMap(event: Event) {
-               val bundle = Bundle().apply {
-                   putString("LAT_KEY", event.coords?.lat)
-                   putString("LONG_KEY", event.coords?.long)
-               }
-                findNavController().navigate(R.id.mapFragment, bundle)
+                val bundle = Bundle().apply {
+                    putString("LAT_KEY", event.coords?.lat)
+                    putString("LONG_KEY", event.coords?.long)
+                }
+                if (event.coords?.lat != null && event.coords?.long != null){
+                    findNavController().navigate(R.id.mapFragment, bundle)
+                }else{
+                    Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
             }
 
         })
@@ -132,26 +138,6 @@ class EventFragment : Fragment() {
             }),
         )
 
-//        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-//            0, ItemTouchHelper.START or ItemTouchHelper.END
-//        ) {
-//
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onSwiped(
-//                viewHolder: RecyclerView.ViewHolder,
-//                direction: Int
-//            ) {
-//                println("DO SOMETHING")
-//            }
-//        }).attachToRecyclerView(binding.list)
-
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitData)
         }
@@ -165,9 +151,13 @@ class EventFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_EventFragment_to_newEventFragment)
+            findNavController().navigate(R.id.action_containerFragmentView_to_newEventFragment)
         }
-
         return binding.root
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = EventFragment()
     }
 }

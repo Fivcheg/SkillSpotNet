@@ -12,12 +12,18 @@ import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
+import ru.netology.nmedia.adapter.TabsAdapter
 import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.databinding.ActivityAppBinding
+import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.ui.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.viewmodel.AuthViewModel
@@ -32,9 +38,25 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     lateinit var auth: AppAuth
     private val viewModel: AuthViewModel by viewModels()
 
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    private val fragList =
+//        listOf(FeedFragment.newInstance(), EventFragment.newInstance(), UserFragment.newInstance())
+
+//    private lateinit var binding: ActivityAppBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.setApiKey(BuildConfig.MAPKIT_API_KEY)
+//        val fragListTitle =
+//            listOf(getString(R.string.posts), getString(R.string.events), getString(R.string.users))
+//        binding = ActivityAppBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//        val adapter = TabsAdapter(this, fragList)
+//        binding.navHostFragment.adapter = adapter
+//        TabLayoutMediator(binding.mainAppTabs, binding.navHostFragment) { tab, pos ->
+//            tab.text = fragListTitle[pos]
+//        }.attach()
+
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
                 return@let
@@ -48,7 +70,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             intent.removeExtra(Intent.EXTRA_TEXT)
             findNavController(R.id.nav_host_fragment)
                 .navigate(
-                    R.id.action_feedFragment_to_newPostFragment,
+                    R.id.action_containerFragmentView_to_newPostFragment,
                     Bundle().apply {
                         textArg = text
                     }
@@ -99,24 +121,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
                     R.id.signout -> {
                         auth.removeAuth()
-                        true
-                    }
-
-                    R.id.myJob -> {
-                        findNavController(R.id.nav_host_fragment)
-                            .navigate(R.id.JobFragment)
-                        true
-                    }
-
-                    R.id.myEvent -> {
-                        findNavController(R.id.nav_host_fragment)
-                            .navigate(R.id.EventFragment)
-                        true
-                    }
-
-                    R.id.allUsers -> {
-                        findNavController(R.id.nav_host_fragment)
-                            .navigate(R.id.userFragment)
                         true
                     }
 

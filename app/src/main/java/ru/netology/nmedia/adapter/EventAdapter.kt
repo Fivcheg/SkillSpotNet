@@ -86,7 +86,6 @@ class EventAdapter(
         private val onInteractionListener: OnInteractionListener,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(event: Event) {
             binding.apply {
