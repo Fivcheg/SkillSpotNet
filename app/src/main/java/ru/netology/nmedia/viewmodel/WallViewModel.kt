@@ -52,7 +52,7 @@ class WallViewModel @Inject constructor(
                         pagingData.map { item ->
                             if (item !is Post) item else item.copy(
                                 ownedByMe = item.authorId == userId,
-                                likedByMe = item.likeOwnerIds.contains(userId.toInt())
+                                likedByMe = item.likeOwnerIds.contains(id.toInt())
                             )
                         }
 
