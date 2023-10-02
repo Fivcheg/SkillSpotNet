@@ -40,11 +40,6 @@
             app:destination="@id/containerFragmentView" />
     </fragment>
     <fragment
-        android:id="@+id/JobFragment"
-        android:name="ru.netology.nmedia.ui.JobFragment"
-        android:label="fragment_job"
-        tools:layout="@layout/fragment_jobs"/>
-    <fragment
         android:id="@+id/newJobFragment"
         android:name="ru.netology.nmedia.ui.NewJobFragment"
         android:label="fragment_new_job"
@@ -81,6 +76,18 @@
         android:name="ru.netology.nmedia.ui.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_users">
+        <action
+            android:id="@+id/action_userFragment_to_userProfileFragment2"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="ru.netology.nmedia.ui.FragmentContainerProfileView"
+        android:label="fragment_profile_user"
+        tools:layout="@layout/fragment_user_profile">
+        <action
+            android:id="@+id/action_userProfileFragment_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
     <fragment
         android:id="@+id/containerFragmentView"
@@ -90,9 +97,6 @@
         <action
             android:id="@+id/action_containerFragmentView_to_EventFragment"
             app:destination="@id/EventFragment" />
-        <action
-            android:id="@+id/action_containerFragmentView_to_JobFragment"
-            app:destination="@id/JobFragment" />
         <action
             android:id="@+id/action_containerFragmentView_to_feedFragment"
             app:destination="@id/feedFragment" />
@@ -105,5 +109,8 @@
         <action
             android:id="@+id/action_containerFragmentView_to_newEventFragment"
             app:destination="@id/newEventFragment" />
+        <action
+            android:id="@+id/action_containerFragmentView_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
 </navigation>

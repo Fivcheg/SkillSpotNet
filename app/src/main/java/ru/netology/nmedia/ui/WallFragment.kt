@@ -23,10 +23,11 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
+import ru.netology.nmedia.viewmodel.WallViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FeedFragment : Fragment() {
+class WallFragment : Fragment() {
     @Inject
     lateinit var repository: PostRepository
 
@@ -34,6 +35,7 @@ class FeedFragment : Fragment() {
     lateinit var auth: AppAuth
     private val viewModel: PostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val wallViewModel: WallViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,7 +129,7 @@ class FeedFragment : Fragment() {
         )
 
         lifecycleScope.launchWhenCreated {
-            viewModel.data.collectLatest(adapter::submitData)
+            wallViewModel.loadWall(id.toLong()).collectLatest(adapter::submitData)
         }
 
         lifecycleScope.launchWhenCreated {
@@ -135,7 +137,6 @@ class FeedFragment : Fragment() {
                 binding.swiperefresh.isRefreshing = it.refresh is LoadState.Loading
             }
         }
-
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
@@ -145,8 +146,9 @@ class FeedFragment : Fragment() {
 
         return binding.root
     }
-    companion object{
+
+    companion object {
         @JvmStatic
-        fun newInstance() = FeedFragment()
+        fun newInstance() = WallFragment()
     }
 }

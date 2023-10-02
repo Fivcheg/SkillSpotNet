@@ -18,6 +18,7 @@ import ru.netology.nmedia.dto.Job
 import ru.netology.nmedia.repository.JobRepository
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.JobViewModel
+import ru.netology.nmedia.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +30,7 @@ class JobFragment : Fragment() {
     lateinit var auth: AppAuth
     private val viewModel: JobViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val userModel: UserViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,28 +63,10 @@ class JobFragment : Fragment() {
 
         })
 
-//        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-//            0, ItemTouchHelper.START or ItemTouchHelper.END
-//        ) {
-//
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onSwiped(
-//                viewHolder: RecyclerView.ViewHolder,
-//                direction: Int
-//            ) {
-//
-//            }
-//        }).attachToRecyclerView(binding.listJobs)
 
-        //TODO change id to any users. this for test
-        val id = auth.authStateFlow.value.id
+        //   val id = auth.authStateFlow.value.id
+        val id = userModel.user.value!!.id
+
 
         binding.listJobs.adapter = adapter
 
@@ -95,10 +79,17 @@ class JobFragment : Fragment() {
             viewModel.loadJobs(id)
         }
 
-        binding.fabJob.setOnClickListener {
-            findNavController().navigate(R.id.action_containerFragmentView_to_newJobFragment)
-        }
+      //  if (id == auth.authStateFlow.value.id) {
+            binding.fabJob.setOnClickListener {
+                findNavController().navigate(R.id.action_containerFragmentView_to_newJobFragment)
+            }
+    //    }
 
         return binding.root
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = JobFragment()
     }
 }

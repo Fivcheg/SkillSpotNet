@@ -9,7 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.dto.Event
-import ru.netology.nmedia.dto.EventItem
 import ru.netology.nmedia.dto.Job
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
@@ -162,6 +161,35 @@ interface ApiService {
     @Multipart
     @POST("media")
     suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Media>
+
+    //-------------- Wall -------------------//
+
+    @GET("{authorId}/wall")
+    suspend fun getWall(
+        @Path("authorId") authorId: Long
+    ): Response<List<Post>>
+
+    @GET("{authorId}/wall/latest")
+    suspend fun getWallLatest(
+        @Path("authorId") authorId: Long,
+        @Query("count") count: Int,
+    ): Response<List<Post>>
+
+    @GET("{authorId}/wall/{id}/before")
+    suspend fun getWallBefore(
+        @Path("authorId") authorId: Long,
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+    ): Response<List<Post>>
+
+    @GET("{authorId}/wall/{id}/after")
+    suspend fun getWallAfter(
+        @Path("authorId") authorId: Long,
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+    ): Response<List<Post>>
+
+
 
 }
 

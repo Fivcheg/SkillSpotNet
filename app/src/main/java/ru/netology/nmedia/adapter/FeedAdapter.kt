@@ -1,11 +1,9 @@
 package ru.netology.nmedia.adapter
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.navigation.Navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -77,7 +75,6 @@ class FeedAdapter(
             }
         }
     }
-
 
     class PostViewHolder(
         private val binding: CardPostBinding,
@@ -158,7 +155,7 @@ class FeedAdapter(
                     onInteractionListener.onPlayAudio(post)
                 }
 
-                playVideo.setOnClickListener{
+                playVideo.setOnClickListener {
                     onInteractionListener.onPlayVideo(post)
                 }
             }

@@ -18,9 +18,8 @@ data class PostEntity(
     @Embedded
     val coords: CoordinatesEmbeddable?,
     val link: String? = null,
-//    @Embedded
-//    var likeOwnerIds: LikeOwnerIdsConverter?,
-//    val mentionIds: List<Int>?,
+    val likeOwnerIds: List<Int> = emptyList(),
+    val mentionIds: List<Int>?,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @Embedded
@@ -30,7 +29,7 @@ data class PostEntity(
     val users: UsersEmbeddable?,
 ) {
     fun toDto(): Post {
-        val post = Post(
+        return Post(
             id = id,
             authorId = authorId,
             author = author,
@@ -40,15 +39,14 @@ data class PostEntity(
             published = published,
             coords = coords?.toDto(),
             link = link,
-//            likeOwnerIds = likeOwnerIds?.toDto(),
-//            mentionIds = mentionIds,
+            likeOwnerIds = likeOwnerIds,
+            mentionIds = mentionIds,
             mentionedMe = mentionedMe,
             likedByMe = likedByMe,
             attachment = attachment?.toDto(),
             ownedByMe = ownedByMe,
             users = users?.toDto()
         )
-        return post
     }
 
     companion object {
@@ -63,8 +61,8 @@ data class PostEntity(
                 published = dto.published,
                 coords = CoordinatesEmbeddable.fromDto(dto.coords),
                 link = dto.link,
-//                likeOwnerIds = LikeOwnerIdsConverter.fromDto(dto.likeOwnerIds),
-//                mentionIds = dto.mentionIds,
+                likeOwnerIds = dto.likeOwnerIds,
+                mentionIds = dto.mentionIds,
                 mentionedMe = dto.mentionedMe,
                 likedByMe = dto.likedByMe,
                 attachment = AttachmentEmbeddable.fromDto(dto.attachment),

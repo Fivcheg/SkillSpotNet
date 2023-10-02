@@ -115,15 +115,13 @@ class EventFragment : Fragment() {
                     putString("LAT_KEY", event.coords?.lat)
                     putString("LONG_KEY", event.coords?.long)
                 }
-                if (event.coords?.lat != null && event.coords?.long != null){
+                if (event.coords?.lat != null && event.coords?.long != null) {
                     findNavController().navigate(R.id.mapFragment, bundle)
-                }else{
+                } else {
                     Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
                         .show()
                 }
-
             }
-
         })
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {

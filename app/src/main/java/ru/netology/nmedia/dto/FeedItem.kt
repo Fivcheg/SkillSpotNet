@@ -1,7 +1,6 @@
 package ru.netology.nmedia.dto
 
 import ru.netology.nmedia.enumeration.AttachmentType
-import ru.netology.nmedia.enumeration.EventType
 
 sealed class FeedItem {
     abstract val id: Long
@@ -23,8 +22,8 @@ data class Post(
     val published: String,
     val coords: Coordinates? = null,
     val link: String? = null,
- //   val likeOwnerIds: List<Int>? = null,
-//    val mentionIds: List<Int>? = null,
+    val likeOwnerIds: List<Int> = emptyList(),
+    val mentionIds: List<Int>? = null,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
 //    val likes: Int = 0,

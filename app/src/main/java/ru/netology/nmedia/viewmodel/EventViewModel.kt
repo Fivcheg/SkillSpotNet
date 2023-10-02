@@ -41,7 +41,8 @@ private val empty = Event(
     published = "2023-01-27T17:00:00.000Z",
     coords = null,
     type = EventType.OFFLINE,
-    likeOwnerIds = null,
+    likeOwnerIds = emptyList(),
+   // mentionIds = null,
     likedByMe = false,
     speakerIds = null,
     participantsIds = null,
@@ -107,16 +108,6 @@ class EventViewModel @Inject constructor(
     private fun loadEvents() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
-    fun refreshPosts() = viewModelScope.launch {
-        try {
-            _dataState.value = FeedModelState(refreshing = true)
-            repository.getAllEvents()
-            _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }

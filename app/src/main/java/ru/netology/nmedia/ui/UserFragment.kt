@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.UserAdapter
 import ru.netology.nmedia.databinding.FragmentUsersBinding
@@ -61,7 +58,7 @@ class UserFragment : Fragment() {
                             putString("avatar", user.avatar)
                             putString("name", user.name)
                         }
-                        findNavController().navigateUp()
+                        findNavController().navigate(R.id.userProfileFragment, bundle)
                     }
                 }
             }
@@ -73,6 +70,8 @@ class UserFragment : Fragment() {
         {
             adapter.submitList(it)
         }
+
+
 
         userViewModel.dataState.observe(viewLifecycleOwner)
         {

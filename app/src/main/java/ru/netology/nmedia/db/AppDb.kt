@@ -2,6 +2,7 @@ package ru.netology.nmedia.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ru.netology.nmedia.dao.EventDao
 import ru.netology.nmedia.dao.EventRemoteKeyDao
 import ru.netology.nmedia.dao.JobDao
@@ -14,6 +15,7 @@ import ru.netology.nmedia.entity.JobEntity
 import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.entity.PostRemoteKeyEntity
 import ru.netology.nmedia.entity.UserEntity
+import ru.netology.nmedia.util.Converters
 
 @Database(
     entities = [
@@ -24,9 +26,10 @@ import ru.netology.nmedia.entity.UserEntity
         EventRemoteKeyEntity::class,
         UserEntity::class,
     ],
-    version = 42,
+    version = 46,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDao(): PostDao
     abstract fun postRemoteKeyDao(): PostRemoteKeyDao
