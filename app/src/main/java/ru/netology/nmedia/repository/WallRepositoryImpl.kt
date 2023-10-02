@@ -21,8 +21,18 @@ class WallRepositoryImpl @Inject constructor(
     private val postDao: PostDao,
     private val apiService: ApiService,
     private val postRemoteKeyDao: PostRemoteKeyDao,
-    private val appDb: AppDb, override val data: Flow<PagingData<Post>>,
+    private val appDb: AppDb,
 ) : WallRepository {
+
+
+    @OptIn(ExperimentalPagingApi::class)
+    override val data: Flow<PagingData<Post>> = Pager(
+        config = PagingConfig(pageSize = 5),
+        remoteMediator = PostRemoteMediator(apiService, appDb, postDao, postRemoteKeyDao),
+        pagingSourceFactory = postDao::pagingSource,
+    ).flow.map { pagingData ->
+        pagingData.map(PostEntity::toDto)
+    }
 
     @OptIn(ExperimentalPagingApi::class)
     override fun loadWall(userId: Long): Flow<PagingData<Post>> = Pager(
@@ -40,3 +50,4 @@ class WallRepositoryImpl @Inject constructor(
             it.map(PostEntity::toDto)
         }
 }
+

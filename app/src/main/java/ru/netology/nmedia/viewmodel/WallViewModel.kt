@@ -20,7 +20,6 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class WallViewModel @Inject constructor(
@@ -28,8 +27,8 @@ class WallViewModel @Inject constructor(
     val auth: AppAuth,
 ) : ViewModel() {
 
-    private val cached: Flow<PagingData<FeedItem>> = repository
-        .data
+
+    private val cached: Flow<PagingData<FeedItem>> = repository.loadWall(515)
         .map { pagingData ->
             pagingData.insertSeparators(
                 generator = { before, after ->
@@ -47,16 +46,15 @@ class WallViewModel @Inject constructor(
 
     fun loadWall(id: Long) = auth.authStateFlow
         .flatMapLatest { (userId, _) ->
-                cached
-                    .map { pagingData ->
-                        pagingData.map { item ->
-                            if (item !is Post) item else item.copy(
-                                ownedByMe = item.authorId == userId,
-                                likedByMe = item.likeOwnerIds.contains(id.toInt())
-                            )
-                        }
-
+            cached
+                .map { pagingData ->
+                    pagingData.map { item ->
+                        if ((item !is Post)) item else item.copy(
+                            ownedByMe = item.authorId == userId,
+                            likedByMe = item.likeOwnerIds.contains(userId.toInt())
+                        )
                     }
-            }
+                }
         }
-//}
+}
+

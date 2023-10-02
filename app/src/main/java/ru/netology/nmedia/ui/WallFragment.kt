@@ -129,6 +129,7 @@ class WallFragment : Fragment() {
         )
 
         lifecycleScope.launchWhenCreated {
+
             wallViewModel.loadWall(id.toLong()).collectLatest(adapter::submitData)
         }
 
