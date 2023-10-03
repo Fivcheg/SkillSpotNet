@@ -60,8 +60,8 @@ class MapFragment : Fragment() {
             placemark.addTapListener(placemarkTapListener)
             view?.findViewById<View>(R.id.button_set_point)?.setOnClickListener {
                 bundle.apply {
-                    putDouble("lat", point.latitude)
-                    putDouble("long", point.longitude)
+                    putDouble("latitude", point.latitude)
+                    putDouble("longitude", point.longitude)
                 }
                 setFragmentResult(REQUEST_KEY, bundle)
                 findNavController().navigate(R.id.action_mapFragment_to_newEventFragment)

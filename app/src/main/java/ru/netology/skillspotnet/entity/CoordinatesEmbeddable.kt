@@ -3,10 +3,10 @@ package ru.netology.skillspotnet.entity
 import ru.netology.skillspotnet.dto.Coordinates
 
 data class CoordinatesEmbeddable(
-    var lat: String = "",
-    var long: String = "",
+    var latitude: String = "",
+    var longitude: String = "",
 ) {
-    fun toDto() = Coordinates(lat, long)
+    fun toDto() = Coordinates(latitude, longitude)
 
     companion object {
         fun fromDto(dto: Coordinates?) = dto?.let {
