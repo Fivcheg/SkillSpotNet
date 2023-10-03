@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    namespace "ru.netology.nmedia"
+    namespace "ru.netology.skillspotnet"
 
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "ru.netology.nmedia"
+        applicationId "ru.netology.skillspotnet"
         minSdkVersion 22
         targetSdkVersion 33
         versionCode 1
