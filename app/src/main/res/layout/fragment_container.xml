@@ -11,22 +11,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:elevation="10dp"
+        app:tabRippleColor="@color/tab_ripple_color"
+        android:background="@color/tab_ripple_color"
         app:tabMode="auto">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Posts" />
+            android:text="@string/postsTab" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Events" />
+            android:text="@string/eventsTab" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Users" />
+            android:text="@string/usersTab" />
 
     </com.google.android.material.tabs.TabLayout>
 

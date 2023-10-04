@@ -21,50 +21,38 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_spacing"
+        android:textSize="@dimen/profile_name"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/username"
-        android:layout_margin="@dimen/common_spacing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_avatar"
         tools:text="@sample/posts.json/data/author" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/user_name_divider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_spacing"
-        android:layout_marginBottom="@dimen/common_spacing"
-        app:dividerInsetEnd="16dp"
-        app:dividerInsetStart="16dp"
-        app:layout_constraintStart_toStartOf="@+id/user_name"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
-
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/profileAppTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@color/tab_ripple_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name_divider"
-        app:tabMode="auto">
+        app:layout_constraintTop_toBottomOf="@+id/user_name"
+        app:tabMode="auto"
+        android:elevation="10dp"
+        app:tabRippleColor="@color/tab_ripple_color">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Posts" />
+            android:text="@string/postsTab" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Events" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/jobs" />
+            android:text="@string/jobsTab" />
 
     </com.google.android.material.tabs.TabLayout>
 

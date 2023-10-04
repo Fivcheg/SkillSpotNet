@@ -92,7 +92,7 @@ class EventViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    public val edited = MutableLiveData(empty)
+    val edited = MutableLiveData(empty)
     private val _eventCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _eventCreated

@@ -104,8 +104,8 @@ class EventAdapter(
 
                 Glide.with(itemView)
                     .load("${event.authorAvatar}")
-                    .placeholder(R.drawable.baseline_catching_pokemon_24)
-                    .error(R.drawable.baseline_sign_language_24)
+                    .placeholder(R.drawable.baseline_terrain_24)
+                    .error(R.drawable.baseline_insert_emoticon_24)
                     .timeout(10_000)
                     .circleCrop()
                     .into(avatar)
@@ -113,7 +113,7 @@ class EventAdapter(
                 event.attachment?.apply {
                     Glide.with(imageEvent)
                         .load(this.url)
-                        .placeholder(R.drawable.baseline_catching_pokemon_24)
+                        .placeholder(R.drawable.baseline_terrain_24)
                         .error(R.drawable.baseline_report_gmailerrorred_24)
                         .timeout(10_000)
                         .into(imageEvent)

@@ -5,8 +5,11 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="icon_button_padding">12dp</dimen>
     <dimen name="icon_button_min_size">48dp</dimen>
-    <dimen name="image_post_size">200dp</dimen>
+    <dimen name="image_post_size">300dp</dimen>
     <dimen name="image_post_min_size">100dp</dimen>
     <dimen name="common_spacing_null">0dp</dimen>
+    <dimen name="post_user_name">24dp</dimen>
+    <dimen name="content_size">16dp</dimen>
+    <dimen name="profile_name">36dp</dimen>
 </resources>
 

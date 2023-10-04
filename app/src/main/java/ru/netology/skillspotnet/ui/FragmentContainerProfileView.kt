@@ -32,14 +32,14 @@ class FragmentContainerProfileView : Fragment() {
     ): View {
         val binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         val fragListTitle =
-            listOf(getString(R.string.posts), getString(R.string.jobs))
+            listOf(getString(R.string.posts), getString(R.string.jobsTab))
 
         binding.userName.text = arguments?.getString("name")
 
         Glide.with(this)
             .load(arguments?.getString("avatar"))
-            .placeholder(R.drawable.baseline_catching_pokemon_24)
-            .error(R.drawable.baseline_sign_language_24)
+            .placeholder(R.drawable.baseline_terrain_24)
+            .error(R.drawable.baseline_insert_emoticon_24)
             .timeout(10_000)
             .circleCrop()
             .into(binding.userAvatar)

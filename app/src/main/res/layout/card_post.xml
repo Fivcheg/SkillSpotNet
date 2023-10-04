@@ -29,6 +29,7 @@
             android:layout_marginEnd="@dimen/common_spacing"
             android:ellipsize="end"
             android:singleLine="true"
+            android:textSize="@dimen/post_user_name"
             app:layout_constraintBottom_toTopOf="@+id/published"
             app:layout_constraintEnd_toStartOf="@id/menu"
             app:layout_constraintStart_toEndOf="@id/avatar"
@@ -72,6 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autoLink="web"
+            android:textSize="@dimen/content_size"
             android:lineSpacingMultiplier="1.5"
             android:paddingTop="@dimen/common_spacing"
             android:paddingBottom="@dimen/common_spacing"
@@ -82,8 +84,8 @@
 
         <ImageView
             android:id="@+id/imagePost"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="343dp"
+            android:layout_height="90dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/attachmentImagePost"
             android:maxWidth="@dimen/image_post_size"
@@ -128,8 +130,7 @@
             app:layout_constraintEnd_toEndOf="@id/imagePost"
             app:layout_constraintStart_toStartOf="@id/imagePost"
             app:layout_constraintTop_toBottomOf="@id/playAudio"
-            tools:srcCompat="@drawable/baseline_video_file_24"
-            />
+            tools:srcCompat="@drawable/outline_smart_display_24" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/footer"

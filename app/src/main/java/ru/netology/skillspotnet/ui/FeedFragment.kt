@@ -139,13 +139,20 @@ class FeedFragment : Fragment() {
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
+        if (auth.authStateFlow.value.id == 0L || auth.authStateFlow.value.token == null) {
+            binding.fab.visibility = View.GONE
+        } else {
+            binding.fab.visibility = View.VISIBLE
+        }
+
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_containerFragmentView_to_newPostFragment)
         }
 
         return binding.root
     }
-    companion object{
+
+    companion object {
         @JvmStatic
         fun newInstance() = FeedFragment()
     }

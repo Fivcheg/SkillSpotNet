@@ -51,11 +51,14 @@
         android:id="@+id/fabEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:contentDescription="@string/add_event"
-        android:focusable="true"
         android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/divider_color"
+        app:tint="@color/divider_color"
+        android:clickable="true"
+        android:contentDescription="@string/add_post"
+        android:focusable="true"
         app:srcCompat="@drawable/ic_add_24dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -144,8 +144,14 @@ class WallFragment : Fragment() {
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
+        if (id != auth.authStateFlow.value.id) {
+            binding.fab.visibility = View.GONE
+        } else{
+            binding.fab.visibility = View.VISIBLE
+        }
+
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_containerFragmentView_to_newPostFragment)
+            findNavController().navigate(R.id.newPostFragment)
         }
 
         return binding.root

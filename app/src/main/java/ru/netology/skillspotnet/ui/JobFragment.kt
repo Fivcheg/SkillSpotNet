@@ -3,6 +3,8 @@ package ru.netology.skillspotnet.ui
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,7 +31,6 @@ class JobFragment : Fragment() {
     @Inject
     lateinit var auth: AppAuth
     private val viewModel: JobViewModel by activityViewModels()
-    private val authViewModel: AuthViewModel by activityViewModels()
     private val userModel: UserViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,11 +80,16 @@ class JobFragment : Fragment() {
             viewModel.loadJobs(id)
         }
 
-      //  if (id == auth.authStateFlow.value.id) {
-            binding.fabJob.setOnClickListener {
-                findNavController().navigate(R.id.action_containerFragmentView_to_newJobFragment)
-            }
-    //    }
+        if (id != auth.authStateFlow.value.id) {
+            binding.fabJob.visibility = GONE
+        } else {
+            binding.fabJob.visibility = VISIBLE
+        }
+
+        binding.fabJob.setOnClickListener {
+            findNavController().navigate(R.id.newJobFragment)
+        }
+
 
         return binding.root
     }

@@ -94,8 +94,8 @@ class FeedAdapter(
 
                 Glide.with(itemView)
                     .load("${post.authorAvatar}")
-                    .placeholder(R.drawable.baseline_catching_pokemon_24)
-                    .error(R.drawable.baseline_sign_language_24)
+                    .placeholder(R.drawable.baseline_terrain_24)
+                    .error(R.drawable.baseline_insert_emoticon_24)
                     .timeout(10_000)
                     .circleCrop()
                     .into(avatar)
@@ -103,7 +103,7 @@ class FeedAdapter(
                 post.attachment?.apply {
                     Glide.with(imagePost)
                         .load(this.url)
-                        .placeholder(R.drawable.baseline_catching_pokemon_24)
+                        .placeholder(R.drawable.baseline_terrain_24)
                         .error(R.drawable.baseline_report_gmailerrorred_24)
                         .timeout(10_000)
                         .into(imagePost)

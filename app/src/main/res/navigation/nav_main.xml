@@ -40,6 +40,15 @@
             app:destination="@id/containerFragmentView" />
     </fragment>
     <fragment
+        android:id="@+id/JobFragment"
+        android:name="ru.netology.skillspotnet.ui.JobFragment"
+        android:label="fragment_job"
+        tools:layout="@layout/fragment_jobs">
+        <action
+            android:id="@+id/action_JobFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/newJobFragment"
         android:name="ru.netology.skillspotnet.ui.NewJobFragment"
         android:label="fragment_new_job"
@@ -112,5 +121,8 @@
         <action
             android:id="@+id/action_containerFragmentView_to_userFragment"
             app:destination="@id/userFragment" />
+        <action
+            android:id="@+id/action_containerFragmentView_to_JobFragment"
+            app:destination="@id/JobFragment" />
     </fragment>
 </navigation>

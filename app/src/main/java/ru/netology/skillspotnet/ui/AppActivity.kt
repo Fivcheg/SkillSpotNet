@@ -65,9 +65,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                 println("some stuff happened: ${task.exception}")
                 return@addOnCompleteListener
             }
-
             val token = task.result
-            println(token)
         }
 
         checkGoogleApiAvailability()
