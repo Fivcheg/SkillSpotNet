@@ -54,7 +54,6 @@ class PostViewModel @Inject constructor(
                 generator = { before, after ->
                     if (before?.id?.rem(5) != 0L) null else
                         Ad(
-                            //TODO !!!!!!!!
                             Random.nextLong(),
                             "@sample/ads_images/",
                             "figma.jpg"
@@ -166,6 +165,16 @@ class PostViewModel @Inject constructor(
             repository.dislikeById(id)
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun setMentionIds(id: Long) {
+        edited.value?.let {
+            if (edited.value?.mentionIds?.contains(id.toInt()) == false) {
+                edited.value = edited.value?.copy(
+                    mentionIds = it.mentionIds?.plus(id.toInt())
+                )
+            }
         }
     }
 }

@@ -7,5 +7,6 @@
     <color name="image_color">#333</color>
     <color name="tab_ripple_color">#ffebf0</color>
     <color name="tab_shadow_color">#333333</color>
+    <color name="color_primary_green">#188038</color>
 
 </resources>

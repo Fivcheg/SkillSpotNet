@@ -42,4 +42,5 @@ interface PostDao {
 
     @Query("UPDATE PostEntity SET likedByMe = 0 WHERE id = :id AND likedByMe = 1")
     suspend fun unlikeById(id: Long)
+
 }

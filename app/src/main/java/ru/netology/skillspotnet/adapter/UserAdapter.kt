@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.netology.skillspotnet.R
 import ru.netology.skillspotnet.databinding.CardUsersBinding
+import ru.netology.skillspotnet.dto.Post
 import ru.netology.skillspotnet.dto.User
 
 class UserAdapter(
@@ -16,6 +17,8 @@ class UserAdapter(
 
     interface OnUserInteractionListener {
         fun onOpenUser(user: User)
+        fun onViewMentions(user: User)
+        fun onAddMentions(user: User)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -42,14 +45,25 @@ class UserViewHolder(
     fun bind(user: User) {
         binding.apply {
             userName.text = user.name
+            userLogin.text = user.login
             Glide.with(userAvatar)
                 .load("${user.avatar}")
-                .placeholder(R.drawable.baseline_catching_pokemon_24)
+                .placeholder(R.drawable.baseline_terrain_24)
+                .error(R.drawable.baseline_insert_emoticon_24)
+                .timeout(10_000)
+                .circleCrop()
                 .into(userAvatar)
 
             userView.setOnClickListener {
                 onUserInteractionListener.onOpenUser(user)
             }
+
+            addUser.setOnClickListener {
+                onUserInteractionListener.onAddMentions(user)
+            }
+//
+//            addUser.isChecked = false
+
         }
     }
 }

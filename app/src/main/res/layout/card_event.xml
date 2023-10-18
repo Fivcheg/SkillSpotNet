@@ -16,7 +16,7 @@
             android:layout_height="@dimen/posts_avatar_size"
             android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/description_post_author_avatar"
-            app:layout_constraintBottom_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="@id/header_bottom_divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@sample/posts.json/data/authorAvatar" />
@@ -44,7 +44,7 @@
             android:layout_marginStart="@dimen/common_spacing"
             android:layout_marginEnd="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
-            app:layout_constraintBottom_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="@id/header_bottom_divider"
             app:layout_constraintEnd_toStartOf="@id/menu"
             app:layout_constraintStart_toEndOf="@id/avatar"
             app:layout_constraintTop_toBottomOf="@id/author"
@@ -61,12 +61,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/header"
-            android:layout_width="wrap_content"
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/header_bottom_divider"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="avatar,published,menu" />
+            app:constraint_referenced_ids="avatar,published,menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/content" />
 
         <TextView
             android:id="@+id/content"
@@ -79,13 +81,14 @@
             android:textSize="@dimen/content_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintTop_toBottomOf="@id/header_bottom_divider"
             tools:text="@sample/posts.json/data/content" />
 
         <ImageView
             android:id="@+id/imageEvent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/common_spacing"
             android:adjustViewBounds="true"
             android:contentDescription="@string/attachmentImagePost"
             android:maxWidth="@dimen/image_post_size"
@@ -97,8 +100,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/content"
             tools:srcCompat="@tools:sample/avatars[7]"
-            tools:visibility="visible" />
-
+            tools:visibility="gone" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/event_audio_group"
@@ -113,24 +115,47 @@
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/description_audio_play"
             app:icon="@drawable/baseline_play_circle_outline_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageEvent" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/playVideoEvent"
+            style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_spacing"
-            android:adjustViewBounds="true"
             android:checkable="true"
             android:contentDescription="@string/description_video"
+            android:paddingBottom="@dimen/common_spacing"
+            app:icon="@drawable/outline_smart_display_24"
             app:layout_constraintEnd_toEndOf="@id/imageEvent"
             app:layout_constraintStart_toStartOf="@id/imageEvent"
-            app:layout_constraintTop_toBottomOf="@id/playAudioEvent"
-            tools:srcCompat="@drawable/baseline_video_file_24" />
+            app:layout_constraintTop_toBottomOf="@id/playAudioEvent" />
+
+        <TextView
+            android:id="@+id/typeEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_spacing"
+            android:contentDescription="@string/typeEvent"
+            android:text="@string/dateTimeEvent"
+            app:layout_constraintStart_toStartOf="@id/content"
+            app:layout_constraintTop_toBottomOf="@id/playVideoEvent"
+             />
+
+        <TextView
+            android:id="@+id/typeEventValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_spacing"
+            android:contentDescription="@string/typeEvent"
+            app:layout_constraintStart_toEndOf="@id/dateTimeEvent"
+            app:layout_constraintTop_toBottomOf="@id/playVideoEvent"
+            tools:text="@sample/posts.json/data/published" />
 
         <TextView
             android:id="@+id/dateTimeEvent"
@@ -140,7 +165,7 @@
             android:contentDescription="@string/dateTimeEvent"
             android:text="@string/dateTimeEvent"
             app:layout_constraintStart_toStartOf="@id/content"
-            app:layout_constraintTop_toBottomOf="@id/playVideoEvent" />
+            app:layout_constraintTop_toBottomOf="@id/typeEvent" />
 
         <TextView
             android:id="@+id/dateTimeEventValue"
@@ -149,7 +174,7 @@
             android:layout_margin="@dimen/common_spacing"
             android:contentDescription="@string/dateTimeEvent"
             app:layout_constraintStart_toEndOf="@id/dateTimeEvent"
-            app:layout_constraintTop_toBottomOf="@id/playVideoEvent"
+            app:layout_constraintTop_toBottomOf="@id/typeEvent"
             tools:text="@sample/posts.json/data/published" />
 
         <TextView
@@ -167,6 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/common_spacing"
+            android:layout_marginBottom="@dimen/coordinates_spacing"
             android:contentDescription="@string/coordinatesOfEvent"
             app:layout_constraintStart_toEndOf="@id/dateTimeEvent"
             app:layout_constraintTop_toBottomOf="@id/dateTimeEvent"
@@ -181,7 +207,7 @@
             android:contentDescription="@string/description_event_speakers"
             app:icon="@drawable/outline_accessibility_new_24"
             app:layout_constraintStart_toEndOf="@+id/share"
-            app:layout_constraintTop_toBottomOf="@+id/coordinatesEvent"
+            app:layout_constraintTop_toBottomOf="@+id/footer_top_divider"
             tools:checked="@sample/posts.json/data/likedByMe" />
 
         <com.google.android.material.button.MaterialButton
@@ -193,7 +219,7 @@
             android:contentDescription="@string/description_event_location"
             app:icon="@drawable/outline_location_on_24"
             app:layout_constraintStart_toEndOf="@+id/buttonSpeakersEvent"
-            app:layout_constraintTop_toBottomOf="@+id/coordinatesEvent"
+            app:layout_constraintTop_toBottomOf="@+id/footer_top_divider"
             tools:checked="@sample/posts.json/data/likedByMe" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -213,7 +239,7 @@
             android:contentDescription="@string/description_post_like"
             app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coordinatesEvent"
+            app:layout_constraintTop_toBottomOf="@+id/footer_top_divider"
             tools:checked="@sample/posts.json/data/likedByMe"
             tools:text="@sample/posts.json/data/likes" />
 
@@ -226,6 +252,26 @@
             android:contentDescription="@string/description_post_share"
             app:icon="@drawable/ic_share_24dp"
             app:layout_constraintStart_toEndOf="@+id/like"
+            app:layout_constraintTop_toBottomOf="@+id/footer_top_divider" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/footer_top_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_marginBottom="@dimen/common_spacing"
+            app:layout_constraintBottom_toTopOf="@+id/share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/coordinatesEvent" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/footer_bottom_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/share" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

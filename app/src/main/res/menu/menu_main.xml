@@ -5,8 +5,7 @@
         <item
             android:id="@+id/signin"
             android:title="@string/sign_in"
-            app:showAsAction="never"
-            />
+            app:showAsAction="never"/>
         <item
             android:id="@+id/signup"
             android:title="@string/sign_up"

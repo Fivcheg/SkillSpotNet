@@ -1,6 +1,5 @@
 package ru.netology.skillspotnet.entity
 
-
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.netology.skillspotnet.dto.Job

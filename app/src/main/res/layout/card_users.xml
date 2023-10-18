@@ -16,15 +16,32 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addUser"
+        style="@style/Widget.AppTheme.LikeCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:checkable="true"
+        android:contentDescription="@string/description_post_like"
+        android:visibility="visible"
+        app:icon="@drawable/ic_add_speaker_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/user_avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/user_avatar" />
+
     <ImageView
         android:id="@+id/user_avatar"
         android:layout_width="@dimen/posts_avatar_size"
         android:layout_height="@dimen/posts_avatar_size"
-        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_marginLeft="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
+        android:layout_marginBottom="@dimen/common_spacing"
         android:contentDescription="@string/user_avatar"
-        android:src="@drawable/baseline_catching_pokemon_24"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/baseline_insert_emoticon_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addUser"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars[1]" />
 
@@ -36,20 +53,32 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/username"
-        app:layout_constraintBottom_toBottomOf="@+id/user_avatar"
+        android:textSize="@dimen/post_user_name"
+        app:layout_constraintBottom_toTopOf="@+id/user_login"
         app:layout_constraintStart_toEndOf="@+id/user_avatar"
         app:layout_constraintTop_toTopOf="@+id/user_avatar"
+        tools:text="@sample/posts.json/data/author" />
+
+    <TextView
+        android:id="@+id/user_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/username"
+        app:layout_constraintBottom_toBottomOf="@+id/user_avatar"
+        app:layout_constraintStart_toEndOf="@+id/user_avatar"
+
         tools:text="@sample/posts.json/data/author" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/user_name_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_spacing"
-        android:layout_marginBottom="@dimen/common_spacing"
         app:dividerInsetEnd="16dp"
         app:dividerInsetStart="16dp"
-        app:layout_constraintStart_toStartOf="@+id/user_name"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

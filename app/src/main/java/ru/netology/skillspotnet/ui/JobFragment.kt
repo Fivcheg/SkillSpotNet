@@ -75,6 +75,7 @@ class JobFragment : Fragment() {
             viewModel.data.collectLatest(adapter::submitList)
         }
 
+
         lifecycleScope.launchWhenCreated {
             viewModel.setId(id)
             viewModel.loadJobs(id)
@@ -89,7 +90,6 @@ class JobFragment : Fragment() {
         binding.fabJob.setOnClickListener {
             findNavController().navigate(R.id.newJobFragment)
         }
-
 
         return binding.root
     }

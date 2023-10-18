@@ -11,5 +11,6 @@
     <dimen name="post_user_name">24dp</dimen>
     <dimen name="content_size">16dp</dimen>
     <dimen name="profile_name">36dp</dimen>
+    <dimen name="coordinates_spacing">32dp</dimen>
 </resources>
 

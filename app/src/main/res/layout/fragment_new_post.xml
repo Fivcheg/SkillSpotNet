@@ -105,6 +105,15 @@
             android:contentDescription="@string/description_take_video"
             android:padding="@dimen/common_spacing"
             app:icon="@drawable/baseline_video_file_24" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addMentions"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_mention"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/baseline_control_point_duplicate_24" />
     </LinearLayout>
 
 

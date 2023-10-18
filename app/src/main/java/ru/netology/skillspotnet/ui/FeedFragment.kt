@@ -23,6 +23,7 @@ import ru.netology.skillspotnet.dto.Post
 import ru.netology.skillspotnet.repository.PostRepository
 import ru.netology.skillspotnet.viewmodel.AuthViewModel
 import ru.netology.skillspotnet.viewmodel.PostViewModel
+import ru.netology.skillspotnet.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,6 +35,7 @@ class FeedFragment : Fragment() {
     lateinit var auth: AppAuth
     private val viewModel: PostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -112,6 +114,18 @@ class FeedFragment : Fragment() {
                 findNavController().navigate(R.id.imageOpenNav, bundle)
             }
 
+            override fun onViewMentions(post: Post) {
+                if (!post.mentionIds.isNullOrEmpty()) {
+                    userViewModel.getUsersIds(post.mentionIds)
+                    val bundle = Bundle()
+                    bundle.putString("MENTION_IDS", "MENTION")
+                //    bundle.putString("MENTION_IDS", post.mentionIds.toString())
+                    findNavController().navigate(R.id.userFragment, bundle)
+                } else {
+                    Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
         })
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
@@ -135,7 +149,6 @@ class FeedFragment : Fragment() {
                 binding.swiperefresh.isRefreshing = it.refresh is LoadState.Loading
             }
         }
-
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 

@@ -11,7 +11,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 class ContentResolverModule {
 
-
     @Provides
     fun provideContentResolver(@ApplicationContext context: Context) = context.contentResolver
 

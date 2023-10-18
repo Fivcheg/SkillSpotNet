@@ -19,6 +19,7 @@ import ru.netology.skillspotnet.enumeration.AttachmentType
 import ru.netology.skillspotnet.util.AndroidUtils
 import ru.netology.skillspotnet.util.StringArg
 import ru.netology.skillspotnet.viewmodel.PostViewModel
+import ru.netology.skillspotnet.viewmodel.UserViewModel
 
 
 @AndroidEntryPoint
@@ -115,6 +116,19 @@ class NewPostFragment : Fragment() {
             type = AttachmentType.VIDEO
         }
 
+        binding.addMentions.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("ADD_MENTION", "ADD_MENTION")
+            }
+            findNavController().navigate(R.id.userFragment, bundle)
+        }
+
+       viewModel.edited.observe(viewLifecycleOwner) {
+            binding.addMentions.apply {
+                text = "$text ${viewModel.edited.value?.mentionIds?.count().toString()}"
+            }
+       }
+
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
@@ -144,7 +158,6 @@ class NewPostFragment : Fragment() {
                         }
                         true
                     }
-
                     else -> false
                 }
 

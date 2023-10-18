@@ -34,6 +34,7 @@ class FeedAdapter(
         fun onOpenImage(post: Post) {}
         fun onPlayAudio(post: Post) {}
         fun onPlayVideo(post: Post) {}
+        fun onViewMentions(post: Post) {}
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -89,6 +90,7 @@ class FeedAdapter(
                 content.text = post.content
                 like.isChecked = post.likedByMe
                 like.text = post.likeOwnerIds.count().toString()
+                mention.text = post.mentionIds?.count().toString()
                 imagePost.visibility =
                     if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
 
@@ -157,6 +159,10 @@ class FeedAdapter(
 
                 playVideo.setOnClickListener {
                     onInteractionListener.onPlayVideo(post)
+                }
+
+                mention.setOnClickListener {
+                    onInteractionListener.onViewMentions(post)
                 }
             }
         }

@@ -27,4 +27,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/card_users" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_save_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/color_primary_green"
+        app:backgroundTint="@color/divider_color"
+        app:tint="@color/divider_color"
+        android:clickable="true"
+        android:visibility="visible"
+        android:contentDescription="@string/add_post"
+        android:focusable="true"
+        app:srcCompat="@drawable/baseline_check_24" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -65,5 +65,10 @@
     <string name="events">Events</string>
     <string name="users">Users</string>
     <string name="nothing">Nothing</string>
-    <string name="jobs">Jobs</string>
+    <string name="jobsTab">Jobs</string>
+    <string name="postsTab">Posts</string>
+    <string name="eventsTab">Events</string>
+    <string name="usersTab">Users</string>
+    <string name="description_mention">Mention</string>
+    <string name="typeEvent">Event type: </string>
 </resources>

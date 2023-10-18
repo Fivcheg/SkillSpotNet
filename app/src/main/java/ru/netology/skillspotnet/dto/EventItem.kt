@@ -2,7 +2,6 @@ package ru.netology.skillspotnet.dto
 
 import ru.netology.skillspotnet.enumeration.EventType
 
-
 sealed class EventItem {
     abstract val id: Long
 }

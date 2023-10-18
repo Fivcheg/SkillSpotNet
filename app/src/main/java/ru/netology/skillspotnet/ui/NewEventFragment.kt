@@ -169,6 +169,12 @@ class NewEventFragment : Fragment() {
             findNavController().navigate(R.id.mapFragment, bundle)
         }
 
+//        binding.pickSpeakers.setOnClickListener{
+//            val bundle = Bundle()
+//            bundle.putString("speakerIds", viewModel.edited.value?.speakerIds.toString())
+//             findNavController().navigate(R.id.userFragment, bundle)
+//        }
+
         binding.textEditInputDateEvent.setOnClickListener {
             context?.let { item ->
                 pickDate(binding.textEditInputDateEvent, item)
@@ -180,13 +186,6 @@ class NewEventFragment : Fragment() {
                 pickTime(binding.textEditInputEventTime, item)
             }
         }
-
-//        binding.pickSpeakers.setOnClickListener {
-//            val bundle = Bundle().apply {
-//                putString("open", "speaker")
-//            }
-//            findNavController().navigate(R.id.nav_users, bundle)
-//        }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()

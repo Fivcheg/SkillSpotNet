@@ -35,6 +35,7 @@ class EventAdapter(
         fun onShare(event: Event) {}
         fun onAdClick(ad: AdEvent) {}
         fun onOpenImage(event: Event) {}
+        fun onSpeakerAdd(event: Event) {}
         fun onPlayAudio(event: Event) {}
         fun onPlayVideo(event: Event) {}
         fun onOpenMap(event: Event) {}
@@ -96,9 +97,13 @@ class EventAdapter(
                 like.isChecked = event.likedByMe
                 like.text = event.likeOwnerIds.count().toString()
                 dateTimeEventValue.text = formatToDate(event.datetime)
-                coordinatesEventValue.text = "${event.coords?.lat}, ${event.coords?.long}"
-                buttonSpeakersEvent.text = event.speakerIds?.count().toString()
-
+                coordinatesEventValue.text =
+                    if (event.coords?.lat != null && event.coords?.long != null) {
+                        "${event.coords.lat.dropLast(13)}, ${event.coords.long.dropLast(10)}"
+                    } else {
+                        " null"
+                    }
+                typeEventValue.text = event.type.toString()
                 imageEvent.visibility =
                     if (event.attachment != null && event.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
 
@@ -165,6 +170,11 @@ class EventAdapter(
                     onInteractionListener.onPlayAudio(event)
                 }
 
+                //TODO click open user
+                buttonSpeakersEvent.setOnClickListener {
+                    onInteractionListener.onSpeakerAdd(event)
+                }
+
                 playVideoEvent.setOnClickListener {
                     onInteractionListener.onPlayVideo(event)
                 }
@@ -172,7 +182,6 @@ class EventAdapter(
                 buttonLocationEvent.setOnClickListener {
                     onInteractionListener.onOpenMap(event)
                 }
-
             }
         }
     }

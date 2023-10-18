@@ -29,7 +29,6 @@ import javax.inject.Inject
 class EventFragment : Fragment() {
     @Inject
     lateinit var repository: EventRepository
-
     @Inject
     lateinit var auth: AppAuth
     private val viewModel: EventViewModel by activityViewModels()
@@ -62,6 +61,13 @@ class EventFragment : Fragment() {
 
             override fun onRemove(event: Event) {
                 viewModel.removeEventById(event.id)
+            }
+
+            override fun onSpeakerAdd(event: Event){
+                val bundle = Bundle().apply {
+                    putString("speakerIds", event.speakerIds.toString())
+                }
+                    findNavController().navigate(R.id.userFragment, bundle)
             }
 
             override fun onShare(event: Event) {
@@ -115,7 +121,7 @@ class EventFragment : Fragment() {
                     putString("LAT_KEY", event.coords?.lat)
                     putString("LONG_KEY", event.coords?.long)
                 }
-                if (event.coords?.lat != null && event.coords?.long != null) {
+                if (event.coords?.lat != null) {
                     findNavController().navigate(R.id.mapFragment, bundle)
                 } else {
                     Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
@@ -147,6 +153,12 @@ class EventFragment : Fragment() {
         }
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
+
+        if (auth.authStateFlow.value.id == 0L || auth.authStateFlow.value.token == null) {
+            binding.fab.visibility = View.GONE
+        } else {
+            binding.fab.visibility = View.VISIBLE
+        }
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_containerFragmentView_to_newEventFragment)

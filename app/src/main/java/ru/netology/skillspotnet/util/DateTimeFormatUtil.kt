@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
-
 fun realTimeFormat(datetime: String): String {
     val transformation = DateTimeFormatter
         .ofLocalizedDateTime(FormatStyle.SHORT)

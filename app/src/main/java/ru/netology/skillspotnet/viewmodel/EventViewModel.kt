@@ -68,7 +68,6 @@ class EventViewModel @Inject constructor(
                 generator = { before, after ->
                     if (before?.id?.rem(5) != 0L) null else
                         AdEvent(
-                            //TODO !!!!!!!!
                             Random.nextLong(),
                             "@sample/ads_images/",
                             "figma.jpg"
@@ -172,6 +171,14 @@ class EventViewModel @Inject constructor(
             repository.removeEventById(id)
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun setSpeaker(id: Long) {
+        if (edited.value?.speakerIds?.contains(id.toInt()) == false) {
+            edited.value = edited.value?.speakerIds?.plus(id.toInt())?.let {
+                edited.value?.copy(speakerIds = it)
+            }
         }
     }
 

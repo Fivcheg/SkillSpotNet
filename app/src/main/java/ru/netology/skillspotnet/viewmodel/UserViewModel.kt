@@ -28,8 +28,8 @@ class UserViewModel @Inject constructor(
     val user: LiveData<User>
         get() = _user
 
-    private val _userIds = MutableLiveData<Set<Long>>()
-    val userIds: LiveData<Set<Long>>
+    private val _userIds = MutableLiveData<List<Int>>()
+    val userIds: LiveData<List<Int>>
         get() = _userIds
 
     val data: LiveData<List<User>> =
@@ -71,8 +71,8 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getUsersIds(set: Set<Long>) =
+    fun getUsersIds(viewUsers: List<Int>) =
         viewModelScope.launch {
-            _userIds.value = set
+            _userIds.value = viewUsers
         }
 }
