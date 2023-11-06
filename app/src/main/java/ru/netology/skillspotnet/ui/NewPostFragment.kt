@@ -123,13 +123,7 @@ class NewPostFragment : Fragment() {
         }
 
         viewModel.edited.observe(viewLifecycleOwner) {
-//            val reciveMention =
-//                arguments?.getString("mentionList")?.drop(1)?.dropLast(1)?.split(", ")
-//                    ?.count()
-//                    .toString()
-
             val reciveMention = viewModel.edited.value?.mentionIds?.count().toString()
-
             binding.addMentions.apply {
                 text = reciveMention
             }
@@ -164,6 +158,7 @@ class NewPostFragment : Fragment() {
                         }
                         true
                     }
+
                     else -> false
                 }
         }, viewLifecycleOwner)

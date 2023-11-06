@@ -29,6 +29,7 @@ import javax.inject.Inject
 class EventFragment : Fragment() {
     @Inject
     lateinit var repository: EventRepository
+
     @Inject
     lateinit var auth: AppAuth
     private val viewModel: EventViewModel by activityViewModels()
@@ -63,11 +64,11 @@ class EventFragment : Fragment() {
                 viewModel.removeEventById(event.id)
             }
 
-            override fun onSpeakerAdd(event: Event){
+            override fun onSpeakerAdd(event: Event) {
                 val bundle = Bundle().apply {
                     putString("speakerIds", event.speakerIds.toString())
                 }
-                    findNavController().navigate(R.id.userFragment, bundle)
+                findNavController().navigate(R.id.userFragment, bundle)
             }
 
             override fun onShare(event: Event) {
@@ -81,7 +82,6 @@ class EventFragment : Fragment() {
                     Intent.createChooser(intent, getString(R.string.chooser_share_event))
                 startActivity(shareIntent)
             }
-
 
             override fun onPlayAudio(event: Event) {
                 try {

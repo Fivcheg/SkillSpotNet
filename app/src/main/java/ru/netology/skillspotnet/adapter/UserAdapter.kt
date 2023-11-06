@@ -15,6 +15,7 @@ import ru.netology.skillspotnet.dto.User
 
 class UserAdapter(
     private val onUserInteractionListener: OnUserInteractionListener,
+    private val showAddUsers: Boolean,
 ) : ListAdapter<User, UserViewHolder>(UserDiffCallback()) {
 
     interface OnUserInteractionListener {
@@ -55,12 +56,11 @@ class UserViewHolder(
                 .circleCrop()
                 .into(userAvatar)
 
-
             userView.setOnClickListener {
                 onUserInteractionListener.onOpenUser(user)
             }
 
-            addUser.visibility = GONE
+            addUser.visibility = VISIBLE
 
             addUser.setOnClickListener {
                 onUserInteractionListener.onAddMentions(user)

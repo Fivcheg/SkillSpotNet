@@ -50,6 +50,7 @@ class UserFragment : Fragment() {
     ): View {
 
         val binding = FragmentUsersBinding.inflate(inflater, container, false)
+        val showAddUsers: Boolean = false
 
         val adapter = UserAdapter(object : UserAdapter.OnUserInteractionListener {
             override fun onOpenUser(user: User) {
@@ -62,32 +63,32 @@ class UserFragment : Fragment() {
                 findNavController().navigate(R.id.userProfileFragment, bundle)
             }
 
-
             override fun onAddMentions(user: User) {
-
                     if (authViewModel.authenticated) {
-                    if (postViewModel.userIds.value != null) {
-                        if (postViewModel.userIds.value!!.contains(user.id.toInt())) {
+                   // if (postViewModel.edited.value?.mentionIds != null) {
+
+                        if (postViewModel.edited.value!!.mentionIds == null || postViewModel.edited.value?.mentionIds!!.contains(user.id.toInt())) {
                             postViewModel.setMentionIds(user.id)
                         } else {
                             postViewModel.unSetMentionIds(user.id)
                         }
-                    } else {
-                        postViewModel.setMentionIds(user.id)
-                    }
+//                    }
+//                    else {
+//                        postViewModel.setMentionIds(user.id)
+//                    }
 
                 } else {
                     Toast.makeText(activity, R.string.notAuth, Toast.LENGTH_SHORT)
                         .show()
                 }
             }
-        })
+        }, showAddUsers)
 
 
         binding.fabSaveUser.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString("mentionList", postViewModel.userIds.value.toString())
-            }
+//            val bundle = Bundle().apply {
+//                putString("mentionList", postViewModel.edited.value?.mentionIds.toString())
+//            }
             findNavController().navigateUp()
         }
 
@@ -108,6 +109,7 @@ class UserFragment : Fragment() {
 
         if ((auth.authStateFlow.value.id != 0L || auth.authStateFlow.value.token != null) && navFromNewPost) {
             binding.fabSaveUser.visibility = View.VISIBLE
+
         } else {
             binding.fabSaveUser.visibility = View.GONE
         }

@@ -86,10 +86,6 @@ class PostViewModel @Inject constructor(
     val media: LiveData<MediaModel>
         get() = _media
 
-    private val _userIds = MutableLiveData<List<Int>>()
-    val userIds: LiveData<List<Int>>
-        get() = _userIds
-
     init {
         loadPosts()
     }
@@ -178,11 +174,12 @@ class PostViewModel @Inject constructor(
                 edited.value = edited.value?.copy(
                     mentionIds = it.mentionIds?.plus(id.toInt())
                 )
-            } else {
-                edited.value = edited.value?.copy(
-                    mentionIds = it.mentionIds?.minus(id.toInt())
-                )
             }
+//            else {
+//                edited.value = edited.value?.copy(
+//                    mentionIds = it.mentionIds?.minus(id.toInt())
+//                )
+//            }
         }
     }
 
