@@ -19,7 +19,6 @@ import ru.netology.skillspotnet.enumeration.AttachmentType
 import ru.netology.skillspotnet.util.AndroidUtils
 import ru.netology.skillspotnet.util.StringArg
 import ru.netology.skillspotnet.viewmodel.PostViewModel
-import ru.netology.skillspotnet.viewmodel.UserViewModel
 
 
 @AndroidEntryPoint
@@ -123,11 +122,18 @@ class NewPostFragment : Fragment() {
             findNavController().navigate(R.id.userFragment, bundle)
         }
 
-       viewModel.edited.observe(viewLifecycleOwner) {
+        viewModel.edited.observe(viewLifecycleOwner) {
+//            val reciveMention =
+//                arguments?.getString("mentionList")?.drop(1)?.dropLast(1)?.split(", ")
+//                    ?.count()
+//                    .toString()
+
+            val reciveMention = viewModel.edited.value?.mentionIds?.count().toString()
+
             binding.addMentions.apply {
-                text = "$text ${viewModel.edited.value?.mentionIds?.count().toString()}"
+                text = reciveMention
             }
-       }
+        }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
@@ -160,7 +166,6 @@ class NewPostFragment : Fragment() {
                     }
                     else -> false
                 }
-
         }, viewLifecycleOwner)
 
         return binding.root

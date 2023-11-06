@@ -1,6 +1,8 @@
 package ru.netology.skillspotnet.adapter
 
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,7 +19,6 @@ class UserAdapter(
 
     interface OnUserInteractionListener {
         fun onOpenUser(user: User)
-        fun onViewMentions(user: User)
         fun onAddMentions(user: User)
     }
 
@@ -54,16 +55,16 @@ class UserViewHolder(
                 .circleCrop()
                 .into(userAvatar)
 
+
             userView.setOnClickListener {
                 onUserInteractionListener.onOpenUser(user)
             }
 
+            addUser.visibility = GONE
+
             addUser.setOnClickListener {
                 onUserInteractionListener.onAddMentions(user)
             }
-//
-//            addUser.isChecked = false
-
         }
     }
 }

@@ -116,10 +116,9 @@ class FeedFragment : Fragment() {
 
             override fun onViewMentions(post: Post) {
                 if (!post.mentionIds.isNullOrEmpty()) {
-                    userViewModel.getUsersIds(post.mentionIds)
+                   userViewModel.getUsersIds(post.mentionIds)
                     val bundle = Bundle()
-                    bundle.putString("MENTION_IDS", "MENTION")
-                //    bundle.putString("MENTION_IDS", post.mentionIds.toString())
+                    bundle.putBoolean("CLICK_VIEW_MENTION", true)
                     findNavController().navigate(R.id.userFragment, bundle)
                 } else {
                     Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)

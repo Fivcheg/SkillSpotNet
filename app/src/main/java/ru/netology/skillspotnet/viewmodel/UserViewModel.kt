@@ -3,10 +3,13 @@ package ru.netology.skillspotnet.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.skillspotnet.api.ApiService
 import ru.netology.skillspotnet.dto.User
@@ -75,4 +78,5 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             _userIds.value = viewUsers
         }
+
 }

@@ -7,13 +7,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import ru.netology.skillspotnet.R
 import ru.netology.skillspotnet.adapter.UserAdapter
+import ru.netology.skillspotnet.auth.AppAuth
+import ru.netology.skillspotnet.databinding.CardUsersBinding
 import ru.netology.skillspotnet.databinding.FragmentUsersBinding
 import ru.netology.skillspotnet.dto.Post
 import ru.netology.skillspotnet.dto.User
@@ -21,11 +30,14 @@ import ru.netology.skillspotnet.viewmodel.AuthViewModel
 import ru.netology.skillspotnet.viewmodel.EventViewModel
 import ru.netology.skillspotnet.viewmodel.PostViewModel
 import ru.netology.skillspotnet.viewmodel.UserViewModel
+import javax.inject.Inject
+import kotlin.io.path.fileVisitor
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class UserFragment : Fragment() {
-
+    @Inject
+    lateinit var auth: AppAuth
     private val userViewModel: UserViewModel by activityViewModels()
     private val postViewModel by activityViewModels<PostViewModel>()
     private val authViewModel by activityViewModels<AuthViewModel>()
@@ -39,10 +51,6 @@ class UserFragment : Fragment() {
 
         val binding = FragmentUsersBinding.inflate(inflater, container, false)
 
-    //    val userView = arguments?.getString("MENTION_IDS")?.drop(1)?.dropLast(1)?.split(", ")?.toList()!!.map{it.toInt()}
-
-        val userView = arguments?.getString("MENTION_IDS")
-
         val adapter = UserAdapter(object : UserAdapter.OnUserInteractionListener {
             override fun onOpenUser(user: User) {
                 userViewModel.getUserById(user.id)
@@ -54,23 +62,57 @@ class UserFragment : Fragment() {
                 findNavController().navigate(R.id.userProfileFragment, bundle)
             }
 
-            override fun onViewMentions(user: User) {
-
-            }
 
             override fun onAddMentions(user: User) {
-                postViewModel.setMentionIds(user.id)
+
+                    if (authViewModel.authenticated) {
+                    if (postViewModel.userIds.value != null) {
+                        if (postViewModel.userIds.value!!.contains(user.id.toInt())) {
+                            postViewModel.setMentionIds(user.id)
+                        } else {
+                            postViewModel.unSetMentionIds(user.id)
+                        }
+                    } else {
+                        postViewModel.setMentionIds(user.id)
+                    }
+
+                } else {
+                    Toast.makeText(activity, R.string.notAuth, Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         })
 
+
         binding.fabSaveUser.setOnClickListener {
-        //    postViewModel.save()
+            val bundle = Bundle().apply {
+                putString("mentionList", postViewModel.userIds.value.toString())
+            }
             findNavController().navigateUp()
         }
 
         binding.listUsers.adapter = adapter
+        val userView: Boolean = arguments?.getBoolean("CLICK_VIEW_MENTION") ?: false
+        val filteredUsers = if (userView) {
+            combine(
+                userViewModel.data.asFlow(),
+                userViewModel.userIds.asFlow().map { it.toSet() }) { users, userIds ->
+                users.filter { it.id.toInt() in userIds }
+            }
+                .asLiveData()
+        } else {
+            userViewModel.data
+        }
 
-        userViewModel.data.observe(viewLifecycleOwner)
+        val navFromNewPost: Boolean = arguments?.getString("ADD_MENTION") == "ADD_MENTION"
+
+        if ((auth.authStateFlow.value.id != 0L || auth.authStateFlow.value.token != null) && navFromNewPost) {
+            binding.fabSaveUser.visibility = View.VISIBLE
+        } else {
+            binding.fabSaveUser.visibility = View.GONE
+        }
+
+        filteredUsers.observe(viewLifecycleOwner)
         {
             adapter.submitList(it)
         }
@@ -84,7 +126,6 @@ class UserFragment : Fragment() {
                 }
             }
         }
-
         return binding.root
     }
 
