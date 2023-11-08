@@ -42,9 +42,6 @@ class FeedAdapter(
             is Ad -> typeAd
             is Post -> typePost
             null -> throw IllegalArgumentException("unknown item type")
-            else -> {
-                0
-            }
         }
     }
 
@@ -70,9 +67,6 @@ class FeedAdapter(
             when (it) {
                 is Post -> (holder as? PostViewHolder)?.bind(it)
                 is Ad -> (holder as? AdViewHolder)?.bind(it)
-                else -> {
-                    0
-                }
             }
         }
     }
@@ -82,7 +76,6 @@ class FeedAdapter(
         private val onInteractionListener: OnInteractionListener,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-
         fun bind(post: Post) {
             binding.apply {
                 author.text = post.author
@@ -90,7 +83,7 @@ class FeedAdapter(
                 content.text = post.content
                 like.isChecked = post.likedByMe
                 like.text = post.likeOwnerIds.count().toString()
-                mention.text = post.mentionIds?.count().toString()
+                mention.text = post.mentionIds.count().toString()
                 imagePost.visibility =
                     if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
 

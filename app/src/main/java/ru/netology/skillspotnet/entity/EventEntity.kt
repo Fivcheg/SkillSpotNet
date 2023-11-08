@@ -23,8 +23,8 @@ data class EventEntity(
     val typeEvent: EventType,
     val likeOwnerIds: List<Int> = emptyList(),
     val likedByMe: Boolean,
-       val speakerIds: List<Int>?,
-    val participantsIds: List<Int>?,
+    val speakerIds: List<Int> = emptyList(),
+    val participantsIds: List<Int> = emptyList(),
     val participatedByMe: Boolean,
     @Embedded
     var attachment: AttachmentEmbeddable?,

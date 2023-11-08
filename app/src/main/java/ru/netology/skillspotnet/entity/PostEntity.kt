@@ -19,7 +19,7 @@ data class PostEntity(
     val coords: CoordinatesEmbeddable?,
     val link: String? = null,
     val likeOwnerIds: List<Int> = emptyList(),
-    val mentionIds: List<Int>?,
+    val mentionIds: List<Int> = emptyList(),
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @Embedded

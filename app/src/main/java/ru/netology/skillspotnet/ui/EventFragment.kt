@@ -23,6 +23,7 @@ import ru.netology.skillspotnet.dto.Event
 import ru.netology.skillspotnet.repository.EventRepository
 import ru.netology.skillspotnet.viewmodel.AuthViewModel
 import ru.netology.skillspotnet.viewmodel.EventViewModel
+import ru.netology.skillspotnet.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,7 +33,8 @@ class EventFragment : Fragment() {
 
     @Inject
     lateinit var auth: AppAuth
-    private val viewModel: EventViewModel by activityViewModels()
+    private val eventViewModel: EventViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -44,7 +46,7 @@ class EventFragment : Fragment() {
 
         val adapter = EventAdapter(object : EventAdapter.OnInteractionListener {
             override fun onEdit(event: Event) {
-                viewModel.edit(event)
+                eventViewModel.edit(event)
                 findNavController()
                     .navigate(R.id.newEventFragment)
             }
@@ -52,8 +54,8 @@ class EventFragment : Fragment() {
             override fun onLike(event: Event) {
                 if (authViewModel.authenticated) {
                     if (!event.likedByMe)
-                        viewModel.likeEventById(event.id)
-                    else viewModel.dislikeEventById(event.id)
+                        eventViewModel.likeEventById(event.id)
+                    else eventViewModel.dislikeEventById(event.id)
                 } else {
                     Toast.makeText(activity, R.string.notAuth, Toast.LENGTH_SHORT)
                         .show()
@@ -61,14 +63,19 @@ class EventFragment : Fragment() {
             }
 
             override fun onRemove(event: Event) {
-                viewModel.removeEventById(event.id)
+                eventViewModel.removeEventById(event.id)
             }
 
-            override fun onSpeakerAdd(event: Event) {
-                val bundle = Bundle().apply {
-                    putString("speakerIds", event.speakerIds.toString())
+            override fun onSpeakerView(event: Event) {
+                if (event.speakerIds.isNotEmpty()) {
+                    userViewModel.getUsersIds(event.speakerIds)
+                    val bundle = Bundle()
+                    bundle.putBoolean("CLICK_VIEW", true)
+                    findNavController().navigate(R.id.userFragment, bundle)
+                } else {
+                    Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
+                        .show()
                 }
-                findNavController().navigate(R.id.userFragment, bundle)
             }
 
             override fun onShare(event: Event) {
@@ -143,7 +150,7 @@ class EventFragment : Fragment() {
         )
 
         lifecycleScope.launchWhenCreated {
-            viewModel.data.collectLatest(adapter::submitData)
+            eventViewModel.data.collectLatest(adapter::submitData)
         }
 
         lifecycleScope.launchWhenCreated {

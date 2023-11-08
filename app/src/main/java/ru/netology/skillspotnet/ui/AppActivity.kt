@@ -21,6 +21,7 @@ import ru.netology.skillspotnet.auth.AppAuth
 import ru.netology.skillspotnet.repository.PostRepository
 import ru.netology.skillspotnet.ui.NewPostFragment.Companion.textArg
 import ru.netology.skillspotnet.viewmodel.AuthViewModel
+import ru.netology.skillspotnet.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,6 +32,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     @Inject
     lateinit var auth: AppAuth
     private val viewModel: AuthViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +93,15 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                     R.id.signup -> {
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.signUpFragment)
+                        true
+                    }
+
+                    R.id.profile -> {
+                        val bundle = Bundle().apply {
+                            putLong("My_id", viewModel.data.value!!.id)
+                        }
+                        findNavController(R.id.nav_host_fragment)
+                            .navigate(R.id.userProfileFragment, bundle)
                         true
                     }
 

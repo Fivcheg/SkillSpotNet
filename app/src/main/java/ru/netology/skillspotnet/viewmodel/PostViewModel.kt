@@ -31,7 +31,7 @@ private val empty = Post(
     coords = null,
     link = null,
     likeOwnerIds = emptyList(),
-    mentionIds = null,
+    mentionIds = emptyList(),
     mentionedMe = false,
     likedByMe = false,
     attachment = null,
@@ -93,16 +93,6 @@ class PostViewModel @Inject constructor(
     private fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
-    fun refreshPosts() = viewModelScope.launch {
-        try {
-            _dataState.value = FeedModelState(refreshing = true)
-            repository.getAll()
-            _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }
@@ -170,27 +160,17 @@ class PostViewModel @Inject constructor(
 
     fun setMentionIds(id: Long) {
         edited.value?.let {
-            if (edited.value?.mentionIds?.contains(id.toInt()) == false) {
-                edited.value = edited.value?.copy(
-                    mentionIds = it.mentionIds?.plus(id.toInt())
-                )
-            }
-//            else {
-//                edited.value = edited.value?.copy(
-//                    mentionIds = it.mentionIds?.minus(id.toInt())
-//                )
-//            }
+            edited.value = edited.value?.copy(
+                mentionIds = it.mentionIds.plus(id.toInt())
+            )
         }
     }
 
     fun unSetMentionIds(id: Long) {
         edited.value?.let {
-            if (edited.value?.mentionIds?.contains(id.toInt()) == false) {
-                edited.value = edited.value?.copy(
-                    mentionIds = it.mentionIds?.minus(id.toInt())
-                )
-            }
+            edited.value = edited.value?.copy(
+                mentionIds = it.mentionIds.minus(id.toInt())
+            )
         }
     }
-
 }

@@ -115,9 +115,7 @@ interface ApiService {
     @DELETE("my/jobs/{id}")
     suspend fun removeJobById(@Path("id") id: Long): Response<Unit>
 
-
     //-------------- Event -------------------//
-
 
     @GET("events")
     suspend fun getAllEvents(): Response<List<Event>>

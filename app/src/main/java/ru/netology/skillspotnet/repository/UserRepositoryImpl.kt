@@ -29,7 +29,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getAllUsers() {
         try {
-            userDao.getAllUsers()
+           userDao.getAllUsers()
             val response = apiService.getUsers()
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())

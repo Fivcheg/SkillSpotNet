@@ -3,13 +3,10 @@ package ru.netology.skillspotnet.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.skillspotnet.api.ApiService
 import ru.netology.skillspotnet.dto.User
@@ -31,6 +28,7 @@ class UserViewModel @Inject constructor(
     val user: LiveData<User>
         get() = _user
 
+
     private val _userIds = MutableLiveData<List<Int>>()
     val userIds: LiveData<List<Int>>
         get() = _userIds
@@ -51,26 +49,18 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun refreshPosts() = viewModelScope.launch {
-        try {
-            _dataState.value = FeedModelState(refreshing = true)
-            repository.getAllUsers()
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
-    fun getUserById(id: Long) = viewModelScope.launch {
-        _dataState.postValue(FeedModelState(loading = true))
-        try {
-            val response = apiService.getUserById(id)
-            if (response.isSuccessful) {
-                _user.value = response.body()
+    fun getUserById(id: Long){
+        viewModelScope.launch {
+            _dataState.postValue(FeedModelState(loading = true))
+            try {
+                val response = apiService.getUserById(id)
+                if (response.isSuccessful) {
+                    _user.value = response.body()
+                }
+                _dataState.postValue(FeedModelState())
+            } catch (e: Exception) {
+                _dataState.postValue(FeedModelState(error = true))
             }
-            _dataState.postValue(FeedModelState())
-        } catch (e: Exception) {
-            _dataState.postValue(FeedModelState(error = true))
         }
     }
 

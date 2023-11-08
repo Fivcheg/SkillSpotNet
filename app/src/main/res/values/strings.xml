@@ -71,4 +71,7 @@
     <string name="usersTab">Users</string>
     <string name="description_mention">Mention</string>
     <string name="typeEvent">Event type: </string>
+    <string name="now">Now</string>
+    <string name="thisNull">null</string>
+    <string name="profile">My profile</string>
 </resources>

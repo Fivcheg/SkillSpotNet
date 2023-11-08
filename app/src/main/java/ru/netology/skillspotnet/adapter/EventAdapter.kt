@@ -3,6 +3,9 @@ package ru.netology.skillspotnet.adapter
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
@@ -35,7 +38,7 @@ class EventAdapter(
         fun onShare(event: Event) {}
         fun onAdClick(ad: AdEvent) {}
         fun onOpenImage(event: Event) {}
-        fun onSpeakerAdd(event: Event) {}
+        fun onSpeakerView(event: Event) {}
         fun onPlayAudio(event: Event) {}
         fun onPlayVideo(event: Event) {}
         fun onOpenMap(event: Event) {}
@@ -46,9 +49,6 @@ class EventAdapter(
             is AdEvent -> typeAd
             is Event -> typeEvent
             null -> throw IllegalArgumentException("unknown item type")
-            else -> {
-                0
-            }
         }
     }
 
@@ -75,9 +75,6 @@ class EventAdapter(
             when (it) {
                 is Event -> (holder as? EventViewHolder)?.bind(it)
                 is AdEvent -> (holder as? AdViewHolder)?.bind(it)
-                else -> {
-                    0
-                }
             }
         }
     }
@@ -97,15 +94,16 @@ class EventAdapter(
                 like.isChecked = event.likedByMe
                 like.text = event.likeOwnerIds.count().toString()
                 dateTimeEventValue.text = formatToDate(event.datetime)
+                buttonSpeakersEvent.text = event.speakerIds.count().toString()
                 coordinatesEventValue.text =
-                    if (event.coords?.lat != null && event.coords?.long != null) {
+                    if (event.coords?.lat != null) {
                         "${event.coords.lat.dropLast(13)}, ${event.coords.long.dropLast(10)}"
                     } else {
                         " null"
                     }
                 typeEventValue.text = event.type.toString()
                 imageEvent.visibility =
-                    if (event.attachment != null && event.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
+                    if (event.attachment != null && event.attachment.type == AttachmentType.IMAGE) VISIBLE else GONE
 
                 Glide.with(itemView)
                     .load("${event.authorAvatar}")
@@ -124,13 +122,13 @@ class EventAdapter(
                         .into(imageEvent)
                 }
 
-                menu.visibility = if (event.ownedByMe) View.VISIBLE else View.INVISIBLE
+                menu.visibility = if (event.ownedByMe) VISIBLE else INVISIBLE
 
                 eventAudioGroup.visibility =
-                    if (event.attachment != null && event.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
+                    if (event.attachment != null && event.attachment.type == AttachmentType.AUDIO) VISIBLE else GONE
 
                 playVideoEvent.visibility =
-                    if (event.attachment != null && event.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
+                    if (event.attachment != null && event.attachment.type == AttachmentType.VIDEO) VISIBLE else GONE
 
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
@@ -170,9 +168,9 @@ class EventAdapter(
                     onInteractionListener.onPlayAudio(event)
                 }
 
-                //TODO click open user
+
                 buttonSpeakersEvent.setOnClickListener {
-                    onInteractionListener.onSpeakerAdd(event)
+                    onInteractionListener.onSpeakerView(event)
                 }
 
                 playVideoEvent.setOnClickListener {

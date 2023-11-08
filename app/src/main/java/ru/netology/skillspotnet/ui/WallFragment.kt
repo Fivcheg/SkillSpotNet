@@ -128,7 +128,11 @@ class WallFragment : Fragment() {
             }),
         )
 
-        val id = parentFragment?.arguments?.getLong("id")
+        val id = if (parentFragment?.arguments?.getLong("id")?.toInt() != 0) {
+            parentFragment?.arguments?.getLong("id")
+        } else {
+            authViewModel.data.value!!.id
+        }
 
         lifecycleScope.launchWhenCreated {
             if (id != null) {
@@ -146,7 +150,7 @@ class WallFragment : Fragment() {
 
         if (id != auth.authStateFlow.value.id) {
             binding.fab.visibility = View.GONE
-        } else{
+        } else {
             binding.fab.visibility = View.VISIBLE
         }
 

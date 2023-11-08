@@ -32,6 +32,7 @@ class JobFragment : Fragment() {
     lateinit var auth: AppAuth
     private val viewModel: JobViewModel by activityViewModels()
     private val userModel: UserViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,13 +62,9 @@ class JobFragment : Fragment() {
             override fun onRemoveJob(job: Job) {
                 viewModel.removeById(job.id)
             }
-
         })
 
-
-        //   val id = auth.authStateFlow.value.id
-        val id = userModel.user.value!!.id
-
+        val id = userModel.user.value?.id ?: authViewModel.data.value!!.id
 
         binding.listJobs.adapter = adapter
 
@@ -75,16 +72,15 @@ class JobFragment : Fragment() {
             viewModel.data.collectLatest(adapter::submitList)
         }
 
-
         lifecycleScope.launchWhenCreated {
             viewModel.setId(id)
             viewModel.loadJobs(id)
         }
 
-        if (id != auth.authStateFlow.value.id) {
-            binding.fabJob.visibility = GONE
+        binding.fabJob.visibility = if (id != auth.authStateFlow.value.id) {
+            GONE
         } else {
-            binding.fabJob.visibility = VISIBLE
+            VISIBLE
         }
 
         binding.fabJob.setOnClickListener {

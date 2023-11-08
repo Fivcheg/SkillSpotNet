@@ -23,14 +23,13 @@ data class Post(
     val coords: Coordinates? = null,
     val link: String? = null,
     val likeOwnerIds: List<Int> = emptyList(),
-    val mentionIds: List<Int>? = null,
+    val mentionIds: List<Int> = emptyList(),
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     val attachment: Attachment? = null,
     val ownedByMe: Boolean = false,
     val users: Users? = null,
 ) : FeedItem()
-
 
 data class Attachment(
     val url: String,

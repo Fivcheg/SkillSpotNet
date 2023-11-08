@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -115,10 +117,10 @@ class FeedFragment : Fragment() {
             }
 
             override fun onViewMentions(post: Post) {
-                if (!post.mentionIds.isNullOrEmpty()) {
-                   userViewModel.getUsersIds(post.mentionIds)
+                if (post.mentionIds.isNotEmpty()) {
+                    userViewModel.getUsersIds(post.mentionIds)
                     val bundle = Bundle()
-                    bundle.putBoolean("CLICK_VIEW_MENTION", true)
+                    bundle.putBoolean("CLICK_VIEW", true)
                     findNavController().navigate(R.id.userFragment, bundle)
                 } else {
                     Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
@@ -151,11 +153,12 @@ class FeedFragment : Fragment() {
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
-        if (auth.authStateFlow.value.id == 0L || auth.authStateFlow.value.token == null) {
-            binding.fab.visibility = View.GONE
-        } else {
-            binding.fab.visibility = View.VISIBLE
-        }
+        binding.fab.visibility =
+            if (auth.authStateFlow.value.id == 0L || auth.authStateFlow.value.token == null) {
+                GONE
+            } else {
+                VISIBLE
+            }
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_containerFragmentView_to_newPostFragment)

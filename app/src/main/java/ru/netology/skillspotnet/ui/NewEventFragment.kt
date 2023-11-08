@@ -9,6 +9,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -36,10 +38,6 @@ import ru.netology.skillspotnet.viewmodel.EventViewModel
 
 @AndroidEntryPoint
 class NewEventFragment : Fragment() {
-
-    companion object {
-        var Bundle.textArg: String? by StringArg
-    }
 
     private var fragmentBinding: FragmentNewEventBinding? = null
     private val viewModel: EventViewModel by activityViewModels()
@@ -93,8 +91,8 @@ class NewEventFragment : Fragment() {
         }
 
         if (binding.textEditInputLatitudeCoordsEvent.text.toString() != "null" || binding.textEditInputLongitudeCoordsEvent.text.toString() != "null") {
-            binding.textEditInputLatitudeCoordsEvent.visibility = View.VISIBLE
-            binding.textEditInputLongitudeCoordsEvent.visibility = View.VISIBLE
+            binding.textEditInputLatitudeCoordsEvent.visibility = VISIBLE
+            binding.textEditInputLongitudeCoordsEvent.visibility = VISIBLE
         }
 
         binding.edit.requestFocus()
@@ -169,11 +167,12 @@ class NewEventFragment : Fragment() {
             findNavController().navigate(R.id.mapFragment, bundle)
         }
 
-//        binding.pickSpeakers.setOnClickListener{
-//            val bundle = Bundle()
-//            bundle.putString("speakerIds", viewModel.edited.value?.speakerIds.toString())
-//             findNavController().navigate(R.id.userFragment, bundle)
-//        }
+        binding.pickSpeakers.setOnClickListener{
+            val bundle = Bundle().apply {
+                putString("PICK_SPEAKER", "PICK_SPEAKER")
+            }
+            findNavController().navigate(R.id.userFragment, bundle)
+        }
 
         binding.textEditInputDateEvent.setOnClickListener {
             context?.let { item ->
@@ -187,17 +186,24 @@ class NewEventFragment : Fragment() {
             }
         }
 
+        viewModel.edited.observe(viewLifecycleOwner) {
+            val reciveSpeaker = viewModel.edited.value?.speakerIds?.count().toString()
+            binding.pickSpeakers.apply {
+                text = reciveSpeaker
+            }
+        }
+
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
 
         viewModel.media.observe(viewLifecycleOwner) {
             if (it.uri == null) {
-                binding.mediaContainer.visibility = View.GONE
+                binding.mediaContainer.visibility = GONE
                 return@observe
             }
 
-            binding.mediaContainer.visibility = View.VISIBLE
+            binding.mediaContainer.visibility = VISIBLE
             binding.media.setImageURI(it.uri)
         }
 
@@ -218,7 +224,7 @@ class NewEventFragment : Fragment() {
                                             "${it.textEditInputEventTime.text}"
                                 )
                             )
-                            viewModel.changeCoords(latitude.toString(), longitude.toString())
+                            viewModel.changeCoords((latitude ?: viewModel.edited.value?.coords?.lat).toString(), (longitude ?:viewModel.edited.value?.coords?.long).toString())
                             viewModel.saveEvent()
                             AndroidUtils.hideKeyboard(requireView())
                             findNavController().navigate(R.id.containerFragmentView)

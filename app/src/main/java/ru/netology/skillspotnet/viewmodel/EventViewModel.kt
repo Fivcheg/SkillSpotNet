@@ -42,10 +42,9 @@ private val empty = Event(
     coords = null,
     type = EventType.OFFLINE,
     likeOwnerIds = emptyList(),
-   // mentionIds = null,
     likedByMe = false,
-    speakerIds = null,
-    participantsIds = null,
+    speakerIds = emptyList(),
+    participantsIds = emptyList(),
     participatedByMe = false,
     attachment = null,
     link = null,
@@ -174,11 +173,19 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun setSpeaker(id: Long) {
-        if (edited.value?.speakerIds?.contains(id.toInt()) == false) {
-            edited.value = edited.value?.speakerIds?.plus(id.toInt())?.let {
-                edited.value?.copy(speakerIds = it)
-            }
+    fun pickSpeakerIds(id: Long) {
+        edited.value?.let {
+            edited.value = edited.value?.copy(
+                speakerIds = it.speakerIds.plus(id.toInt())
+            )
+        }
+    }
+
+    fun unPickSpeakerIds(id: Long) {
+        edited.value?.let {
+            edited.value = edited.value?.copy(
+                speakerIds = it.speakerIds.minus(id.toInt())
+            )
         }
     }
 
