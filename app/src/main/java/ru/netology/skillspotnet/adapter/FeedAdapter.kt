@@ -84,6 +84,7 @@ class FeedAdapter(
                 like.isChecked = post.likedByMe
                 like.text = post.likeOwnerIds.count().toString()
                 mention.text = post.mentionIds.count().toString()
+                if (post.mentionedMe) mention.setIconTintResource(R.color.colorAccent) else mention.setIconTintResource(R.color.tab_shadow_color)
                 imagePost.visibility =
                     if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
 

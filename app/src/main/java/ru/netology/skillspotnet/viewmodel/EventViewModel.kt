@@ -21,6 +21,7 @@ import ru.netology.skillspotnet.dto.Coordinates
 import ru.netology.skillspotnet.dto.Event
 import ru.netology.skillspotnet.dto.EventItem
 import ru.netology.skillspotnet.dto.MediaUpload
+import ru.netology.skillspotnet.dto.Users
 import ru.netology.skillspotnet.enumeration.AttachmentType
 import ru.netology.skillspotnet.enumeration.EventType
 import ru.netology.skillspotnet.model.FeedModelState
@@ -30,6 +31,10 @@ import ru.netology.skillspotnet.util.SingleLiveEvent
 import javax.inject.Inject
 import kotlin.random.Random
 
+val emptyUser = Users(
+    name = "",
+    avatar = null
+)
 private val empty = Event(
     id = 0,
     authorId = 0,
@@ -49,7 +54,7 @@ private val empty = Event(
     attachment = null,
     link = null,
     ownedByMe = false,
-    users = null,
+    users = emptyUser,
 )
 
 private val noMedia = MediaModel()
@@ -185,6 +190,22 @@ class EventViewModel @Inject constructor(
         edited.value?.let {
             edited.value = edited.value?.copy(
                 speakerIds = it.speakerIds.minus(id.toInt())
+            )
+        }
+    }
+
+    fun pickParticipantsIds(id: Long) {
+        edited.value?.let {
+            edited.value = edited.value?.copy(
+                participantsIds = it.participantsIds.plus(id.toInt())
+            )
+        }
+    }
+
+    fun unPickParticipantsIds(id: Long) {
+        edited.value?.let {
+            edited.value = edited.value?.copy(
+                participantsIds = it.participantsIds.minus(id.toInt())
             )
         }
     }

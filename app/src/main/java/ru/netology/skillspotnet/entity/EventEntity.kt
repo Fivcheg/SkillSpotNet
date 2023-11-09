@@ -31,7 +31,7 @@ data class EventEntity(
     val link: String?,
     val ownedByMe: Boolean,
     @Embedded
-    val users: UsersEmbeddable?,
+    val users: UsersEmbeddable,
 ) {
     fun toDto(): Event {
         val event = Event(
@@ -53,7 +53,7 @@ data class EventEntity(
             attachment = attachment?.toDto(),
             link = link,
             ownedByMe = ownedByMe,
-            users = users?.toDto()
+            users = users.toDto()
         )
         return event
     }

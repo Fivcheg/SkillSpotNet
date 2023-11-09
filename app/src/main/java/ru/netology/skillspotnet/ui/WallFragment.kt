@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -23,6 +25,7 @@ import ru.netology.skillspotnet.dto.Post
 import ru.netology.skillspotnet.repository.PostRepository
 import ru.netology.skillspotnet.viewmodel.AuthViewModel
 import ru.netology.skillspotnet.viewmodel.PostViewModel
+import ru.netology.skillspotnet.viewmodel.UserViewModel
 import ru.netology.skillspotnet.viewmodel.WallViewModel
 import javax.inject.Inject
 
@@ -35,6 +38,7 @@ class WallFragment : Fragment() {
     lateinit var auth: AppAuth
     private val viewModel: PostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private val wallViewModel: WallViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -114,6 +118,18 @@ class WallFragment : Fragment() {
                 findNavController().navigate(R.id.imageOpenNav, bundle)
             }
 
+            override fun onViewMentions(post: Post) {
+                if (post.mentionIds.isNotEmpty()) {
+                    userViewModel.getUsersIds(post.mentionIds)
+                    val bundle = Bundle()
+                    bundle.putBoolean("CLICK_VIEW", true)
+                    findNavController().navigate(R.id.userFragment, bundle)
+                } else {
+                    Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
         })
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
@@ -148,10 +164,10 @@ class WallFragment : Fragment() {
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
-        if (id != auth.authStateFlow.value.id) {
-            binding.fab.visibility = View.GONE
+        binding.fab.visibility = if (id != auth.authStateFlow.value.id) {
+            GONE
         } else {
-            binding.fab.visibility = View.VISIBLE
+            VISIBLE
         }
 
         binding.fab.setOnClickListener {

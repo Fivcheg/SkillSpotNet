@@ -26,7 +26,7 @@ data class PostEntity(
     var attachment: AttachmentEmbeddable?,
     val ownedByMe: Boolean,
     @Embedded
-    val users: UsersEmbeddable?,
+    val users: UsersEmbeddable,
 ) {
     fun toDto(): Post {
         return Post(
@@ -45,7 +45,7 @@ data class PostEntity(
             likedByMe = likedByMe,
             attachment = attachment?.toDto(),
             ownedByMe = ownedByMe,
-            users = users?.toDto()
+            users = users.toDto()
         )
     }
 

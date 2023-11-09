@@ -78,6 +78,18 @@ class EventFragment : Fragment() {
                 }
             }
 
+            override fun onParticipatedView(event: Event) {
+                if (event.participantsIds.isNotEmpty()) {
+                    userViewModel.getUsersIds(event.participantsIds)
+                    val bundle = Bundle()
+                    bundle.putBoolean("CLICK_VIEW", true)
+                    findNavController().navigate(R.id.userFragment, bundle)
+                } else {
+                    Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
             override fun onShare(event: Event) {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND

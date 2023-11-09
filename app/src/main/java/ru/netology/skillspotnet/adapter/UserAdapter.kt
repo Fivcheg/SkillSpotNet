@@ -1,6 +1,7 @@
 package ru.netology.skillspotnet.adapter
 
 import android.view.LayoutInflater
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -13,15 +14,15 @@ import ru.netology.skillspotnet.dto.User
 
 class UserAdapter(
     private val onUserInteractionListener: OnUserInteractionListener,
-    private val showAddUsers: Boolean,
-    private val idsCheck: List<Int>,
-    private val isPost: Boolean,
+    private val idsCheck: List<Int>?,
+    private val checkRole: String?,
 ) : ListAdapter<User, UserViewHolder>(UserDiffCallback()) {
 
     interface OnUserInteractionListener {
         fun onOpenUser(user: User)
         fun onAddMentions(user: User)
         fun onPickSpeaker(user: User)
+        fun onPickParticipants(user: User)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -30,7 +31,7 @@ class UserAdapter(
             parent,
             false
         )
-        return UserViewHolder(binding, onUserInteractionListener, showAddUsers, idsCheck, isPost)
+        return UserViewHolder(binding, onUserInteractionListener, idsCheck, checkRole)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
@@ -43,9 +44,8 @@ class UserAdapter(
 class UserViewHolder(
     private val binding: CardUsersBinding,
     private val onUserInteractionListener: UserAdapter.OnUserInteractionListener,
-    private val showAddUsers: Boolean,
-    private val idsCheck: List<Int>,
-    private val isPost: Boolean,
+    private val idsCheck: List<Int>?,
+    private val checkRole: String?,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: User) {
@@ -64,22 +64,30 @@ class UserViewHolder(
                 onUserInteractionListener.onOpenUser(user)
             }
 
-            if (showAddUsers) {
-                addUser.visibility = VISIBLE
-            }
-
-            if (idsCheck.contains(user.id.toInt())) {
-                addUser.isChecked = true
+            addUser.visibility = if (checkRole != null) {
+                VISIBLE
+            } else {
+                GONE
             }
 
             addUser.setOnClickListener {
-                if (isPost) {
-                    onUserInteractionListener.onAddMentions(user)
-                } else {
-                    onUserInteractionListener.onPickSpeaker(user)
-                }
+                when (checkRole) {
+                    "ADD_MENTION" -> {
+                        onUserInteractionListener.onAddMentions(user)
+                    }
 
+                    "PICK_SPEAKER" -> {
+                        onUserInteractionListener.onPickSpeaker(user)
+                    }
+
+                    "PICK_PARTICIPANTS" -> {
+                        onUserInteractionListener.onPickParticipants(user)
+                    }
+
+                    else -> {}
+                }
             }
+            addUser.isChecked = idsCheck != null && idsCheck.contains(user.id.toInt())
         }
     }
 }

@@ -101,7 +101,6 @@ interface ApiService {
         @Part("login") login: String,
         @Part("password") pass: String,
         @Part("name") name: String,
-        // @Part image: MultipartBody.Part?,
     ): Response<Token>
 
     //-------------- Job -------------------//
@@ -149,12 +148,6 @@ interface ApiService {
 
     @DELETE("events/{id}/likes")
     suspend fun dislikeEventById(@Path("id") id: Long): Response<Event>
-
-    @POST("events/{id}/participants")
-    suspend fun participate(@Path("id") id: Long): Response<Event>
-
-    @DELETE("events/{id}/participants")
-    suspend fun doNotParticipate(@Path("id") id: Long): Response<Event>
 
     @Multipart
     @POST("media")

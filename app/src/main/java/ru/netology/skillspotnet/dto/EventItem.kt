@@ -31,9 +31,13 @@ data class Event(
     val attachment: Attachment? = null,
     val link: String? = null,
     val ownedByMe: Boolean = false,
-    val users: Users? = null,
+    val users: Users,
 ) : EventItem() {
     companion object {
+        val emptyUser = Users(
+            name = "",
+            avatar = null
+        )
         val emptyEvent = Event(
             id = 0,
             authorId = 0,
@@ -53,7 +57,8 @@ data class Event(
             attachment = null,
             link = null,
             ownedByMe = false,
-            users = null,
+            users = emptyUser,
         )
     }
+
 }

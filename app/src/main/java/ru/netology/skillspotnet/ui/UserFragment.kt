@@ -45,14 +45,25 @@ class UserFragment : Fragment() {
 
         val binding = FragmentUsersBinding.inflate(inflater, container, false)
         val userView: Boolean = arguments?.getBoolean("CLICK_VIEW") ?: false
-        val isPost = (arguments?.getString("ADD_MENTION") == "ADD_MENTION")
-        val navFromNewCreation: Boolean =
-            (arguments?.getString("ADD_MENTION") == "ADD_MENTION") || (arguments?.getString("PICK_SPEAKER") == "PICK_SPEAKER")
-        val idsCheck: List<Int> = if (arguments?.getString("ADD_MENTION") == "ADD_MENTION") {
-            postViewModel.edited.value?.mentionIds
-        } else {
-            eventViewModel.edited.value?.speakerIds
-        } ?: emptyList()
+        val checkRole = arguments?.getString("PRESS_ADD")
+        val idsCheck =
+            when (checkRole) {
+                "ADD_MENTION" -> {
+                    postViewModel.edited.value?.mentionIds
+                }
+
+                "PICK_SPEAKER" -> {
+                    eventViewModel.edited.value?.speakerIds
+                }
+
+                "PICK_PARTICIPANTS" -> {
+                    eventViewModel.edited.value?.participantsIds
+                }
+
+                else -> {
+                    emptyList()
+                }
+            }
 
         val adapter = UserAdapter(object : UserAdapter.OnUserInteractionListener {
             override fun onOpenUser(user: User) {
@@ -93,8 +104,21 @@ class UserFragment : Fragment() {
                 eventViewModel.edited.value?.speakerIds!!
             }
 
-        }, navFromNewCreation, idsCheck, isPost)
+            override fun onPickParticipants(user: User) {
+                if (authViewModel.authenticated) {
+                    if (eventViewModel.edited.value?.participantsIds!!.contains(user.id.toInt())) {
+                        eventViewModel.unPickParticipantsIds(user.id)
+                    } else {
+                        eventViewModel.pickParticipantsIds(user.id)
+                    }
+                } else {
+                    Toast.makeText(activity, R.string.notAuth, Toast.LENGTH_SHORT)
+                        .show()
+                }
+                eventViewModel.edited.value?.participantsIds!!
+            }
 
+        }, idsCheck, checkRole)
 
         binding.fabSaveUser.setOnClickListener {
             findNavController().navigateUp()
@@ -114,7 +138,7 @@ class UserFragment : Fragment() {
         }
 
         binding.fabSaveUser.visibility =
-            if ((auth.authStateFlow.value.id != 0L || auth.authStateFlow.value.token != null) && navFromNewCreation) {
+            if ((auth.authStateFlow.value.id != 0L || auth.authStateFlow.value.token != null) && checkRole != null) {
                 VISIBLE
             } else {
                 GONE

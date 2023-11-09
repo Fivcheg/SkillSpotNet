@@ -2,7 +2,6 @@ package ru.netology.skillspotnet.adapter
 
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -39,6 +38,7 @@ class EventAdapter(
         fun onAdClick(ad: AdEvent) {}
         fun onOpenImage(event: Event) {}
         fun onSpeakerView(event: Event) {}
+        fun onParticipatedView(event: Event) {}
         fun onPlayAudio(event: Event) {}
         fun onPlayVideo(event: Event) {}
         fun onOpenMap(event: Event) {}
@@ -95,6 +95,13 @@ class EventAdapter(
                 like.text = event.likeOwnerIds.count().toString()
                 dateTimeEventValue.text = formatToDate(event.datetime)
                 buttonSpeakersEvent.text = event.speakerIds.count().toString()
+                buttonParticipantsEvent.text = event.participantsIds.count().toString()
+                if (event.participatedByMe) buttonSpeakersEvent.setIconTintResource(R.color.colorAccent) else buttonSpeakersEvent.setIconTintResource(
+                    R.color.tab_shadow_color
+                )
+                if (event.coords == null) {
+                    buttonLocationEvent.visibility = INVISIBLE
+                }
                 coordinatesEventValue.text =
                     if (event.coords?.lat != null) {
                         "${event.coords.lat.dropLast(13)}, ${event.coords.long.dropLast(10)}"
@@ -171,6 +178,10 @@ class EventAdapter(
 
                 buttonSpeakersEvent.setOnClickListener {
                     onInteractionListener.onSpeakerView(event)
+                }
+
+                buttonParticipantsEvent.setOnClickListener {
+                    onInteractionListener.onParticipatedView(event)
                 }
 
                 playVideoEvent.setOnClickListener {

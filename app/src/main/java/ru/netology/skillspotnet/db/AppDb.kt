@@ -26,7 +26,7 @@ import ru.netology.skillspotnet.util.Converters
         EventRemoteKeyEntity::class,
         UserEntity::class,
     ],
-    version = 53,
+    version = 54,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

@@ -117,7 +117,7 @@ class NewPostFragment : Fragment() {
 
         binding.addMentions.setOnClickListener {
             val bundle = Bundle().apply {
-                putString("ADD_MENTION", "ADD_MENTION")
+                putString("PRESS_ADD", "ADD_MENTION")
             }
             findNavController().navigate(R.id.userFragment, bundle)
         }

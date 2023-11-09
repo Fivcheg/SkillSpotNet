@@ -36,7 +36,7 @@ private val empty = Post(
     likedByMe = false,
     attachment = null,
     ownedByMe = false,
-    users = null
+    users = emptyUser
 )
 
 private val noMedia = MediaModel()

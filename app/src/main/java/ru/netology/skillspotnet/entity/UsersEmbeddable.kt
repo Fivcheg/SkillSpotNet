@@ -9,7 +9,7 @@ data class UsersEmbeddable(
     fun toDto() = Users(name, avatar)
 
     companion object {
-        fun fromDto(dto: Users?) = dto?.let {
+        fun fromDto(dto: Users) = dto.let {
             UsersEmbeddable(it.name, it.avatar)
         }
     }

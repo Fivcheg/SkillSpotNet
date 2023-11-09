@@ -28,7 +28,6 @@ import ru.netology.skillspotnet.databinding.FragmentNewEventBinding
 import ru.netology.skillspotnet.dto.Event
 import ru.netology.skillspotnet.enumeration.AttachmentType
 import ru.netology.skillspotnet.util.AndroidUtils
-import ru.netology.skillspotnet.util.StringArg
 import ru.netology.skillspotnet.util.formatToDate
 import ru.netology.skillspotnet.util.formatToInstant
 import ru.netology.skillspotnet.util.pickDate
@@ -167,9 +166,16 @@ class NewEventFragment : Fragment() {
             findNavController().navigate(R.id.mapFragment, bundle)
         }
 
-        binding.pickSpeakers.setOnClickListener{
+        binding.pickSpeakers.setOnClickListener {
             val bundle = Bundle().apply {
-                putString("PICK_SPEAKER", "PICK_SPEAKER")
+                putString("PRESS_ADD", "PICK_SPEAKER")
+            }
+            findNavController().navigate(R.id.userFragment, bundle)
+        }
+
+        binding.pickParticipants.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("PRESS_ADD", "PICK_PARTICIPANTS")
             }
             findNavController().navigate(R.id.userFragment, bundle)
         }
@@ -187,9 +193,15 @@ class NewEventFragment : Fragment() {
         }
 
         viewModel.edited.observe(viewLifecycleOwner) {
-            val reciveSpeaker = viewModel.edited.value?.speakerIds?.count().toString()
-            binding.pickSpeakers.apply {
-                text = reciveSpeaker
+            val receiveSpeaker = viewModel.edited.value?.speakerIds?.count().toString()
+            val receiveParticipated = viewModel.edited.value?.participantsIds?.count().toString()
+            binding.apply {
+                pickSpeakers.apply {
+                    text = receiveSpeaker
+                }
+                pickParticipants.apply {
+                    text = receiveParticipated
+                }
             }
         }
 
@@ -202,7 +214,6 @@ class NewEventFragment : Fragment() {
                 binding.mediaContainer.visibility = GONE
                 return@observe
             }
-
             binding.mediaContainer.visibility = VISIBLE
             binding.media.setImageURI(it.uri)
         }
@@ -224,7 +235,10 @@ class NewEventFragment : Fragment() {
                                             "${it.textEditInputEventTime.text}"
                                 )
                             )
-                            viewModel.changeCoords((latitude ?: viewModel.edited.value?.coords?.lat).toString(), (longitude ?:viewModel.edited.value?.coords?.long).toString())
+                            viewModel.changeCoords(
+                                (latitude ?: viewModel.edited.value?.coords?.lat).toString(),
+                                (longitude ?: viewModel.edited.value?.coords?.long).toString()
+                            )
                             viewModel.saveEvent()
                             AndroidUtils.hideKeyboard(requireView())
                             findNavController().navigate(R.id.containerFragmentView)
