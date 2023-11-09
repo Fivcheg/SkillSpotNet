@@ -15,6 +15,7 @@ import ru.netology.skillspotnet.databinding.FragmentSignupBinding
 import ru.netology.skillspotnet.util.AndroidUtils.hideKeyboard
 import ru.netology.skillspotnet.validation.ValidationUser.Companion.validName
 import ru.netology.skillspotnet.validation.ValidationUser.Companion.validPassword
+import ru.netology.skillspotnet.validation.ValidationUser.Companion.validPasswordRepeat
 import ru.netology.skillspotnet.validation.ValidationUser.Companion.validUser
 import ru.netology.skillspotnet.viewmodel.SignUpViewModel
 import javax.inject.Inject
@@ -45,18 +46,19 @@ class SignUpFragment : Fragment() {
                 val checkName = validName(userEditText.text.toString())
                 val checkPassword = validPassword(password.text.toString())
                 val checkUser = validUser(username.text.toString())
+                val checkPasswordRepeat = validPasswordRepeat(passwordRepeat.text.toString(), password.text.toString())
 
-
-                if (checkPassword == null && checkUser == null && checkName == null) {
+                if (checkPassword == null && checkUser == null && checkName == null && checkPasswordRepeat == null) {
                     viewModel.registrationUser(
                         userEditText.text.toString(),
                         username.text.toString(),
                         password.text.toString(),
                     )
                 } else {
-                    userContainer.helperText = checkUser ?: "User is good"
+                    userContainer.helperText = checkUser
                     loginPasswordContainer.helperText = checkPassword ?: "Pass is good"
                     loginContainer.helperText = checkUser ?: "Login is good"
+                    loginPasswordRepeatContainer.helperText = checkPasswordRepeat ?: "The entered passwords are equal"
                 }
                 hideKeyboard(requireView())
             }

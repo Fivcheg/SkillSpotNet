@@ -23,6 +23,13 @@ class ValidationUser {
             return null
         }
 
+        fun validPasswordRepeat(passwordRepeatText: String, password: String): String?{
+            if (passwordRepeatText.hashCode() != password.hashCode()) {
+                return "The entered passwords are not equal"
+            }
+            return null
+        }
+
     }
 }
 
