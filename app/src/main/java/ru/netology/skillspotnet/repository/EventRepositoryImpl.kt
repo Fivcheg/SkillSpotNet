@@ -171,6 +171,38 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun participateEventById(id: Long) {
+        try {
+            eventDao.participate(id)
+            val response = apiService.participate(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insertEvent(EventEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError()
+        }
+    }
+
+    override suspend fun unParticipateEventById(id: Long) {
+        try {
+            eventDao.unParticipate(id)
+            val response = apiService.unParticipate(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insertEvent(EventEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError()
+        }
+    }
+
     override suspend fun uploadEvent(upload: MediaUpload): Media {
         try {
             val media = contentResolver.openInputStream(upload.file)?.use {

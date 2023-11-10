@@ -22,7 +22,6 @@ class UserAdapter(
         fun onOpenUser(user: User)
         fun onAddMentions(user: User)
         fun onPickSpeaker(user: User)
-        fun onPickParticipants(user: User)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -78,10 +77,6 @@ class UserViewHolder(
 
                     "PICK_SPEAKER" -> {
                         onUserInteractionListener.onPickSpeaker(user)
-                    }
-
-                    "PICK_PARTICIPANTS" -> {
-                        onUserInteractionListener.onPickParticipants(user)
                     }
 
                     else -> {}

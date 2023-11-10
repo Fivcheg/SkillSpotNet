@@ -43,4 +43,13 @@ interface EventDao {
     @Query("UPDATE EventEntity SET likedByMe = 0 WHERE id = :id AND likedByMe = 1")
     suspend fun unlikeEventById(id: Long)
 
+    @Query(
+        "UPDATE EventEntity SET participatedByMe = 1 WHERE id = :id AND participatedByMe = 0"
+    )
+    suspend fun participate(id: Long)
+
+    @Query(
+        "UPDATE EventEntity SET participatedByMe = 0 WHERE id = :id AND participatedByMe = 1"
+    )
+    suspend fun unParticipate(id: Long)
 }

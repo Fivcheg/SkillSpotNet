@@ -16,4 +16,7 @@ interface EventRepository {
     suspend fun likeEventById(id: Long)
     suspend fun dislikeEventById(id: Long)
     suspend fun uploadEvent(upload: MediaUpload): Media
+    suspend fun participateEventById(id: Long)
+    suspend fun unParticipateEventById(id: Long)
+
 }

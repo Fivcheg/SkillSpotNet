@@ -51,6 +51,17 @@ class EventFragment : Fragment() {
                     .navigate(R.id.newEventFragment)
             }
 
+            override fun onParticipated(event: Event) {
+                if (authViewModel.authenticated) {
+                    if (!event.participatedByMe)
+                        eventViewModel.participateEventById(event.id)
+                    else eventViewModel.unParticipateEventById(event.id)
+                } else {
+                    Toast.makeText(activity, R.string.notAuth, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
             override fun onLike(event: Event) {
                 if (authViewModel.authenticated) {
                     if (!event.likedByMe)
@@ -78,17 +89,17 @@ class EventFragment : Fragment() {
                 }
             }
 
-            override fun onParticipatedView(event: Event) {
-                if (event.participantsIds.isNotEmpty()) {
-                    userViewModel.getUsersIds(event.participantsIds)
-                    val bundle = Bundle()
-                    bundle.putBoolean("CLICK_VIEW", true)
-                    findNavController().navigate(R.id.userFragment, bundle)
-                } else {
-                    Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
+//            override fun onParticipatedView(event: Event) {
+//                if (event.participantsIds.isNotEmpty()) {
+//                    userViewModel.getUsersIds(event.participantsIds)
+//                    val bundle = Bundle()
+//                    bundle.putBoolean("CLICK_VIEW", true)
+//                    findNavController().navigate(R.id.userFragment, bundle)
+//                } else {
+//                    Toast.makeText(context, R.string.nothing, Toast.LENGTH_SHORT)
+//                        .show()
+//                }
+//            }
 
             override fun onShare(event: Event) {
                 val intent = Intent().apply {

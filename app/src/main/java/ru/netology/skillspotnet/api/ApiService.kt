@@ -153,6 +153,12 @@ interface ApiService {
     @POST("media")
     suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Media>
 
+    @POST("events/{id}/participants")
+    suspend fun participate(@Path("id") id: Long): Response<Event>
+
+    @DELETE("events/{id}/participants")
+    suspend fun unParticipate(@Path("id") id: Long): Response<Event>
+
     //-------------- Wall -------------------//
 
     @GET("{authorId}/wall")

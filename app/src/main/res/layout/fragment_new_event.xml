@@ -24,6 +24,7 @@
                 android:id="@+id/edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints="Enter text"
                 android:background="@android:color/transparent"
                 android:inputType="textMultiLine"
                 android:padding="@dimen/common_spacing" />
@@ -185,15 +186,6 @@
             android:contentDescription="@string/description_pick_location"
             android:padding="@dimen/common_spacing"
             app:icon="@drawable/outline_hearing_24" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pickParticipants"
-            style="@style/Widget.AppTheme.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/description_pick_location"
-            android:padding="@dimen/common_spacing"
-            app:icon="@drawable/outline_spatial_audio_off_24" />
 
     </LinearLayout>
 

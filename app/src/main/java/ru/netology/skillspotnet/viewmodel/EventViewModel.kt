@@ -194,22 +194,6 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun pickParticipantsIds(id: Long) {
-        edited.value?.let {
-            edited.value = edited.value?.copy(
-                participantsIds = it.participantsIds.plus(id.toInt())
-            )
-        }
-    }
-
-    fun unPickParticipantsIds(id: Long) {
-        edited.value?.let {
-            edited.value = edited.value?.copy(
-                participantsIds = it.participantsIds.minus(id.toInt())
-            )
-        }
-    }
-
     fun likeEventById(id: Long) = viewModelScope.launch {
         try {
             repository.likeEventById(id)
@@ -221,6 +205,21 @@ class EventViewModel @Inject constructor(
     fun dislikeEventById(id: Long) = viewModelScope.launch {
         try {
             repository.dislikeEventById(id)
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+    fun participateEventById(id: Long) = viewModelScope.launch {
+        try {
+            repository.participateEventById(id)
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun unParticipateEventById(id: Long) = viewModelScope.launch {
+        try {
+            repository.unParticipateEventById(id)
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }

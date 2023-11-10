@@ -238,8 +238,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/description_event_mentions"
-            android:checkable="false"
-            app:icon="@drawable/outline_spatial_audio_off_24"
+            android:checkable="true"
+            app:icon="@drawable/participants_check"
             app:layout_constraintStart_toEndOf="@+id/buttonSpeakersEvent"
             app:layout_constraintTop_toBottomOf="@+id/footer_top_divider"
             tools:checked="@sample/posts.json/data/likedByMe" />

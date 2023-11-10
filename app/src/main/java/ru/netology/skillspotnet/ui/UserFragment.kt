@@ -56,10 +56,6 @@ class UserFragment : Fragment() {
                     eventViewModel.edited.value?.speakerIds
                 }
 
-                "PICK_PARTICIPANTS" -> {
-                    eventViewModel.edited.value?.participantsIds
-                }
-
                 else -> {
                     emptyList()
                 }
@@ -103,21 +99,6 @@ class UserFragment : Fragment() {
                 }
                 eventViewModel.edited.value?.speakerIds!!
             }
-
-            override fun onPickParticipants(user: User) {
-                if (authViewModel.authenticated) {
-                    if (eventViewModel.edited.value?.participantsIds!!.contains(user.id.toInt())) {
-                        eventViewModel.unPickParticipantsIds(user.id)
-                    } else {
-                        eventViewModel.pickParticipantsIds(user.id)
-                    }
-                } else {
-                    Toast.makeText(activity, R.string.notAuth, Toast.LENGTH_SHORT)
-                        .show()
-                }
-                eventViewModel.edited.value?.participantsIds!!
-            }
-
         }, idsCheck, checkRole)
 
         binding.fabSaveUser.setOnClickListener {

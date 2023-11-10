@@ -173,13 +173,6 @@ class NewEventFragment : Fragment() {
             findNavController().navigate(R.id.userFragment, bundle)
         }
 
-        binding.pickParticipants.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString("PRESS_ADD", "PICK_PARTICIPANTS")
-            }
-            findNavController().navigate(R.id.userFragment, bundle)
-        }
-
         binding.textEditInputDateEvent.setOnClickListener {
             context?.let { item ->
                 pickDate(binding.textEditInputDateEvent, item)
@@ -194,13 +187,9 @@ class NewEventFragment : Fragment() {
 
         viewModel.edited.observe(viewLifecycleOwner) {
             val receiveSpeaker = viewModel.edited.value?.speakerIds?.count().toString()
-            val receiveParticipated = viewModel.edited.value?.participantsIds?.count().toString()
             binding.apply {
                 pickSpeakers.apply {
                     text = receiveSpeaker
-                }
-                pickParticipants.apply {
-                    text = receiveParticipated
                 }
             }
         }

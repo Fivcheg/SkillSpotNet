@@ -38,7 +38,7 @@ class EventAdapter(
         fun onAdClick(ad: AdEvent) {}
         fun onOpenImage(event: Event) {}
         fun onSpeakerView(event: Event) {}
-        fun onParticipatedView(event: Event) {}
+        fun onParticipated(event: Event) {}
         fun onPlayAudio(event: Event) {}
         fun onPlayVideo(event: Event) {}
         fun onOpenMap(event: Event) {}
@@ -95,10 +95,8 @@ class EventAdapter(
                 like.text = event.likeOwnerIds.count().toString()
                 dateTimeEventValue.text = formatToDate(event.datetime)
                 buttonSpeakersEvent.text = event.speakerIds.count().toString()
+                buttonParticipantsEvent.isChecked = event.participatedByMe
                 buttonParticipantsEvent.text = event.participantsIds.count().toString()
-                if (event.participatedByMe) buttonSpeakersEvent.setIconTintResource(R.color.colorAccent) else buttonSpeakersEvent.setIconTintResource(
-                    R.color.tab_shadow_color
-                )
                 if (event.coords == null) {
                     buttonLocationEvent.visibility = INVISIBLE
                 }
@@ -175,13 +173,12 @@ class EventAdapter(
                     onInteractionListener.onPlayAudio(event)
                 }
 
-
                 buttonSpeakersEvent.setOnClickListener {
                     onInteractionListener.onSpeakerView(event)
                 }
 
                 buttonParticipantsEvent.setOnClickListener {
-                    onInteractionListener.onParticipatedView(event)
+                    onInteractionListener.onParticipated(event)
                 }
 
                 playVideoEvent.setOnClickListener {
