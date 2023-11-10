@@ -16,6 +16,7 @@ import ru.netology.skillspotnet.R
 import ru.netology.skillspotnet.databinding.CardAdBinding
 import ru.netology.skillspotnet.databinding.CardEventBinding
 import ru.netology.skillspotnet.dto.AdEvent
+import ru.netology.skillspotnet.dto.AdEvent.Companion.testEvent1
 import ru.netology.skillspotnet.dto.Event
 import ru.netology.skillspotnet.dto.EventItem
 import ru.netology.skillspotnet.enumeration.AttachmentType
@@ -199,7 +200,7 @@ class EventAdapter(
 
         fun bind(ad: AdEvent) {
             binding.apply {
-                image.load("https://cs13.pikabu.ru/post_img/2023/05/20/9/1684592976157428245.jpg")
+                image.load(testEvent1.image)
                 image.setOnClickListener {
                     onInteractionListener.onAdClick(ad)
                 }

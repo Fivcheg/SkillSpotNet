@@ -21,6 +21,8 @@ import ru.netology.skillspotnet.adapter.FeedAdapter
 import ru.netology.skillspotnet.adapter.PagingLoadStateAdapter
 import ru.netology.skillspotnet.auth.AppAuth
 import ru.netology.skillspotnet.databinding.FragmentFeedBinding
+import ru.netology.skillspotnet.dto.Ad
+import ru.netology.skillspotnet.dto.AdEvent.Companion.testEvent1
 import ru.netology.skillspotnet.dto.Post
 import ru.netology.skillspotnet.repository.PostRepository
 import ru.netology.skillspotnet.viewmodel.AuthViewModel
@@ -47,6 +49,10 @@ class FeedFragment : Fragment() {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         val adapter = FeedAdapter(object : FeedAdapter.OnInteractionListener {
+            override fun onAdClick(ad: Ad) {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(testEvent1.url)))
+            }
+
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
                 val bundle = Bundle().apply {

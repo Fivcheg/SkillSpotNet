@@ -10,7 +10,20 @@ data class AdEvent(
     override val id: Long,
     val url: String,
     val image: String,
-) : EventItem()
+) : EventItem() {
+    companion object {
+        val testEvent1 = AdEvent(
+            id = 1,
+            url = "https://www.netology.ru",
+            image = "https://cs13.pikabu.ru/post_img/2023/05/20/9/1684592976157428245.jpg",
+        )
+        val testEvent2 = AdEvent(
+            id = 2,
+            url = "https://www.google.ru",
+            image = "https://mobile-cuisine.com/wp-content/uploads/2013/02/pintrest-marketing.jpg",
+        )
+    }
+}
 
 data class Event(
     override val id: Long,
@@ -60,5 +73,6 @@ data class Event(
             users = emptyUser,
         )
     }
-
 }
+
+
